@@ -1,0 +1,1 @@
+document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll(".show-if").forEach(function(e){var t=e.dataset.control;let n=e.dataset.controlValue,l=document.querySelector(`[id="${t}"]`);l&&(l.value===n?e.style.display="block":e.style.display="none",l.addEventListener("change",function(){l.value===n?e.style.display="block":e.style.display="none"}))})});

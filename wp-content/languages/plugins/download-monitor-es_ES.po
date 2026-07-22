@@ -1,0 +1,4107 @@
+# Translation of Plugins - Download Monitor - Stable (latest release) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - Download Monitor - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2025-09-18 19:23:53+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.3\n"
+"Language: es\n"
+"Project-Id-Version: Plugins - Download Monitor - Stable (latest release)\n"
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:177
+msgid "You do not have permission to delete data from this plugin"
+msgstr "No tienes permiso para borrar datos de este plugin"
+
+#: src/Util/ExtensionLoader.php:20
+msgid "Could not connect to the Download Monitor server. Please try again later."
+msgstr "No se ha podido conectar con el servidor del Download Monitor. Vuelve a intentarlo más tarde."
+
+#: src/Admin/WritePanels.php:242
+msgid "Open in new tab"
+msgstr "Abrir en una nueva pestaña"
+
+#: src/Admin/Settings/Settings.php:667
+msgid "Payment Gateways"
+msgstr "Pasarelas de pago"
+
+#: src/Admin/Settings/Settings.php:341
+msgid "This prefix is added to the invoice ID. Enter an unique prefix here."
+msgstr "Este prefijo se añade al ID de la factura. Introduce aquí un prefijo único."
+
+#: src/Admin/Settings/Settings.php:93
+msgid "General settings"
+msgstr "Ajustes generales"
+
+#: src/Admin/class-dlm-plugin-status.php:498
+msgid "Functions:"
+msgstr "Funciones:"
+
+#: src/Admin/class-dlm-plugin-status.php:492
+msgid "Ask your hosting service to enable the following required modules/functions!"
+msgstr "¡Pide a tu servicio de alojamiento que active los siguientes módulos/funciones necesarios!"
+
+#: src/Admin/class-dlm-plugin-status.php:480
+msgid "DLM - One or more functions are missing!"
+msgstr "DLM - ¡Faltan una o varias funciones!"
+
+#: src/Admin/class-dlm-plugin-status.php:472
+#: src/Admin/class-dlm-plugin-status.php:488
+msgid "Modules and functions help Download Monitor achieve the functionality you desire, and to do that we require that functions and modules, that Download Monitor depends on, be enabled."
+msgstr "Los módulos y funciones ayudan a Download Monitor a conseguir la funcionalidad que deseas, y para ello necesitamos que las funciones y módulos de los que depende Download Monitor estén activos."
+
+#: src/Admin/class-dlm-plugin-status.php:467
+#: src/Admin/class-dlm-plugin-status.php:483
+msgid "Plugin functionality"
+msgstr "Funcionalidad del plugin"
+
+#: src/Admin/class-dlm-plugin-status.php:464
+msgid "DLM - All required modules/functions are active!"
+msgstr "DLM - ¡Todos los módulos/funciones necesarios están activos!"
+
+#: src/Admin/class-dlm-plugin-status.php:446
+msgid "Download Monitor required modules / functions"
+msgstr "Módulos / funciones que necesita Download Monitor"
+
+#: src/Admin/class-dlm-plugin-status.php:164
+msgid "Edit the file using the theme editor."
+msgstr "Edita el archivo utilizando el editor de temas."
+
+#: src/Admin/class-dlm-plugin-status.php:152
+msgid "Action status. If core version is bigger than the overridden file version it is recommended to update the overridden file."
+msgstr "Estado de la acción. Si la versión del núcleo es mayor que la versión del archivo anulado, se recomienda actualizar el archivo anulado."
+
+#: src/Admin/class-dlm-plugin-status.php:140
+msgid "The version of the core file."
+msgstr "La versión del archivo del núcleo."
+
+#: src/Admin/class-dlm-plugin-status.php:133
+msgid "Core version"
+msgstr "Versión del núcleo"
+
+#: src/Admin/class-dlm-plugin-status.php:128
+msgid "The version of the overridden file."
+msgstr "La versión del archivo anulado."
+
+#: src/Admin/class-dlm-plugin-status.php:121
+msgid "Overridden file version"
+msgstr "Versión de archivo anulada"
+
+#: src/Admin/class-dlm-plugin-status.php:116
+msgid "The template that has been overridden."
+msgstr "La plantilla que se ha anulado."
+
+#: src/Admin/class-dlm-plugin-status.php:109
+msgid "Overridden file"
+msgstr "Archivo anulado"
+
+#: src/Admin/class-dlm-plugin-status.php:101
+msgid "There are %s overriden templates!"
+msgstr "¡Hay %s plantillas anuladas!"
+
+#: src/Admin/class-dlm-plugin-status.php:95
+msgid "None of Download Monitor's output templates are being overridden by your theme."
+msgstr "Tu tema no anula ninguna de las plantillas de salida de Download Monitor."
+
+#: src/Admin/class-dlm-plugin-status.php:69
+msgid "Templates"
+msgstr "Plantillas"
+
+#: assets/apps/upsells/components/DetailedLogsFilter.jsx:67
+#: assets/apps/upsells/components/OverviewLogsFilter.jsx:22
+#: assets/js/upsells/upsells.js:1
+msgid "Filter by download…"
+msgstr "Filtrar por descarga…"
+
+#: includes/admin/class-dlm-upsells.php:888
+msgid "Upgrade to Premium!"
+msgstr "¡Actualiza a premium!"
+
+#: includes/admin/class-dlm-upsells.php:208
+#: src/Admin/UpsellsTemplates/dlm_aam-modal-upsell.php:29
+#: src/Admin/UpsellsTemplates/dlm_buttons-modal-upsell.php:17
+#: src/Admin/UpsellsTemplates/dlm_lm-modal-upsell.php:29
+msgid "Free vs Premium"
+msgstr "Gratuita vs Premium"
+
+#: includes/admin/class-dlm-upsells.php:206
+msgid "AVAILABLE WITH PREMIUM"
+msgstr "DISPONIBLE CON PREMIUM"
+
+#: includes/admin/class-dlm-upsells.php:848
+#: includes/admin/class-dlm-upsells.php:849
+msgid "LITE vs Premium"
+msgstr "Básica vs Premium"
+
+#: includes/admin/class-dlm-upsells.php:98
+msgid "Get Premium"
+msgstr "Consigue la versión premium"
+
+#: src/Admin/Extensions.php:996
+msgid "You license has expired,  %s."
+msgstr "Tu licencia ha caducado, %s."
+
+#: src/Admin/Extensions.php:989
+msgid "Invalid license, please check your license key."
+msgstr "Licencia no válida, por favor, comprueba tu clave de licencia."
+
+#: src/Admin/Extensions.php:982 src/Admin/Extensions.php:996
+msgid "If you already renewed, please activate the license."
+msgstr "Si ya has renovado, por favor, activa la licencia."
+
+#: src/Admin/Extensions.php:982
+msgid "License expired, please %srenew%s."
+msgstr "Licencia caducada, por favor, %srenueva%s."
+
+#: src/Admin/Extensions.php:967
+msgid "Main license"
+msgstr "Licencia principal"
+
+#: src/Admin/Extensions.php:949
+msgid "renew your license"
+msgstr "renueva tu licencia"
+
+#: includes/admin/class-dlm-upsells.php:958
+msgid "Enhanced Metrics"
+msgstr "Métricas avanzadas"
+
+#: includes/admin/class-dlm-upsells.php:951
+msgid "Show the download's category"
+msgstr "Mostrar la categoría de las descargas"
+
+#: includes/admin/class-dlm-upsells.php:947
+msgid "Show the location from where in the site the user downloaded"
+msgstr "Mostrar la ubicación del sitio desde la cual descargó el usuario"
+
+#: includes/admin/class-dlm-upsells.php:943
+msgid "See active users and their download information"
+msgstr "Mira los usuarios activos y su información de descarga"
+
+#: includes/admin/class-dlm-upsells.php:939
+msgid "Show number of completed downloads by logged out users"
+msgstr "Mostrar el número de descargas completadas por usuarios desconectados"
+
+#: includes/admin/class-dlm-upsells.php:935
+msgid "Show number of completed downloads by logged in users"
+msgstr "Mostrar el número de descargas completadas por usuarios conectados"
+
+#: includes/admin/class-dlm-upsells.php:931
+msgid "Show % of downloads from the total downloads number"
+msgstr "Mostrar el % de descargas del número de descargas totales"
+
+#: includes/admin/class-dlm-upsells.php:927
+msgid "Show number of failed downloads per download"
+msgstr "Mostrar el número de descargas fallidas por descarga"
+
+#: includes/admin/class-dlm-upsells.php:923
+msgid "Show number of redirected downloads per download"
+msgstr "Mostrar el número de descargas redirigidas por descarga"
+
+#: includes/admin/class-dlm-upsells.php:919
+msgid "Show number of completed downloads per download"
+msgstr "Mostrar el número de descargas completadas por descarga"
+
+#: includes/admin/class-dlm-upsells.php:915
+msgid "Compare dates and view chart to see how you’ve done"
+msgstr "Compara fechas y visualiza el gráfico para ver cómo lo has hecho"
+
+#: src/class-dlm-cron-jobs.php:55
+msgid "DLM Once Weekly"
+msgstr "DLM Una vez a la semana"
+
+#: src/Admin/WritePanels.php:717
+msgid "File type not allowed."
+msgstr "Tipo de archivo no permitido."
+
+#: src/Admin/WritePanels.php:708
+msgid "You are not allowed to upload files."
+msgstr "No tienes permitido subir archivos."
+
+#: src/Admin/class-dlm-media-library.php:390
+msgid "You don't have permissions to unprotect file."
+msgstr "No tienes permisos para desproteger este archivo."
+
+#: src/Admin/class-dlm-media-library.php:360
+msgid "You don't have permissions to create Downloads"
+msgstr "No tienes permisos para crear descargas."
+
+#: src/DLM.php:545 src/DownloadHandler.php:878 src/DownloadHandler.php:896
+msgid "Something is wrong with the file path."
+msgstr "Hay un problema con la ruta del archivo."
+
+#: src/Admin/WritePanels.php:476
+msgid "Add path"
+msgstr "Añadir ruta"
+
+#: src/Admin/Extensions.php:971
+msgid "Deactivate"
+msgstr "Desactivar"
+
+#: src/Admin/Extensions.php:972
+msgid "Forgot your license?"
+msgstr "¿Olvidaste tu licencia?"
+
+#: src/Admin/Extensions.php:786
+msgid "Could not connect to the license server"
+msgstr "No se ha podido conectar con el servidor de licencias"
+
+#: src/Admin/Extensions.php:963
+msgid "Email"
+msgstr "Correo electrónico"
+
+#: src/Admin/Extensions.php:376
+msgid "Installed & Activated"
+msgstr "Instalado y activado"
+
+#: includes/admin/wpchill/class-wpchill-about-us.php:163
+#: src/Admin/Extensions.php:356 src/Admin/Extensions.php:971
+#: includes/admin/wpchill/assets/js/about-us.js:19
+msgid "Activate"
+msgstr "Activar"
+
+#: src/Admin/DownloadPaths/class-dlm-downloads-path.php:591
+msgid "Path updated"
+msgstr "Ruta actualizada"
+
+#: src/Admin/DownloadPaths/class-dlm-downloads-path.php:583
+#: src/Admin/DownloadPaths/class-dlm-downloads-path.php:606
+msgid "No path provided"
+msgstr "No se ha proporcionado una ruta"
+
+#: src/Admin/class-dlm-db-upgrader.php:562
+msgid "Hello there! We made some changes on how Download Monitor's data is structured. Please make a backup of your database and click the upgrade button"
+msgstr "¡Hola! Hemos realizado algunos cambios en el modo en que Download Monitor estructura los datos. Por favor, realiza una copia de seguridad de tu base de datos y haz clic en el botón de actualizar."
+
+#: src/Admin/AdminScripts.php:309
+msgid "Please enter your license key."
+msgstr "Por favor, introduce tu clave de licencia."
+
+#: src/Admin/Extensions.php:720
+msgid "Missing email address."
+msgstr "Falta la dirección de correo electrónico."
+
+#: src/Admin/Extensions.php:724
+msgid "Something went wrong, please try again."
+msgstr "Algo no funcionó. Por favor, inténtalo de nuevo."
+
+#: src/AjaxHandler.php:325
+msgid "Column download_category is already updated"
+msgstr "La columna download_category ya ha sido actualizada"
+
+#: src/AjaxHandler.php:323
+msgid "Column download_category has been updated"
+msgstr "La columna download_category ha sido actualizada"
+
+#: src/AjaxHandler.php:321
+msgid "Error while updating the column download_category"
+msgstr "Error al actualizar la columna download_categoty"
+
+#: src/Admin/WritePanels.php:468 src/Admin/WritePanels.php:474
+msgid "Recommended path:"
+msgstr "Ruta recomendada:"
+
+#: src/Admin/Extensions.php:716
+msgid "Missing license key."
+msgstr "Falta la clave de licencia."
+
+#: src/Admin/class-dlm-db-upgrader.php:89
+msgid "Update started, please wait. Don't close or exit this page. it will reload automatically when it's finished."
+msgstr "Actualización iniciada, por favor, espera. No cierres ni salgas de esta página. Se recargará automáticamente cuando haya finalizado."
+
+#: src/Admin/AdminScripts.php:307
+msgid "Please enter your email address."
+msgstr "Por favor, introduce tu dirección de correo electrónico."
+
+#: src/Admin/AdminScripts.php:306
+msgid "An error occurred while trying to retrieve your licenses. Please try again later."
+msgstr "Ha ocurrido un error mientras se intentaba recuperar tus licencias. Por favor inténtelo de nuevo más tarde."
+
+#: src/Admin/AdminScripts.php:305
+msgid "An email has been sent to you with the corresponding licenses."
+msgstr "Se te ha enviado un correo electrónico con las licencias correspondientes."
+
+#: src/Admin/AdminScripts.php:304
+msgid "Please wait, deactivating extensions...."
+msgstr "Por favor, espera, desactivando extensiones..."
+
+#: src/Admin/AdminScripts.php:303
+msgid "Please wait, activating extensions..."
+msgstr "Por favor, espera, activando extensiones..."
+
+#: src/AjaxHandler.php:305
+msgid "Nonce is required"
+msgstr "Nonce es obligatorio"
+
+#: src/Admin/AdminScripts.php:308
+msgid "Please wait, reaching server..."
+msgstr "Por favor, espera, conectando con el servidor..."
+
+#: src/Admin/class-dlm-db-upgrader.php:557
+msgid "Please <a href=\"#\" class=\"dlm-db-download_category-link\">upgrade the database</a>."
+msgstr "Por favor, <a href=\"#\" class=\"dlm-db-download_category-link\">actualiza la base de datos</a>."
+
+#: src/Admin/Extensions.php:845
+msgid "Master license updated"
+msgstr "Licencia maestra actualizada"
+
+#: src/Admin/class-dlm-empty-table.php:46
+msgid "Need help? Check out %1$s our documentation%2$s."
+msgstr "¿Necesitas ayuda? Echa un vistazo a %1$s nuestra documentación%2$s."
+
+#: src/Admin/class-dlm-empty-table.php:43
+msgid "Create your first Download"
+msgstr "Crea tu primera descarga"
+
+#: src/Admin/class-dlm-empty-table.php:34
+msgid "Grow your audience, track download performance and convert your traffic into sales with an easy-to-use digital downloads solution. "
+msgstr "Haz crecer a tu audiencia, haz seguimiento del rendimiento de tu descarga y convierte tu tráfico en ventas con una solución de descargas digitales de fácil uso. "
+
+#: src/Admin/class-dlm-empty-table.php:31
+msgid "Hi, there!"
+msgstr "¡Hola!"
+
+#: src/Admin/class-dlm-admin-list-table.php:1041
+msgid "Copy download link"
+msgstr "Copiar enlace de descarga"
+
+#: src/Admin/class-dlm-admin-list-table.php:601
+msgid "Download link"
+msgstr "Enlace de descarga"
+
+#: src/Admin/AdminScripts.php:157
+msgid "Copied"
+msgstr "Copiado"
+
+#: src/Admin/Reports/class-dlm-reports-rest-api.php:155
+msgid "Sorry, you are not allowed to see data from this endpoint."
+msgstr "Lo siento, no tienes permiso para acceder a esta variable."
+
+#: src/Widgets/Downloads.php:240
+msgid "Category"
+msgstr "Categoría"
+
+#: src/class-dlm-download-error-handler.php:85
+msgid "No file paths defined"
+msgstr "No se han definido las rutas de archivo"
+
+#: src/class-dlm-download-error-handler.php:58
+msgid "No file path defined"
+msgstr "No se ha definido la ruta del archivo"
+
+#: templates/no-access-modal.php:94
+msgid "Close"
+msgstr "Cerrar"
+
+#: src/class-dlm-modal.php:164 src/class-dlm-modal.php:167
+#: src/class-dlm-modal.php:168
+msgid "No access!"
+msgstr "¡Sin acceso!"
+
+#: src/class-dlm-modal.php:162 src/class-dlm-modal.php:163
+#: src/class-dlm-modal.php:165 src/class-dlm-modal.php:166
+msgid "Error!"
+msgstr "¡Error!"
+
+#: src/class-dlm-modal.php:103 src/class-dlm-modal.php:147
+msgid "You do not have permission to download this file."
+msgstr "No tienes permisos para descargar este archivo."
+
+#: includes/admin/class-dlm-upsells.php:886
+msgid "Upgrade!"
+msgstr "¡Actualizar!"
+
+#: src/Admin/Settings/Settings.php:172
+msgid "Open no access message in a modal (pop-up) window."
+msgstr "Abrir un mensaje de «Sin acceso» en una ventana emergente."
+
+#: src/Admin/Settings/Settings.php:170
+msgid "No Access Modal"
+msgstr "Ventana emergente «Sin acceso»"
+
+#: src/Admin/class-dlm-media-library.php:567
+msgid "Download Monitor file"
+msgstr "Archivo de Download Monitor"
+
+#: src/Admin/class-dlm-media-library.php:562
+msgid "Download Monitor protected file"
+msgstr "Archivo protegido de Download Monitor"
+
+#: src/Admin/class-dlm-media-library.php:329
+msgid "No action is needed."
+msgstr "No fue necesario realizar ninguna acción."
+
+#: src/Admin/class-dlm-media-library.php:327
+msgid "Default file"
+msgstr "Archivo por defecto"
+
+#: src/Admin/class-dlm-media-library.php:218
+msgid "All files"
+msgstr "Todos los archivos"
+
+#: assets/views/meta-box/version.php:149
+msgid "Taken into consideration for the total download count ( total = Download Monitor custom table count + manual download count )."
+msgstr "Tenido en cuenta para el recuento total de descargas (total = recuento de tabla personalizada de Download Monitor + recuento manual de descargas)."
+
+#: assets/views/meta-box/version.php:146
+msgid "Manual download count"
+msgstr "Recuento manual de descargas"
+
+#: src/FileManager.php:764
+msgid "There was an error making or verifying the directory at: %s"
+msgstr "Ha habido un error al crear o verificar el directorio en: %s"
+
+#: src/FileManager.php:716
+msgid "The new path provided: %s is absolute. The new path must be a path relative to the WP uploads directory."
+msgstr "La nueva ruta proporcionada: %s es absoluta. La nueva ruta debe ser una ruta relativa al directorio de subidas de WP."
+
+#: src/FileManager.php:618
+msgid "This file is already protected. Please reload your page."
+msgstr "El archivo ya está protegido. por favor, recarga tu página."
+
+#: src/Admin/class-dlm-media-library.php:418
+msgid "File unprotected."
+msgstr "Archivo desprotegido."
+
+#: src/Admin/class-dlm-media-library.php:373
+msgid "File protected. Download created"
+msgstr "Archivo protegido. Descarga creada"
+
+#: src/Admin/class-dlm-media-library.php:323
+msgid "Unprotect"
+msgstr "Desproteger"
+
+#: src/Admin/class-dlm-media-library.php:318
+msgid "Protect"
+msgstr "Proteger"
+
+#: src/FileManager.php:702
+msgid "The post with ID: %d is not an attachment post type."
+msgstr "La entrada con ID: %d no es un tipo de contenido adjunto."
+
+#: src/Admin/class-dlm-media-library.php:588
+msgid "Download Monitor protect"
+msgstr "Protección de Download Monitor"
+
+#: src/Admin/class-dlm-media-library.php:572
+msgid "Un-Protected"
+msgstr "Desprotegido"
+
+#: src/Admin/class-dlm-media-library.php:320
+msgid "Creates a Download based on this file and moves the file to Download Monitor's protected folder. Also replaces the attachment's URL with the download link."
+msgstr "Crea una descarga basada en este archivo y traslada el archivo a la carpeta protegida de Download Monitor. También reemplaza la URL del adjunto por el enlace de descarga."
+
+#: src/Admin/class-dlm-media-library.php:325
+msgid "Moves the file from Download Monitor's protected directory to the uploads directory. Also places back the original URL for this attachment."
+msgstr "Traslada el archivo de la carpeta protegida de Download Monitor al directorio de subidas. También devuelve a su ubicación la URL original para este adjunto."
+
+#: src/Admin/class-dlm-media-library.php:337
+msgid "DLM protect file"
+msgstr "DLM proteger archivo"
+
+#: src/Admin/class-dlm-db-upgrader.php:529
+msgid "Hello there! We made some changes on how Download Monitor's data is structured. Please <a href=\"#\" class=\"dlm-db-upgrade-link\">click here</a> to upgrade your database"
+msgstr "¡Hola! Hemos hecho algunos cambios en el modo en que se estructuran los datos de Download Monitor. Por favor, <a href=\"#\" class=\"dlm-db-upgrade-link\">haz clic aquí</a> para actualizar tu base de datos"
+
+#: assets/apps/reports/components/DetailedDownloadsTable.jsx:267
+#: assets/apps/reports/components/OverviewDownloadsTable.jsx:220
+#: assets/js/reports/reports.js:1
+msgid "of"
+msgstr "de"
+
+#: src/DLM.php:531
+msgid "An error occurred while trying to download the file. Please try again."
+msgstr "Ha ocurrido un error al intentar descargar el archivo. Por favor, inténtalo de nuevo."
+
+#: src/Admin/class-dlm-db-upgrader.php:524
+msgid "Please <a href=\"#\" class=\"dlm-db-upgrade-link\">upgrade the database</a>."
+msgstr "Por favor, <a href=\"#\" class=\"dlm-db-upgrade-link\">actualiza la base de datos</a>."
+
+#: src/Shortcodes.php:61
+msgid "Log table not present."
+msgstr "La tabla de registro no está presente."
+
+#: src/class-dlm-download-error-handler.php:223 src/DLM.php:543
+msgid "Access denied. You do not have permission to download this file."
+msgstr "Acceso denegado. No tienes permisos para descargar este archivo."
+
+#: src/class-dlm-download-error-handler.php:195 src/DLM.php:541
+msgid "Access denied to this file."
+msgstr "Acceso denegado a este archivo."
+
+#: src/DLM.php:535
+msgid "No file path defined."
+msgstr "No se ha definido la ruta del archivo"
+
+#: src/class-dlm-download-error-handler.php:168
+#: src/class-dlm-download-error-handler.php:175 src/DLM.php:539
+msgid "Download is not allowed for this file type."
+msgstr "La descarga no está permitida para este tipo de archivo."
+
+#: src/Admin/Settings/Settings.php:142
+msgid "Disable file browser"
+msgstr "Desactivar explorador de archivos"
+
+#: assets/apps/reports-widget/components/WidgetCards.jsx:22
+#: assets/apps/reports/components/OverviewCards.jsx:26
+#: assets/js/reports-widget/reports-widget.js:1 assets/js/reports/reports.js:1
+msgid "Total Downloads"
+msgstr "Descargas totales"
+
+#: assets/apps/reports-widget/components/WidgetCards.jsx:21
+#: assets/apps/reports/components/OverviewCards.jsx:24
+#: assets/js/reports-widget/reports-widget.js:1 assets/js/reports/reports.js:1
+msgid "Today Downloads"
+msgstr "Las descargas de hoy"
+
+#: assets/apps/reports/components/DetailedDownloadsTable.jsx:35
+#: assets/js/reports/reports.js:1
+msgid "Download Name"
+msgstr "Fecha de descarga"
+
+#: assets/apps/reports/components/DetailedDownloadsTable.jsx:32
+#: assets/js/reports/reports.js:1
+msgid "IP"
+msgstr "IP"
+
+#: includes/submodules/banner/class-wpchill-welcome.php:89
+#: src/Admin/class-dlm-db-upgrader.php:536
+#: src/Admin/class-dlm-db-upgrader.php:565
+msgid "Upgrade"
+msgstr "Actualizar"
+
+#: src/Admin/class-dlm-db-upgrader.php:534
+msgid "Resume Upgrade"
+msgstr "Continuar actualización"
+
+#: assets/views/meta-box/version.php:132
+msgid "You can use %sDrag & Drop%s to upload files"
+msgstr "Puedes usar %sArrastrar y soltar%s para subir archivos"
+
+#: assets/views/meta-box/version.php:62 src/Admin/WritePanels.php:333
+msgid "Custom URL"
+msgstr "URL personalizada"
+
+#: assets/views/meta-box/version.php:44
+msgid "Drag & Drop here"
+msgstr "Arrastra y suelta aquí"
+
+#: assets/views/meta-box/version.php:34 assets/views/meta-box/version.php:94
+#: src/Admin/WritePanels.php:303
+msgid "File uploaded."
+msgstr "Archivo subido."
+
+#: assets/views/meta-box/version.php:32 assets/views/meta-box/version.php:92
+#: src/Admin/WritePanels.php:298
+msgid "Uploading file:"
+msgstr "Subiendo el archivo:"
+
+#: assets/views/meta-box/version.php:18
+msgid "%s downloads"
+msgstr "%s descargas"
+
+#: assets/views/meta-box/version.php:14
+msgid "Version: "
+msgstr "Versión: "
+
+#: src/Admin/WritePanels.php:313
+msgid "Drag & Drop here to create a new version"
+msgstr "Arrastra y suelta aquí para crear una nueva versión"
+
+#: assets/apps/reports/components/DetailedCards.jsx:24
+#: assets/js/reports/reports.js:1
+msgid "Most Active User"
+msgstr "Usuario más activo"
+
+#: assets/apps/reports/components/DetailedCards.jsx:23
+#: assets/js/reports/reports.js:1
+msgid "Logged In Downloads"
+msgstr "Descargas de usuarios conectados"
+
+#: src/Shortcodes.php:55
+msgid "Logging is not enabled."
+msgstr "El registro no está activado"
+
+#: src/Admin/Settings/Page.php:136
+msgid "Download Monitor action completed!"
+msgstr "¡Acción de Download Monitor completada!"
+
+#: assets/apps/reports/components/OverviewCards.jsx:27
+#: assets/js/reports/reports.js:1
+msgid "Daily Average Downloads"
+msgstr "Promedio diario de descargas"
+
+#: assets/apps/reports/components/DetailedDownloadsTable.jsx:33
+#: assets/js/reports/reports.js:1
+msgid "Role"
+msgstr "Perfil"
+
+#: assets/apps/upsells/components/DetailedLogsFilter.jsx:37
+#: assets/js/upsells/upsells.js:1
+msgid "Filter by user…"
+msgstr "Filtrar por usuario…"
+
+#: assets/apps/upsells/components/DetailedLogsFilter.jsx:22
+#: assets/js/upsells/upsells.js:1
+msgid "Filter by status…"
+msgstr "Filtrar por estado…"
+
+#: src/Admin/Settings/Fields/InstallPlugin.php:131
+msgid "Plugin already installed and activated"
+msgstr "El plugin ya está instalado y activado"
+
+#: includes/admin/wpchill/class-wpchill-about-us.php:163
+#: src/Admin/Extensions.php:347 src/Admin/Settings/Fields/InstallPlugin.php:131
+#: includes/admin/wpchill/assets/js/about-us.js:52
+msgid "Install"
+msgstr "Instalar"
+
+#: src/Admin/AdminScripts.php:206
+msgid "Plugin activated successfully."
+msgstr "Plugin activado correctamente."
+
+#: src/Admin/AdminScripts.php:205
+msgid "Something went wrong, plugin could not be activated."
+msgstr "Algo ha ido mal, no se ha podido activar el plugin."
+
+#: src/Admin/AdminScripts.php:204
+msgid "Plugin could not be installed."
+msgstr "No se ha podido instalar el plugin."
+
+#: src/Admin/AdminScripts.php:202
+msgid "Activating plugin..."
+msgstr "Activando el plugin..."
+
+#: src/Admin/AdminScripts.php:201
+msgid "Installing plugin..."
+msgstr "Instalando el plugin..."
+
+#: src/Shop/Admin/ProductTableColumns.php:87
+msgid "No Downloads provided"
+msgstr "No se han proporcionado descargas"
+
+#: includes/admin/class-dlm-beta-testers.php:21
+msgid "New features in this version:"
+msgstr "Características nuevas en esta versión:"
+
+#: includes/admin/class-dlm-beta-testers.php:20
+msgid "<p> We've been working (hard!) on Download Monitor 4.6.0 which comes with a ton of improvements. We need hlep testing it out to make sure we don't break anything.</p><p> Just click on this link %1$s, download and install Download Monitor 4.6.0 and test for issues. Please report any issue found back to us via: %2$s.</p>"
+msgstr "<p> Hemos estado trabajando (¡duro!) en Download Monitor 4.6.0, el cual viene con un montón de mejoras. Necesitamos que nos ayudes probándolo para asegurar que no rompemos nada.</p><p> Solo haz clic en este enlace %1$s, descarga e instala Download Monitor 4.6.0 y prueba en busca de fallos. Por favor, infórmanos de cualquier incidencia que encuentres a través de: %2$s.</p>"
+
+#: includes/admin/class-dlm-beta-testers.php:19
+msgid "Download Monitor - BETA testers - needed!"
+msgstr "Download Monitor - ¡Se necesitan BETA testers!"
+
+#: src/Admin/Settings/Page.php:679
+msgid "Robots.txt file is missing but site may have virtual robots.txt file. If you regenerate this you will loose the restrictions set in the virtual one. Please either update the virtual with the corresponding rules for dlm_uploads or regenerate and update the newly created one with the contents from the virtual file."
+msgstr "Falta el archivo robots.txt, pero el sitio puede tener una versión virtual. Si regeneras el archivo perderás las restricciones configuradas en la versión virtual. Por favor, actualiza la versión virtual con las reglas correspondientes para dlm_uploads o regenera y actualiza el recién creado con los contenidos de la versión virtual."
+
+#: src/Shop/Admin/WritePanels.php:217
+msgid "No information for new products."
+msgstr "No hay información para los productos nuevos."
+
+#: src/class-dlm-download-error-handler.php:203
+msgid "Access denied to this file"
+msgstr "Acceso denegado a este archivo"
+
+#: src/Admin/Settings/Page.php:721
+msgid "Regenerates the robots.txt file."
+msgstr "Regenera el archivo robots.txt."
+
+#: src/Admin/Settings/Page.php:702
+msgid "Robots.txt file exists but dlm_uploads folder is not protected."
+msgstr "El archivo robots.txt existe, pero la carpeta dlm_uploads no está protegida."
+
+#: src/Admin/Settings/Page.php:696
+msgid "You are protected by robots.txt."
+msgstr "Estás protegido por robots.txt."
+
+#: src/Admin/Settings/Page.php:688
+msgid "Robots.txt file is missing but site has virtual robots.txt file. If you regenerate this you will loose the restrictions set in the virtual one. Please either update the virtual with the corresponding rules for dlm_uploads or regenerate and update the newly created one with the contents from the virtual file."
+msgstr "Falta el archivo robots.txt, pero el sitio tiene un archivo virtual robots.txt. Si regeneras el primero, perderás las restricciones establecidas en la versión virtual. Por favor, actualiza la versión virtual del archivo con las reglas correspondientes para dlm_uploads o regenera y actualiza el recién creado con los contenidos del virtual."
+
+#: src/Admin/Settings/Page.php:670 src/Admin/Settings/Page.php:677
+#: src/Admin/Settings/Page.php:686 src/Admin/Settings/Page.php:715
+msgid "Robots.txt is missing."
+msgstr "Falta el archivo robots.txt."
+
+#: src/Admin/Settings/Page.php:132
+msgid "Robots.txt file successfully regenerated!"
+msgstr "¡Robots.txt regenerado correctamente!"
+
+#: src/Admin/Settings/Page.php:720
+msgid "Regenerate crawler protection for uploads folder"
+msgstr "Regenerar la protección del rastreador para la carpeta de subidas."
+
+#: src/Admin/class-dlm-admin-list-table.php:607
+msgid "Locked"
+msgstr "Bloqueado"
+
+#: src/Shop/Util/Assets.php:71
+msgid "Shortcode copied"
+msgstr "Shortcode copiado"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:185
+msgid "Could not create payment. Please check your PayPal logs."
+msgstr "No se ha podido crear el pago. Por favor, comprueba tus registros de PayPal."
+
+#: src/Admin/Settings/Page.php:587
+msgid "Regenerates the .htaccess file."
+msgstr "Regenera el archivo .htaccess."
+
+#: src/Admin/Settings/Page.php:586
+msgid "Regenerate protection for uploads folder"
+msgstr "Regenera la protección para la carpeta de subidas"
+
+#: src/Admin/Settings/Page.php:576
+msgid "Because your server is running on nginx, our .htaccess file can't protect your downloads. %s"
+msgstr "Como tu servidor se ejecuta sobre nginx, nuestro archivo .htaccess no puede proteger tus descargas. %s"
+
+#: src/Admin/Settings/Page.php:565
+msgid "You are protected by htaccess."
+msgstr "Estás protegido por htaccess."
+
+#: src/Admin/Settings/Page.php:560
+msgid "Htaccess is missing."
+msgstr "Falta htaccess."
+
+#: src/Admin/Settings/Page.php:128
+msgid ".htaccess file successfully regenerated!"
+msgstr "¡El archivo .htaccess ha sido regenerado correctamente!"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:204
+msgid "Error saving order with PayPal transaction."
+msgstr "Error al guardar el pedido con la transacción de PayPal."
+
+#: src/Admin/WritePanels.php:729
+msgid "Failed to write the file at: "
+msgstr "Ha ocurrido un error al escribir en el archivo en: "
+
+#: src/Admin/Settings/Settings.php:190 src/Installer.php:39
+msgid "You do not have permission to access this download. %1$sGo to homepage%2$s"
+msgstr "No tienes los permisos para acceder a esta descarga. %1$sVe a la página principal%2$s"
+
+#: src/Admin/class-dlm-admin-list-table.php:1199
+msgid "Duplicate Download"
+msgstr "Descarga duplicada"
+
+#: assets/views/meta-box/version.php:55 assets/views/meta-box/version.php:108
+#: src/Admin/WritePanels.php:326
+msgid "Media Library"
+msgstr "Biblioteca de medios"
+
+#: src/Admin/class-dlm-network-settings.php:113
+#: src/Admin/Settings/Settings.php:144
+msgid "Disables the directory file browser."
+msgstr "Desactiva el explorador de archivos del directorio."
+
+#: src/Admin/UpsellsTemplates/dlm_aam-modal-upsell.php:12
+msgid "Advanced Access Manager"
+msgstr "Advanced Access Manager"
+
+#: src/Admin/class-dlm-admin-list-table.php:1904
+#: src/Admin/class-dlm-admin-list-table.php:1908
+#: src/Product/ProductManager.php:249
+msgid "Update"
+msgstr "Actualizar"
+
+#: src/Product/ProductManager.php:251
+msgid "Please update extension"
+msgstr "Por favor, actualiza la extensión"
+
+#: src/Product/ProductManager.php:241
+msgid "Enter your license key"
+msgstr "Introduce tu clave de licencia"
+
+#: src/Product/ProductManager.php:236 src/Product/ProductManager.php:265
+msgid " or higher"
+msgstr " o superior"
+
+#: src/Product/ProductManager.php:236 src/Product/ProductManager.php:237
+msgid "Extension version:"
+msgstr "Versión de la extensión:"
+
+#: src/Product/ProductManager.php:215
+msgid "Actions"
+msgstr "Acciones"
+
+#: src/Product/ProductManager.php:214
+#: assets/apps/reports-widget/components/BarChartComponent.jsx:127
+#: assets/apps/reports/components/BarChartComponent.jsx:125
+#: assets/apps/reports/components/BarChartComponent.jsx:237
+#: assets/js/reports-widget/reports-widget.js:1 assets/js/reports/reports.js:1
+msgid "Current"
+msgstr "Actual"
+
+#: src/Product/ProductManager.php:213
+msgid "Requirements"
+msgstr "Requisitos"
+
+#: src/Product/ProductManager.php:212
+msgid "Extension"
+msgstr "Extensión"
+
+#: src/Admin/AdminScripts.php:156 src/Admin/class-dlm-admin-list-table.php:1038
+#: src/Admin/WritePanels.php:187 src/Shop/Admin/ProductTableColumns.php:97
+#: src/Shop/Admin/WritePanels.php:212 src/Shop/Util/Assets.php:70
+msgid "Copy shortcode"
+msgstr "Copiar shortcode"
+
+#: src/Admin/WritePanels.php:172
+msgid "Copy URL"
+msgstr "Copiar la URL"
+
+#: src/Admin/WritePanels.php:157 src/Shop/Admin/WritePanels.php:207
+msgid "Copy ID"
+msgstr "Copiar la ID"
+
+#: src/Admin/OptionsUpsells.php:88
+msgid "Require Captcha"
+msgstr "Necesita Captcha"
+
+#: src/Admin/OptionsUpsells.php:77
+msgid "Email locked downloads will only be available after user entered their email address."
+msgstr "Las descargas bloqueadas por correo electrónico solo estarán disponibles después de que el usuario haya introducido su dirección de correo electrónico."
+
+#: src/TermsAndConditions/classes/class-dlm-tc-download-option.php:35
+msgid "This download will only be downloadable after accepting the terms and conditions."
+msgstr "Esta descarga solo será descargable tras aceptar los términos y condiciones."
+
+#: includes/admin/class-dlm-upsells.php:316 src/Admin/Settings/Settings.php:243
+msgid "Content Locking"
+msgstr "Bloqueo de contenido"
+
+#: includes/admin/class-dlm-upsells.php:495
+#: includes/admin/class-dlm-upsells.php:664
+msgid "Gravity Forms Lock"
+msgstr "Gravity Forms Lock"
+
+#: includes/admin/class-dlm-upsells.php:504
+#: includes/admin/class-dlm-upsells.php:681
+msgid "Ninja Forms Lock"
+msgstr "Ninja Forms Lock"
+
+#: src/Product/ProductManager.php:265 src/Product/ProductManager.php:266
+msgid "PHP version:"
+msgstr "Versión de PHP:"
+
+#: src/Product/ProductManager.php:241
+msgid "Purchase a new one"
+msgstr "Compra una nueva"
+
+#: includes/admin/class-dlm-upsells.php:505
+msgid "Use the Ninja Forms - content locking extension to add forms easily to your download files."
+msgstr "Usa Ninja Forms, la extensión de bloqueo de contenido para añadir formularios fácilmente a tus descarga de archivos."
+
+#: includes/admin/class-dlm-upsells.php:486
+#: includes/admin/class-dlm-upsells.php:698 src/Admin/OptionsUpsells.php:76
+#: src/Admin/Settings/Settings.php:247
+msgid "Email Lock"
+msgstr "Email Lock"
+
+#: src/TermsAndConditions/classes/class-dlm-tc-download-option.php:34
+msgid "Terms & Conditions Required"
+msgstr "Términos y condiciones obligatorios"
+
+#: includes/admin/class-dlm-review.php:22
+msgid "Rate the plugin"
+msgstr "Valora el plugin"
+
+#: includes/admin/class-dlm-review.php:24
+msgid "Don't show again"
+msgstr "No volver a mostrar"
+
+#: includes/admin/class-dlm-review.php:23
+msgid "Remind me later"
+msgstr "Recuérdamelo más tarde"
+
+#: includes/admin/class-dlm-review.php:21
+msgid "Hi there! Stoked to see you're using Download Monitor for a few days now - hope you like it! And if you do, please consider rating it. It would mean the world to us.  Keep on rocking!"
+msgstr "¡Hola! Me alegra ver que has usado Download Monitor durante unos días. ¡Espero que te guste! Y, si es así, por favor considera valorarlo. Significaría mucho para nosotros. ¡Sigue disfrutando!"
+
+#: src/Admin/Settings/Page.php:581
+msgid "Miscellaneous"
+msgstr "Miscelánea"
+
+#: templates/shop/checkout/order-complete.php:147
+msgid "No items found."
+msgstr "No se han encontrado elementos."
+
+#: src/Shop/Ajax/AdminChangeOrderStatus.php:32
+msgid "We need and order id and a status."
+msgstr "Necesitamos una ID de pedido y un estado."
+
+#: includes/admin/class-dlm-upsells.php:622
+msgid "Easily import your downloads, including their categories, tags, and files."
+msgstr "Importa fácilmente tus descargas, incluyendo sus categorías, etiquetas y archivos."
+
+#: includes/admin/class-dlm-upsells.php:621
+msgid "Importer"
+msgstr "Importador"
+
+#: src/TermsAndConditions/classes/class-dlm-tc-options.php:26
+#: src/TermsAndConditions/classes/class-dlm-tc-options.php:29
+msgid "Terms & Conditions"
+msgstr "Términos y condiciones"
+
+#: includes/admin/class-dlm-upsells.php:513
+msgid "Mailchimp extension"
+msgstr "Extensión de MailChimp"
+
+#: includes/admin/class-dlm-upsells.php:496
+msgid "Ask users to fill in a form created on Gravity Forms before they start downloading your files."
+msgstr "Pide a los usuarios rellenar un formulario creado en Gravity Forms antes de comenzar a descargar tus archivos."
+
+#: includes/admin/class-dlm-upsells.php:478
+msgid "Limit access to your downloads by setting advanced access rules and restrictions with this extension."
+msgstr "Limita el acceso a tus descargas configurando reglas y restricciones de acceso avanzado con esta extensión."
+
+#: includes/admin/class-dlm-upsells.php:457
+msgid "Create an email alert to be notified each time one of your files has been downloaded."
+msgstr "Crea una alerta de correo electrónico para recibir una notificación cada vez que un archivo sea descargado."
+
+#: includes/admin/class-dlm-upsells.php:456
+#: includes/admin/class-dlm-upsells.php:567
+msgid "Email notifications"
+msgstr "Avisos por correo electrónico"
+
+#: includes/admin/class-dlm-upsells.php:604
+msgid "The Buttons extension allows you to customize your download buttons as you please in order to improve the user experience. Create stunning buttons without needing any coding skills!"
+msgstr "La extensión Buttons te permite personalizar tus botones de descarga a tu gusto para mejorar la experiencia de usuario. ¡Crea estupendos botones sin necesidad de conocer código!"
+
+#: includes/admin/class-dlm-upsells.php:568
+msgid "The Email Notification extension for Download Monitor sends you an email whenever one of your files is downloaded"
+msgstr "La extensión Email Notification para Download Monitor te envía un correo electrónico siempre que uno de tus archivos es descargado."
+
+#: includes/admin/class-dlm-upsells.php:550
+#: includes/admin/class-dlm-upsells.php:830
+msgid "Stop bots from spamming your downloads and ask users to complete Google reCAPTCHA."
+msgstr "Evita que los bots envíen spam a tus descargas y pidan a los usuarios completar el reCAPTCHA de Google."
+
+#: includes/admin/class-dlm-upsells.php:631
+msgid "With a single click, you can quickly export your downloads and their tags, categories, and file versions to a CSV file."
+msgstr "Con un solo clic puedes exportar rápidamente y sus etiquetas categorías y versiones de archivo a un archivo CSV."
+
+#: includes/admin/class-dlm-upsells.php:630
+msgid "Exporter"
+msgstr "Exportador"
+
+#: includes/admin/class-dlm-upsells.php:586
+msgid "List all downloads, categories, tags, and showcase info pages of each resource with a self-contained [download_page] shortcode!"
+msgstr "¡Lista todas las descargas, categorías y etiquetas, y expone las páginas de información de cada recurso con un shortcake independiente [download_page]!"
+
+#: includes/admin/class-dlm-upsells.php:514
+msgid "Create a MailChimp list and ask users to subscribe to it before accessing a downloadable file."
+msgstr "Crea una lista de MailChimp y pide a los usuarios que se suscriban a ella antes de acceder a un archivo descargable."
+
+#: includes/admin/class-dlm-upsells.php:487
+#: includes/admin/class-dlm-upsells.php:523
+#: includes/admin/class-dlm-upsells.php:532
+msgid "Require your users’ email addresses to send newsletters and create a list of your customers."
+msgstr "Requiere las direcciones de correo electrónico de tus usuarios para enviarles newsletters y crea una lista de tus clientes."
+
+#: src/Admin/Settings/Page.php:63
+msgid "Download Monitor action nonce failed."
+msgstr "Fallo en el nonce de acción de Download Monitor."
+
+#: includes/admin/class-dlm-upsells.php:477
+msgid "Advanced access manager"
+msgstr "Gestor avanzado de acceso"
+
+#: src/Admin/Settings/Settings.php:305 src/Admin/Settings/Settings.php:556
+msgid "Emails"
+msgstr "Correos electrónicos"
+
+#: includes/admin/class-dlm-upsells.php:384 src/Admin/Settings/Settings.php:299
+msgid "Integration"
+msgstr "Integración"
+
+#: includes/admin/class-dlm-upsells.php:364 src/Admin/Settings/Settings.php:154
+msgid "Advanced"
+msgstr "Avanzado"
+
+#: includes/admin/class-dlm-upsells.php:349
+msgid "External hosting"
+msgstr "Alojamiento externo"
+
+#: includes/admin/class-dlm-upsells.php:733
+#: includes/admin/class-dlm-upsells.php:810
+msgid "With this extension, you can integrate your files from Google Drive into Download Monitor."
+msgstr "Con esta extensión puedes integrar tus archivos de Google Drive en Download Monitor."
+
+#: includes/admin/class-dlm-upsells.php:798
+msgid "Use Amazon S3 links for Download Monitor files to run secure, expiring download links."
+msgstr "Utiliza los enlaces Amazon S3 para que los archivos Download Monitor se ejecuten de manera segura y con caducidad."
+
+#: includes/admin/class-dlm-upsells.php:648
+msgid "Customize the downloading page by adding banners, ads, and anything you like."
+msgstr "Personaliza la página de descargas añadiendo banners, anuncios y cualquier cosa que quieras."
+
+#: src/Admin/class-dlm-admin-list-table.php:2010 src/Admin/Extensions.php:428
+msgid "Suggest a feature"
+msgstr "Sugerir una característica"
+
+#: includes/admin/class-dlm-upsells.php:372
+msgid "Downloading Page"
+msgstr "Página de descargas"
+
+#: includes/admin/class-dlm-upsells.php:357
+#: includes/admin/class-dlm-upsells.php:732
+#: includes/admin/class-dlm-upsells.php:807 src/Admin/Settings/Settings.php:290
+msgid "Google Drive"
+msgstr "Google Drive"
+
+#: includes/admin/class-dlm-upsells.php:352
+#: includes/admin/class-dlm-upsells.php:715
+#: includes/admin/class-dlm-upsells.php:795 src/Admin/Settings/Settings.php:284
+msgid "Amazon S3"
+msgstr "Amazon S3"
+
+#: src/Admin/Extensions.php:401
+msgid "Couldn't load extensions, please try again later."
+msgstr "No se han podido cargar las extensiones. Por favor, inténtalo de nuevo más tarde."
+
+#: includes/admin/class-dlm-upsells.php:246 src/Admin/Settings/Settings.php:280
+msgid "External Hosting"
+msgstr "Alojamiento externo"
+
+#: templates/content-download-box.php:19
+#: templates/content-download-button.php:19
+#: templates/content-download-filename.php:19
+#: templates/content-download-no-version.php:19
+#: templates/content-download-title.php:21
+#: templates/content-download-version-list.php:19
+#: templates/content-download.php:20
+msgid "No download found"
+msgstr "No se encontraron descargas"
+
+#: src/Shortcodes.php:185
+msgid "No download defined"
+msgstr "No se ha definido la descarga"
+
+#: src/Gutenberg.php:87
+msgid "Please select a download id"
+msgstr "Por favor, selecciona una ID de descarga"
+
+#: src/Admin/WritePanels.php:65 src/Shop/Admin/WritePanels.php:33
+msgid "Publish"
+msgstr "Publicar"
+
+#: src/Admin/Extensions.php:295 src/Admin/Extensions.php:924
+msgid "Reload Extensions"
+msgstr "Recargar extensiones"
+
+#: src/Admin/Extensions.php:166 src/Admin/Extensions.php:905
+msgid "Download Monitor Installed Extensions"
+msgstr "Extensiones de Download Monitor instaladas"
+
+#: src/Admin/Extensions.php:167 src/Admin/Extensions.php:439
+#: src/Admin/Extensions.php:1057
+msgid "Installed Extensions"
+msgstr "Extensiones instaladas"
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:155
+msgid "Delete dlm_download custom post type"
+msgstr "Borrar el tipo de contenido personalizado dlm_download"
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:147
+msgid "Delete Download Monitor's options"
+msgstr "Borrar las opciones de Download Monitor"
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:143
+msgid "Delete all data"
+msgstr "Borrar todos los datos"
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:140
+msgid " Caution!! This action CANNOT be undone"
+msgstr " ¡¡Precaución!! Esta acción NO PUEDE deshacerse"
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:139
+msgid "Sorry to see you go"
+msgstr "Lamento que te marches"
+
+#: includes/admin/class-dlm-upsells.php:377
+#: includes/admin/class-dlm-upsells.php:387
+#: includes/admin/class-dlm-upsells.php:549
+#: includes/admin/class-dlm-upsells.php:829
+msgid "Captcha"
+msgstr "Captcha"
+
+#: includes/admin/class-dlm-upsells.php:224
+msgid "Downloading page"
+msgstr "Página de descargas"
+
+#: src/Admin/Extensions.php:398
+msgid "Wow, looks like you installed all our extensions. Thanks, you rock!"
+msgstr "Guau, parece que has instalado todas nuestras extensiones. Gracias, ¡tú molas!"
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:118
+msgid "Cleaning..."
+msgstr "Limpiando..."
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:68
+#: includes/admin/uninstall/class-dlm-uninstall.php:122
+msgid "Uninstall"
+msgstr "Desinstalar"
+
+#: includes/admin/class-dlm-upsells.php:776
+msgid "The Captcha extension for Download Monitor allows you to require users to complete a Google reCAPTCHA before they gain access to a download."
+msgstr "La extensión Captcha para Download Monitor te permite requerir a los usuarios completar un reCAPTCHA de Google antes de obtener acceso a una descarga."
+
+#: includes/admin/class-dlm-upsells.php:775
+msgid "Captcha extension"
+msgstr "Extensión Captcha"
+
+#: includes/admin/class-dlm-upsells.php:759
+msgid "The Downloading Page extension for Download Monitor forces your downloads to be served from a separate page."
+msgstr "La extensión Downloading Page para Download Monitor fuerza a tus descargas a ser servidas desde una página separada."
+
+#: includes/admin/class-dlm-upsells.php:758
+msgid "Downloading page extension"
+msgstr "Extensión Downloading page"
+
+#: includes/admin/class-dlm-upsells.php:585
+msgid "Page Addon"
+msgstr "Page Addon"
+
+#: includes/admin/class-dlm-upsells.php:332
+msgid "Email lock"
+msgstr "Email Lock"
+
+#: includes/admin/class-dlm-upsells.php:325 src/Admin/OptionsUpsells.php:122
+#: src/Admin/Settings/Settings.php:259
+msgid "Gravity Forms"
+msgstr "Gravity Forms"
+
+#: includes/admin/class-dlm-upsells.php:320 src/Admin/OptionsUpsells.php:139
+#: src/Admin/Settings/Settings.php:253
+msgid "Ninja Forms"
+msgstr "Ninja Forms"
+
+#: includes/admin/class-dlm-upsells.php:235
+#: includes/admin/class-dlm-upsells.php:603
+#: includes/admin/class-dlm-upsells.php:1095
+#: src/Admin/UpsellsTemplates/dlm_buttons-modal-upsell.php:12
+msgid "Buttons"
+msgstr "Buttons"
+
+#: includes/admin/class-dlm-upsells.php:716
+msgid "Link to files hosted on Amazon s3 so that you can serve secure, expiring download links."
+msgstr "Enlaza a los archivos hospedados en Amason S3 para que puedas servir enlaces de descarga seguros y con caducidad."
+
+#: includes/admin/class-dlm-upsells.php:665
+msgid "The Gravity Forms - content locking extension for Download Monitor allows you to require users to fill out a Gravity Forms form before they gain access to a download."
+msgstr "La extensión de bloqueo de contenido Gravity Forms para Download Monitor te permite requerir a los usuarios rellenar un formulario de Gravity Forms antes de obtener acceso a una descarga."
+
+#: includes/admin/class-dlm-upsells.php:682
+msgid "The Ninja Forms - content locking extension for Download Monitor allows you to require users to fill in a Ninja Forms form before they gain access to a download."
+msgstr "La extensión de bloqueo de contenido Ninja Forms para Download Monitor te permite requerir a los usuarios rellenar un formulario de Ninja Forms antes de obtener acceso a una descarga."
+
+#: includes/admin/class-dlm-upsells.php:699
+msgid "The Email Lock extension for Download Monitor allows you to require users to fill in their email address before they gain access to a download."
+msgstr "La extensión Email Lock para Download Monitor te permite requerir a los usuarios rellenar su dirección de correo electrónico antes de obtener acceso a una descarga."
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:160
+msgid "Delete tables set by plugin (  Ex.: Logs table )"
+msgstr "Borrar tablas configuradas por el plugin ( Ej.: tabla de registros)"
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:156
+msgid "Delete custom post types set by Download Monitor plugin and it's add-ons in the database."
+msgstr "Borrar los tipos de contenido personalizados configurados por el plugin Download Monitor y sus extensiones de la base de datos."
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:152
+msgid "Delete transients set by Download Monitor plugin and it's add-ons  to options table in the database."
+msgstr "Borrar los datos transitorios configurados por el plugin Download Monitor y sus extensiones en la tabla de opciones de la base de datos."
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:151
+msgid "Delete Download Monitor set transients"
+msgstr "Borrar los datos transitorios configurados por Download Monitor"
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:148
+msgid "Delete options set by Download Monitor plugin and it's add-ons  to options table in the database."
+msgstr "Borrar las opciones configuradas por el plugin Download Monitor y sus extensiones en la tabla de opciones de la base de datos."
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:144
+msgid "Select this to delete all data Download Monitor plugin and it's add-ons have set in your database."
+msgstr "Seleccionaste para borrar todos los datos que el plugin Download Monitor y sus extensiones han configurado en tu base de datos."
+
+#: src/Admin/Settings/Settings.php:588
+msgid "Other"
+msgstr "Otros"
+
+#: includes/admin/uninstall/class-dlm-uninstall.php:159
+msgid "Delete set tables  "
+msgstr "Borrar tablas de conjuntos  "
+
+#: assets/views/meta-box/version.php:90
+msgid "File URL(s); note: only enter multiple URLs in here if you want to use file mirrors"
+msgstr "URL(s) de archivo; nota: introduce aquí sólo varias URL si quieres utilizar copias en espejo de los archivos"
+
+#. Author URI of the plugin
+#: download-monitor.php
+msgid "https://wpchill.com"
+msgstr "https://wpchill.com"
+
+#. Author of the plugin
+#: download-monitor.php
+msgid "WPChill"
+msgstr "WPChill"
+
+#: src/Shop/Util/PostType.php:33
+msgid "This is where you can create and manage download products for your site."
+msgstr "Aquí es donde puedes crear y gestionar las descargas de productos de tu sitio."
+
+#: src/Shop/Util/PostType.php:30
+msgid "Parent Product"
+msgstr "Producto padre"
+
+#: src/Shop/Util/PostType.php:29
+msgid "No Products found in trash"
+msgstr "No se han encontrado productos en la papelera"
+
+#: src/Shop/Util/PostType.php:28
+msgid "No Products found"
+msgstr "No se han encontrado productos"
+
+#: src/Shop/Util/PostType.php:27
+msgid "Search Products"
+msgstr "Buscar productos"
+
+#: src/Shop/Util/PostType.php:25 src/Shop/Util/PostType.php:26
+msgid "View Product"
+msgstr "Ver producto"
+
+#: src/Shop/Util/PostType.php:24
+msgid "New Product"
+msgstr "Nuevo producto"
+
+#: src/Shop/Util/PostType.php:23
+msgid "Edit Product"
+msgstr "Editar producto"
+
+#: src/Shop/Util/PostType.php:21
+msgid "Add Product"
+msgstr "Añadir producto"
+
+#: src/Shop/Util/PostType.php:20
+msgid "Add New Product"
+msgstr "Añadir nuevo producto"
+
+#: src/Shop/Util/PostType.php:17
+msgid "All Products"
+msgstr "Todos los productos"
+
+#: src/Shop/Admin/DownloadOption.php:30
+msgid "Only users who purchased a product that contains this download will be able to access the file."
+msgstr "Sólo los usuarios que han adquirido un producto que contenga esta descarga podrán acceder al archivo."
+
+#: src/Shop/Admin/DownloadOption.php:29
+msgid "Paid Only"
+msgstr "Sólo de pago"
+
+#: src/Shop/Admin/WritePanels.php:41 src/Shop/Admin/WritePanels.php:49
+msgid "Product Information"
+msgstr "Información del producto"
+
+#: src/Shop/Shortcode/Buy.php:71
+msgid "Product not found"
+msgstr "Producto no encontrado"
+
+#: src/Admin/Settings/Settings.php:323
+msgid "If enabled, allows you to sell your downloads via Download Monitor."
+msgstr "Si está activo, te permite vender tus descargas a través de Download Monitor."
+
+#: assets/views/meta-box/product-information.php:18
+msgid "Select Downloads&hellip;"
+msgstr "Selecciona una descarga&hellip;"
+
+#: includes/php-too-low.php:37
+msgid "After you've upgraded your PHP version, Download Monitor will automatically load and work."
+msgstr "Una vez actualizada la versión de PHP, Download Monitor se cargará y funcionará automáticamente."
+
+#: includes/php-too-low.php:33
+msgid "clicking this link"
+msgstr "Haciendo clic en este enlace"
+
+#: templates/shop/checkout.php:45
+msgid "Billing details"
+msgstr "Detalles de facturación"
+
+#: templates/shop/checkout.php:49
+msgid "Your order"
+msgstr "Tu pedido"
+
+#: templates/shop/cart.php:54
+msgid "Cart Totals"
+msgstr "Total del carrito"
+
+#: templates/shop/cart.php:28
+msgid "Quantity"
+msgstr "Cantidad"
+
+#: templates/shop/cart.php:26
+msgid "Name"
+msgstr "Nombre"
+
+#: templates/shop/cart/totals.php:18
+#: templates/shop/checkout/order-review.php:41
+msgid "Subtotal"
+msgstr "Subtotal"
+
+#: templates/shop/cart/empty.php:13 templates/shop/checkout/empty.php:15
+msgid "Your cart is empty."
+msgstr "Tu carrito está vacío."
+
+#: assets/views/order/page-order-details.php:170
+msgid "Payment Method"
+msgstr "Método de pago"
+
+#: assets/views/order/page-order-details.php:161
+msgid "Date created"
+msgstr "Fecha de creación"
+
+#: assets/views/order/page-order-details.php:70
+msgid "Amount"
+msgstr "Importe"
+
+#: assets/views/order/page-order-details.php:57
+msgid "Transactions"
+msgstr "Transaciones"
+
+#: assets/views/order/page-order-details.php:27
+msgid "QTY"
+msgstr "CANT"
+
+#: assets/views/order/page-order-details.php:26
+#: src/Shop/Admin/ProductTableColumns.php:37 templates/shop/cart.php:27
+msgid "Price"
+msgstr "Precio"
+
+#: assets/views/order/page-order-details.php:25
+#: includes/admin/wpchill/class-wpchill-about-us.php:65
+#: src/Shop/Util/PostType.php:19 templates/shop/checkout/order-review.php:23
+msgid "Product"
+msgstr "Producto"
+
+#: assets/views/order/page-order-details.php:19
+msgid "Order Items"
+msgstr "Artículos del pedido"
+
+#: assets/views/meta-box/product-information.php:6
+msgid "Price (%s)"
+msgstr "Precio (%s)"
+
+#: src/Shop/Checkout/Field.php:50
+msgid "Email address"
+msgstr "Dirección de correo electrónico"
+
+#: src/Util/PageCreator.php:40
+msgid "Checkout"
+msgstr "Finalizar compra"
+
+#: src/Shop/Helper/Country.php:91
+msgid "Georgia"
+msgstr "Georgia"
+
+#: assets/views/order/page-order-details.php:28
+#: assets/views/order/page-order-details.php:47
+#: src/Shop/Admin/OrderTable.php:155 templates/shop/cart.php:29
+#: templates/shop/cart/totals.php:32
+#: templates/shop/checkout/order-review.php:24
+#: templates/shop/checkout/order-review.php:45
+#: assets/apps/reports/components/OverviewDownloadsTable.jsx:36
+#: assets/js/reports/reports.js:1
+msgid "Total"
+msgstr "Total"
+
+#: src/Shop/Helper/Country.php:157
+msgid "Montserrat"
+msgstr "Montserrat"
+
+#: src/Util/PageCreator.php:27
+msgid "Cart"
+msgstr "Carrito"
+
+#: src/Admin/Settings/Settings.php:313 src/Admin/Settings/Settings.php:321
+#: src/Shop/Util/PostType.php:18
+msgid "Shop"
+msgstr "Tienda"
+
+#: src/Shop/Checkout/Field.php:59
+msgid "Address"
+msgstr "Dirección"
+
+#: src/Admin/Settings/Settings.php:157 src/Admin/Settings/Settings.php:397
+msgid "Pages"
+msgstr "Páginas"
+
+#: src/Admin/DownloadPaths/class-dlm-downloads-path-table.php:144
+msgid "Disable"
+msgstr "Desactivar"
+
+#: assets/apps/reports/components/TabNavigation.jsx:13
+#: assets/js/reports/reports.js:1
+msgid "Overview"
+msgstr "Resumen"
+
+#: templates/shop/checkout/error.php:19
+msgid "Checkout error"
+msgstr "Error al finalizar compra"
+
+#: templates/shop/checkout/submit-button.php:15
+msgid "Complete order"
+msgstr "Completar pedido"
+
+#: templates/shop/checkout/order-complete.php:115
+msgid "Download version"
+msgstr "Descargar versión"
+
+#: templates/shop/cart.php:63
+msgid "Proceed to checkout"
+msgstr "Proceder al pago"
+
+#: templates/shop/cart/item.php:18
+msgid "Remove this item from your cart"
+msgstr "Elimina este elemento de tu carrito"
+
+#: assets/views/order/page-order-details.php:158
+msgid "Change"
+msgstr "Cambiar"
+
+#: assets/views/order/page-order-details.php:146
+#: templates/shop/checkout/order-complete.php:37
+msgid "Order Status"
+msgstr "Estado del pedido"
+
+#: assets/views/order/page-order-details.php:141
+#: templates/shop/checkout/order-complete.php:29
+msgid "Order Details"
+msgstr "Detalles del pedido"
+
+#: assets/views/order/page-order-details.php:115
+msgid "Customer"
+msgstr "Cliente"
+
+#: assets/views/order/page-order-details.php:105
+msgid "No transactions found"
+msgstr "No se encontraron transacciones"
+
+#: templates/shop/checkout/no-access.php:13
+msgid "You have no access to this order."
+msgstr "No tienes acceso a este pedido."
+
+#: src/Ajax/CreatePage.php:53
+msgid "No page set"
+msgstr "Ninguna página establecida"
+
+#: src/Ajax/CreatePage.php:48
+msgid "Couldn't create page"
+msgstr "No se ha podido crear la página"
+
+#: src/Admin/DownloadPaths/class-dlm-downloads-path-table.php:123
+#: src/Admin/DownloadPaths/class-dlm-downloads-path.php:314
+msgid "Enabled"
+msgstr "Activado"
+
+#: src/Admin/Settings/Settings.php:681
+msgid "This payment method will be pre-selected on your checkout page."
+msgstr "Este método de pago será preseleccionado en tu página de pagos."
+
+#: src/Admin/Settings/Settings.php:363
+msgid "The position of the currency symbol."
+msgstr "La posición del símbolo de moneda."
+
+#: src/Admin/Settings/Settings.php:354
+msgid "Currency"
+msgstr "Moneda"
+
+#: src/Admin/Settings/Settings.php:347
+msgid "Where is your store located?"
+msgstr "¿Dónde está ubicada tu tienda?"
+
+#: src/Admin/Settings/Settings.php:346
+msgid "Base Country"
+msgstr "País base"
+
+#: src/Admin/Settings/Settings.php:410
+msgid "Checkout page"
+msgstr "Página de pago"
+
+#: src/Admin/Settings/Settings.php:402
+msgid "Cart page"
+msgstr "Página del carrito"
+
+#: src/Shop/Helper/Currency.php:64
+msgid "Swiss Franc"
+msgstr "Franco suizo"
+
+#: src/Shop/Helper/Currency.php:63
+msgid "Swedish Krona"
+msgstr "Corona sueca"
+
+#: src/Shop/Helper/Currency.php:66
+msgid "Tunisian Dinar"
+msgstr "Dinar tunecino"
+
+#: src/Shop/Helper/Currency.php:65
+msgid "Thai Baht"
+msgstr "Baht tailandés"
+
+#: src/Shop/Helper/Currency.php:62
+msgid "South African rand"
+msgstr "Rand sudafricano"
+
+#: src/Shop/Helper/Currency.php:61
+msgid "Singapore Dollar"
+msgstr "Dólar de Singapur"
+
+#: src/Shop/Helper/Currency.php:60
+msgid "Rwandan Franc"
+msgstr "Franco ruandés"
+
+#: src/Shop/Helper/Currency.php:59
+msgid "Russian Ruble"
+msgstr "Rublo ruso"
+
+#: src/Shop/Helper/Currency.php:58
+msgid "Romanian Leu"
+msgstr "Leu rumano"
+
+#: src/Shop/Helper/Currency.php:57
+msgid "Pounds Sterling"
+msgstr "Libras esterlinas"
+
+#: src/Shop/Helper/Currency.php:56
+msgid "Paraguayan Guaraní"
+msgstr "Guaraní paraguayo"
+
+#: src/Shop/Helper/Currency.php:54
+msgid "Pakistani Rupee"
+msgstr "Rupia paquistaní"
+
+#: src/Shop/Helper/Currency.php:53
+msgid "Philippine Pesos"
+msgstr "Pesos filipinos"
+
+#: src/Shop/Helper/Currency.php:52
+msgid "New Zealand Dollar"
+msgstr "Dólar neozelandés"
+
+#: src/Shop/Helper/Currency.php:36
+msgid "Croatia kuna"
+msgstr "Kuna croata"
+
+#: src/Shop/Helper/Currency.php:35
+msgid "Hong Kong Dollar"
+msgstr "Dólar de Hong Kong"
+
+#: src/Shop/Helper/Currency.php:34
+msgid "Ghanaian Cedi"
+msgstr "Cedi de Ghana"
+
+#: src/Shop/Helper/Currency.php:33
+msgid "Euros"
+msgstr "Euros"
+
+#: src/Shop/Helper/Currency.php:32
+msgid "Egyptian Pound"
+msgstr "Libra egipcia"
+
+#: src/Shop/Helper/Currency.php:31
+msgid "Ethiopian Birr"
+msgstr "Birr etíope"
+
+#: src/Shop/Helper/Currency.php:30
+msgid "Dominican Peso"
+msgstr "Peso dominicano"
+
+#: src/Shop/Helper/Currency.php:29
+msgid "Danish Krone"
+msgstr "Corona danesa"
+
+#: src/Shop/Helper/Currency.php:28
+msgid "Djiboutian Franc"
+msgstr "Franco de Yibuti"
+
+#: src/Shop/Helper/Currency.php:27
+msgid "Czech Koruna"
+msgstr "Corona checa"
+
+#: src/Shop/Helper/Currency.php:26
+msgid "Colombian Peso"
+msgstr "Peso colombiano"
+
+#: src/Shop/Helper/Currency.php:25
+msgid "Chinese Yuan"
+msgstr "Yuan chino"
+
+#: src/Shop/Helper/Currency.php:24
+msgid "Chilean Peso"
+msgstr "Peso chileno"
+
+#: src/Shop/Helper/Currency.php:23
+msgid "CFA Franc"
+msgstr "Franco de la Comunidad Financiera Africana (CFA)"
+
+#: src/Shop/Helper/Currency.php:22
+msgid "Canadian Dollars"
+msgstr "Dólares canadienses"
+
+#: src/Shop/Helper/Country.php:247
+msgid "Uzbekistan"
+msgstr "Uzbekistán"
+
+#: src/Shop/Helper/Country.php:248
+msgid "Vanuatu"
+msgstr "Vanuatu"
+
+#: src/Shop/Helper/Country.php:246
+msgid "Uruguay"
+msgstr "Uruguay"
+
+#: src/Shop/Helper/Country.php:245
+msgid "United States (US) Virgin Islands"
+msgstr "Islas Vírgenes de los Estados Unidos"
+
+#: src/Shop/Helper/Country.php:243
+msgid "United States (US)"
+msgstr "Estados Unidos (EE.UU.)"
+
+#: src/Shop/Helper/Country.php:242
+msgid "United Kingdom (UK)"
+msgstr "Reino Unido"
+
+#: src/Shop/Helper/Country.php:241
+msgid "United Arab Emirates"
+msgstr "Emiratos Árabes Unidos"
+
+#: src/Shop/Helper/Country.php:240
+msgid "Ukraine"
+msgstr "Ucrania"
+
+#: src/Shop/Helper/Country.php:239
+msgid "Uganda"
+msgstr "Uganda"
+
+#: src/Shop/Helper/Country.php:238
+msgid "Tuvalu"
+msgstr "Tuvalu"
+
+#: src/Shop/Helper/Country.php:236
+msgid "Turkmenistan"
+msgstr "Turkmenistán"
+
+#: src/Shop/Helper/Country.php:235
+msgid "Turkey"
+msgstr "Turquía"
+
+#: src/Shop/Helper/Country.php:234
+msgid "Tunisia"
+msgstr "Túnez"
+
+#: src/Shop/Helper/Currency.php:48
+msgid "Mexican Peso"
+msgstr "Peso mexicano"
+
+#: src/Shop/Helper/Currency.php:47
+msgid "Malaysian Ringgits"
+msgstr "Ringgits malayos"
+
+#: src/Shop/Helper/Currency.php:46
+msgid "South Korean Won"
+msgstr "Won surcoreano"
+
+#: src/Shop/Helper/Currency.php:45
+msgid "Lao Kip"
+msgstr "Kip de Laos"
+
+#: src/Shop/Helper/Currency.php:44
+msgid "Kenyan Shilling"
+msgstr "Chelín keniano"
+
+#: src/Shop/Helper/Currency.php:43
+msgid "Japanese Yen"
+msgstr "Yen japonés"
+
+#: src/Shop/Helper/Currency.php:42
+msgid "Iranian rial"
+msgstr "Rial iraní"
+
+#: src/Shop/Helper/Currency.php:41
+msgid "Israeli Shekel"
+msgstr "Shekel israelí"
+
+#: src/Shop/Helper/Currency.php:40
+msgid "Indian Rupee"
+msgstr "Rupia india"
+
+#: src/Shop/Helper/Currency.php:39
+msgid "Indonesia Rupiah"
+msgstr "Rupia de Indonesia"
+
+#: src/Shop/Helper/Currency.php:38
+msgid "Icelandic krona"
+msgstr "Corona islandesa"
+
+#: src/Shop/Helper/Currency.php:37
+msgid "Hungarian Forint"
+msgstr "Florín húngaro"
+
+#: src/Shop/Helper/Currency.php:21
+msgid "Burundian Franc"
+msgstr "Franco burundés"
+
+#: src/Shop/Helper/Currency.php:20
+msgid "Bulgarian Lev"
+msgstr "Lev búlgaro"
+
+#: src/Shop/Helper/Currency.php:19
+msgid "Brazilian Real"
+msgstr "Real brasileño"
+
+#: src/Shop/Helper/Country.php:232
+msgid "Tonga"
+msgstr "Tonga"
+
+#: src/Shop/Helper/Country.php:231
+msgid "Tokelau"
+msgstr "Tokelau"
+
+#: src/Shop/Helper/Country.php:230
+msgid "Togo"
+msgstr "Togo"
+
+#: src/Shop/Helper/Country.php:229
+msgid "Timor-Leste"
+msgstr "Timor Oriental"
+
+#: src/Shop/Helper/Country.php:228
+msgid "Thailand"
+msgstr "Tailandia"
+
+#: src/Shop/Helper/Country.php:227
+msgid "Tanzania"
+msgstr "Tanzania"
+
+#: src/Shop/Helper/Country.php:226
+msgid "Tajikistan"
+msgstr "Tayikistán"
+
+#: src/Shop/Helper/Country.php:225
+msgid "Taiwan"
+msgstr "Taiwán"
+
+#: src/Shop/Helper/Country.php:224
+msgid "Syria"
+msgstr "Siria"
+
+#: src/Shop/Helper/Country.php:223
+msgid "Switzerland"
+msgstr "Suiza"
+
+#: src/Shop/Helper/Country.php:222
+msgid "Sweden"
+msgstr "Suecia"
+
+#: src/Shop/Helper/Country.php:221
+msgid "Swaziland"
+msgstr "Swazilandia"
+
+#: src/Shop/Helper/Country.php:219
+msgid "Suriname"
+msgstr "Surinam"
+
+#: src/Shop/Helper/Country.php:218
+msgid "Sudan"
+msgstr "Sudán"
+
+#: src/Shop/Helper/Country.php:203
+msgid "Senegal"
+msgstr "Senegal"
+
+#: src/Shop/Helper/Country.php:202
+msgid "Saudi Arabia"
+msgstr "Arabia Saudí"
+
+#: src/Shop/Helper/Country.php:201
+msgid "S&atilde;o Tom&eacute; and Pr&iacute;ncipe"
+msgstr "Santo Tomé y Príncipe"
+
+#: src/Shop/Helper/Country.php:200
+msgid "San Marino"
+msgstr "San Marino"
+
+#: src/Shop/Helper/Country.php:199
+msgid "Saint Vincent and the Grenadines"
+msgstr "San Vicente y las Granadinas"
+
+#: src/Shop/Helper/Country.php:195
+msgid "Saint Lucia"
+msgstr "Santa Lucía"
+
+#: src/Shop/Helper/Country.php:191
+msgid "Rwanda"
+msgstr "Ruanda"
+
+#: src/Shop/Helper/Country.php:190
+msgid "Russia"
+msgstr "Rusia"
+
+#: src/Shop/Helper/Country.php:189
+msgid "Romania"
+msgstr "Rumanía"
+
+#: src/Shop/Helper/Country.php:179
+msgid "Papua New Guinea"
+msgstr "Papúa Nueva Guinea"
+
+#: src/Shop/Helper/Country.php:178
+msgid "Panama"
+msgstr "Panamá"
+
+#: src/Shop/Helper/Country.php:177
+msgid "Palestinian Territory"
+msgstr "Territorio Palestino"
+
+#: src/Shop/Helper/Country.php:176
+msgid "Pakistan"
+msgstr "Pakistán"
+
+#: src/Shop/Helper/Country.php:175
+msgid "Oman"
+msgstr "Omán"
+
+#: src/Shop/Helper/Country.php:174
+msgid "Norway"
+msgstr "Noruega"
+
+#: src/Shop/Helper/Country.php:173
+msgid "North Korea"
+msgstr "Corea del Norte"
+
+#: src/Shop/Helper/Country.php:172
+msgid "Northern Mariana Islands"
+msgstr "Islas Marianas del Norte"
+
+#: src/Shop/Helper/Country.php:171
+msgid "Norfolk Island"
+msgstr "Isla Norfolk"
+
+#: src/Shop/Helper/Country.php:169
+msgid "Nigeria"
+msgstr "Nigeria"
+
+#: src/Shop/Helper/Country.php:168
+msgid "Niger"
+msgstr "Níger"
+
+#: src/Shop/Helper/Country.php:167
+msgid "Nicaragua"
+msgstr "Nicaragua"
+
+#: src/Shop/Helper/Country.php:166
+msgid "New Zealand"
+msgstr "Nueva Zelanda"
+
+#: src/Shop/Helper/Country.php:165
+msgid "New Caledonia"
+msgstr "Nueva Caledonia"
+
+#: src/Shop/Helper/Country.php:148
+msgid "Mauritania"
+msgstr "Mauritania"
+
+#: src/Shop/Helper/Country.php:147
+msgid "Martinique"
+msgstr "Martinica"
+
+#: src/Shop/Helper/Country.php:146
+msgid "Marshall Islands"
+msgstr "Islas Marshall"
+
+#: src/Shop/Helper/Country.php:145
+msgid "Malta"
+msgstr "Malta"
+
+#: src/Shop/Helper/Country.php:144
+msgid "Mali"
+msgstr "Malí"
+
+#: src/Shop/Helper/Country.php:143
+msgid "Maldives"
+msgstr "Maldivas"
+
+#: src/Shop/Helper/Country.php:142
+msgid "Malaysia"
+msgstr "Malasia"
+
+#: src/Shop/Helper/Country.php:141
+msgid "Malawi"
+msgstr "Malaui"
+
+#: src/Shop/Helper/Country.php:140
+msgid "Madagascar"
+msgstr "Madagascar"
+
+#: src/Shop/Helper/Country.php:139
+msgid "Macedonia"
+msgstr "Macedonia"
+
+#: src/Shop/Helper/Country.php:138
+msgid "Macao S.A.R., China"
+msgstr "Macao"
+
+#: src/Shop/Helper/Country.php:137
+msgid "Luxembourg"
+msgstr "Luxemburgo"
+
+#: src/Shop/Helper/Country.php:136
+msgid "Lithuania"
+msgstr "Lituania"
+
+#: src/Shop/Helper/Country.php:135
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+#: src/Shop/Helper/Country.php:120
+msgid "Jamaica"
+msgstr "Jamaica"
+
+#: src/Shop/Helper/Country.php:119
+msgid "Ivory Coast"
+msgstr "Costa de Marfil"
+
+#: src/Shop/Helper/Country.php:118
+msgid "Italy"
+msgstr "Italia"
+
+#: src/Shop/Helper/Country.php:117
+msgid "Israel"
+msgstr "Israel"
+
+#: src/Shop/Helper/Country.php:116
+msgid "Isle of Man"
+msgstr "Isla de Man"
+
+#: src/Shop/Helper/Country.php:115
+msgid "Ireland"
+msgstr "Irlanda"
+
+#: src/Shop/Helper/Country.php:114
+msgid "Iraq"
+msgstr "Irak"
+
+#: src/Shop/Helper/Country.php:113
+msgid "Iran"
+msgstr "Irán"
+
+#: src/Shop/Helper/Country.php:112
+msgid "Indonesia"
+msgstr "Indonesia"
+
+#: src/Shop/Helper/Country.php:111
+msgid "India"
+msgstr "India"
+
+#: src/Shop/Helper/Country.php:110
+msgid "Iceland"
+msgstr "Islandia"
+
+#: src/Shop/Helper/Country.php:109
+msgid "Hungary"
+msgstr "Hungría"
+
+#: src/Shop/Helper/Country.php:108
+msgid "Hong Kong"
+msgstr "Hong Kong"
+
+#: src/Shop/Helper/Country.php:107
+msgid "Honduras"
+msgstr "Honduras"
+
+#: src/Shop/Helper/Country.php:106
+msgid "Heard Island and McDonald Islands"
+msgstr "Islas Heard y McDonald"
+
+#: src/Shop/Helper/Country.php:89
+msgid "Gabon"
+msgstr "Gabón"
+
+#: src/Shop/Helper/Country.php:88
+msgid "French Southern Territories"
+msgstr "Territorios Franceses del Sur"
+
+#: src/Shop/Helper/Country.php:87
+msgid "French Polynesia"
+msgstr "Polinesia francesa"
+
+#: src/Shop/Helper/Country.php:86
+msgid "French Guiana"
+msgstr "Guayana francesa"
+
+#: src/Shop/Helper/Country.php:85
+msgid "France"
+msgstr "Francia"
+
+#: src/Shop/Helper/Country.php:84
+msgid "Finland"
+msgstr "Finlandia"
+
+#: src/Shop/Helper/Country.php:83
+msgid "Fiji"
+msgstr "Fiji"
+
+#: src/Shop/Helper/Country.php:82
+msgid "Faroe Islands"
+msgstr "Islas Feroe"
+
+#: src/Shop/Helper/Country.php:80
+msgid "Ethiopia"
+msgstr "Etiopía"
+
+#: src/Shop/Helper/Country.php:79
+msgid "Estonia"
+msgstr "Estonia"
+
+#: src/Shop/Helper/Country.php:78
+msgid "Eritrea"
+msgstr "Eritrea"
+
+#: src/Shop/Helper/Country.php:77
+msgid "Equatorial Guinea"
+msgstr "Guinea Ecuatorial"
+
+#: src/Shop/Helper/Country.php:76
+msgid "El Salvador"
+msgstr "El Salvador"
+
+#: src/Shop/Helper/Country.php:75
+msgid "Egypt"
+msgstr "Egipto"
+
+#: src/Shop/Helper/Country.php:59
+msgid "Colombia"
+msgstr "Colombia"
+
+#: src/Shop/Helper/Country.php:56
+msgid "China"
+msgstr "China"
+
+#: src/Shop/Helper/Country.php:55
+msgid "Chile"
+msgstr "Chile"
+
+#: src/Shop/Helper/Country.php:54
+msgid "Chad"
+msgstr "Chad"
+
+#: src/Shop/Helper/Country.php:53
+msgid "Central African Republic"
+msgstr "República Centroafricana"
+
+#: src/Shop/Helper/Country.php:52
+msgid "Cayman Islands"
+msgstr "Islas Caimán"
+
+#: src/Shop/Helper/Country.php:51
+msgid "Cape Verde"
+msgstr "Cabo Verde"
+
+#: src/Shop/Helper/Country.php:50
+msgid "Canada"
+msgstr "Canadá"
+
+#: src/Shop/Helper/Country.php:49
+msgid "Cameroon"
+msgstr "Camerún"
+
+#: src/Shop/Helper/Country.php:48
+msgid "Cambodia"
+msgstr "Camboya"
+
+#: src/Shop/Helper/Country.php:47
+msgid "Burundi"
+msgstr "Burundi"
+
+#: src/Shop/Helper/Country.php:46
+msgid "Burkina Faso"
+msgstr "Burkina Faso"
+
+#: src/Shop/Helper/Country.php:30
+msgid "Belgium"
+msgstr "Bélgica"
+
+#: src/Shop/Helper/Country.php:29
+msgid "Belarus"
+msgstr "Bielorusia"
+
+#: src/Shop/Helper/Country.php:28
+msgid "Barbados"
+msgstr "Barbados"
+
+#: src/Shop/Helper/Country.php:27
+msgid "Bangladesh"
+msgstr "Bangladesh"
+
+#: src/Shop/Helper/Country.php:26
+msgid "Bahrain"
+msgstr "Bahrein"
+
+#: src/Shop/Helper/Country.php:25
+msgid "Bahamas"
+msgstr "Bahamas"
+
+#: src/Shop/Helper/Country.php:24
+msgid "Azerbaijan"
+msgstr "Azerbaiyán"
+
+#: src/Shop/Helper/Country.php:23
+msgid "Austria"
+msgstr "Austria"
+
+#: src/Shop/Helper/Country.php:22
+msgid "Australia"
+msgstr "Australia"
+
+#: src/Shop/Helper/Country.php:21
+msgid "Aruba"
+msgstr "Aruba"
+
+#: src/Shop/Helper/Country.php:20
+msgid "Armenia"
+msgstr "Armenia"
+
+#: src/Shop/Helper/Country.php:19
+msgid "Argentina"
+msgstr "Argentina"
+
+#: src/Shop/Checkout/Field.php:68
+msgid "Postcode / ZIP"
+msgstr "Código postal / ZIP"
+
+#: src/Shop/Checkout/Field.php:41
+msgid "Company name"
+msgstr "Nombre de la empresa"
+
+#: src/Shop/Checkout/Field.php:32
+msgid "Last name"
+msgstr "Apellidos"
+
+#: src/Shop/Checkout/Field.php:22
+msgid "First name"
+msgstr "Nombre"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:112
+msgid "Your application client ID."
+msgstr "La ID de cliente de tu aplicación."
+
+#: src/Shop/Admin/Pages/Orders.php:71
+msgid "Order with that ID could not be found"
+msgstr "No se ha podido encontrar el pedido con esa ID"
+
+#: assets/views/order/page-order-overview.php:15
+#: src/Shop/Admin/Pages/Orders.php:23
+msgid "Orders"
+msgstr "Pedidos"
+
+#: src/Shop/Helper/Currency.php:17
+msgid "Australian Dollars"
+msgstr "Dólares australianos"
+
+#: src/Shop/Helper/Currency.php:16
+msgid "Argentine Peso"
+msgstr "Peso argentino"
+
+#: src/Shop/Helper/Country.php:257
+msgid "Zimbabwe"
+msgstr "Zimbabue"
+
+#: src/Shop/Helper/Country.php:256
+msgid "Zambia"
+msgstr "Zambia"
+
+#: src/Shop/Helper/Country.php:255
+msgid "Yemen"
+msgstr "Yemen"
+
+#: src/Shop/Helper/Country.php:254
+msgid "Samoa"
+msgstr "Samoa"
+
+#: src/Shop/Helper/Country.php:253
+msgid "Western Sahara"
+msgstr "Sáhara Occidental"
+
+#: src/Shop/Helper/Country.php:251
+msgid "Vietnam"
+msgstr "Vietnam"
+
+#: src/Shop/Helper/Country.php:250
+msgid "Venezuela"
+msgstr "Venezuela"
+
+#: src/Shop/Helper/Country.php:249
+msgid "Vatican"
+msgstr "Vaticano"
+
+#: src/Shop/Helper/Country.php:233
+msgid "Trinidad and Tobago"
+msgstr "Trinidad y Tobago"
+
+#: assets/views/order/page-order-details.php:14
+msgid "Order Details #%s"
+msgstr "Detalles del pedido #%s"
+
+#: src/Admin/Settings/Settings.php:680
+msgid "Default Gateway"
+msgstr "Pasarela por defecto"
+
+#: src/Admin/Settings/Settings.php:673
+msgid "Check all payment methods you want to enable on your webshop."
+msgstr "Comprueba todos los métodos de pago que deseas activar en tu tienda."
+
+#: src/Admin/Settings/Settings.php:672
+msgid "Enabled Gateways"
+msgstr "Pasarelas activas"
+
+#: src/Admin/Settings/Settings.php:389
+msgid "Disable Cart"
+msgstr "Desactivar carrito"
+
+#: src/Admin/Settings/Settings.php:383
+msgid "Thousand Separator"
+msgstr "Separador de miles"
+
+#: src/Admin/Settings/Settings.php:384
+msgid "The thousand separator of displayed prices."
+msgstr "El separador de miles de los precios mostrados."
+
+#: src/Admin/Settings/Settings.php:377
+msgid "The decimal separator of displayed prices."
+msgstr "El separador decimal de los precios mostrados."
+
+#: src/Admin/Settings/Settings.php:376
+msgid "Decimal Separator"
+msgstr "Separador decimal"
+
+#: src/Admin/Settings/Settings.php:369
+msgid "Right with space (%s)"
+msgstr "A la derecha con espacio (%s)"
+
+#: src/Admin/Settings/Settings.php:368
+msgid "Left with space (%s)"
+msgstr "A la izquierda con espacio (%s)"
+
+#: src/Admin/Settings/Settings.php:367
+msgid "Right (%s)"
+msgstr "Derecha (%s)"
+
+#: src/Shop/Helper/Currency.php:18
+msgid "Bangladeshi Taka"
+msgstr "Taka de Bangladesh"
+
+#: src/Shop/Helper/Currency.php:49
+msgid "Nigerian Naira"
+msgstr "Naira nigeriano"
+
+#: src/Shop/Helper/Country.php:217
+msgid "Sri Lanka"
+msgstr "Sri Lanka"
+
+#: src/Shop/Helper/Country.php:216
+msgid "Spain"
+msgstr "España"
+
+#: src/Shop/Helper/Country.php:215
+msgid "South Sudan"
+msgstr "Sudán del Sur"
+
+#: src/Shop/Helper/Country.php:214
+msgid "South Korea"
+msgstr "Corea del Sur"
+
+#: src/Shop/Helper/Country.php:212
+msgid "South Africa"
+msgstr "Sudáfrica"
+
+#: src/Shop/Helper/Country.php:211
+msgid "Somalia"
+msgstr "Somalia"
+
+#: src/Shop/Helper/Country.php:210
+msgid "Solomon Islands"
+msgstr "Islas Salomón"
+
+#: src/Shop/Helper/Country.php:209
+msgid "Slovenia"
+msgstr "Eslovenia"
+
+#: src/Shop/Helper/Country.php:187
+msgid "Qatar"
+msgstr "Catar"
+
+#: src/Shop/Helper/Country.php:186
+msgid "Puerto Rico"
+msgstr "Puerto Rico"
+
+#: src/Shop/Helper/Country.php:185
+msgid "Portugal"
+msgstr "Portugal"
+
+#: src/Shop/Helper/Country.php:184
+msgid "Poland"
+msgstr "Polonia"
+
+#: src/Shop/Helper/Country.php:182
+msgid "Philippines"
+msgstr "Filipinas"
+
+#: src/Shop/Helper/Country.php:181
+msgid "Peru"
+msgstr "Perú"
+
+#: src/Shop/Helper/Country.php:180
+msgid "Paraguay"
+msgstr "Paraguay"
+
+#: src/Shop/Helper/Country.php:164
+msgid "Netherlands"
+msgstr "Países Bajos"
+
+#: src/Shop/Helper/Country.php:163
+msgid "Nepal"
+msgstr "Nepal"
+
+#: src/Shop/Helper/Country.php:162
+msgid "Nauru"
+msgstr "Nauru"
+
+#: src/Shop/Helper/Country.php:170
+msgid "Niue"
+msgstr "Niue"
+
+#: src/Shop/Helper/Country.php:161
+msgid "Namibia"
+msgstr "Namibia"
+
+#: src/Shop/Helper/Country.php:133
+msgid "Liberia"
+msgstr "Liberia"
+
+#: src/Shop/Helper/Country.php:132
+msgid "Lesotho"
+msgstr "Lesoto"
+
+#: src/Shop/Helper/Country.php:131
+msgid "Lebanon"
+msgstr "Líbano"
+
+#: src/Shop/Helper/Country.php:130
+msgid "Latvia"
+msgstr "Letonia"
+
+#: src/Shop/Helper/Country.php:129
+msgid "Laos"
+msgstr "Laos"
+
+#: src/Shop/Helper/Country.php:128
+msgid "Kyrgyzstan"
+msgstr "Kirguistán"
+
+#: src/Shop/Helper/Country.php:127
+msgid "Kuwait"
+msgstr "Kuwait"
+
+#: src/Shop/Helper/Country.php:126
+msgid "Kiribati"
+msgstr "Kiribati"
+
+#: src/Shop/Helper/Country.php:125
+msgid "Kenya"
+msgstr "Kenia"
+
+#: src/Shop/Helper/Country.php:124
+msgid "Kazakhstan"
+msgstr "Kazajistán"
+
+#: src/Shop/Helper/Country.php:123
+msgid "Jordan"
+msgstr "Jordania"
+
+#: src/Shop/Helper/Country.php:122
+msgid "Jersey"
+msgstr "Jersey"
+
+#: src/Shop/Helper/Country.php:121
+msgid "Japan"
+msgstr "Japón"
+
+#: src/Shop/Helper/Country.php:105
+msgid "Haiti"
+msgstr "Haití"
+
+#: src/Shop/Helper/Country.php:104
+msgid "Guyana"
+msgstr "Guyana"
+
+#: src/Shop/Helper/Country.php:73
+msgid "Dominican Republic"
+msgstr "República Dominicana"
+
+#: src/Shop/Helper/Country.php:72
+msgid "Dominica"
+msgstr "Dominica"
+
+#: src/Shop/Helper/Country.php:71
+msgid "Djibouti"
+msgstr "Yibuti"
+
+#: src/Shop/Helper/Country.php:70
+msgid "Denmark"
+msgstr "Dinamarca"
+
+#: src/Shop/Helper/Country.php:69
+msgid "Czech Republic"
+msgstr "República Checa"
+
+#: src/Shop/Helper/Country.php:68
+msgid "Cyprus"
+msgstr "Chipre"
+
+#: src/Shop/Helper/Country.php:67
+msgid "Cura&ccedil;ao"
+msgstr "Curazao"
+
+#: src/Shop/Helper/Country.php:66
+msgid "Cuba"
+msgstr "Cuba"
+
+#: src/Shop/Helper/Country.php:65
+msgid "Croatia"
+msgstr "Croacia"
+
+#: src/Shop/Helper/Country.php:64
+msgid "Costa Rica"
+msgstr "Costa Rica"
+
+#: src/Shop/Helper/Country.php:63
+msgid "Cook Islands"
+msgstr "Islas Cook"
+
+#: src/Shop/Helper/Country.php:62
+msgid "Congo (Kinshasa)"
+msgstr "Congo (Kinsasa)"
+
+#: src/Shop/Helper/Country.php:61
+msgid "Congo (Brazzaville)"
+msgstr "Congo (Brazzaville)"
+
+#: src/Shop/Helper/Country.php:60
+msgid "Comoros"
+msgstr "Comores"
+
+#: src/Shop/Helper/Country.php:58
+msgid "Cocos (Keeling) Islands"
+msgstr "Islas Cocos (Keeling)"
+
+#: src/Shop/Helper/Country.php:18
+msgid "Antigua and Barbuda"
+msgstr "Antigua y Barbuda"
+
+#: src/Shop/Helper/Country.php:17
+msgid "Antarctica"
+msgstr "Antártida"
+
+#: src/Shop/Helper/Country.php:13
+msgid "American Samoa"
+msgstr "Samoa Americana"
+
+#: src/Shop/Helper/Country.php:12
+msgid "Algeria"
+msgstr "Argelia"
+
+#: src/Shop/Helper/Country.php:11
+msgid "Albania"
+msgstr "Albania"
+
+#: src/Shop/Helper/Country.php:15
+msgid "Angola"
+msgstr "Angola"
+
+#: src/Shop/Helper/Country.php:14
+msgid "Andorra"
+msgstr "Andorra"
+
+#: src/Shop/Helper/Country.php:9
+msgid "Afghanistan"
+msgstr "Afganistán"
+
+#: src/Shop/Checkout/Field.php:87
+msgid "Country"
+msgstr "País"
+
+#: src/Shop/Checkout/Field.php:77
+msgid "City"
+msgstr "Ciudad"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:94
+msgid "Click here to read more on how to set this up"
+msgstr "Haz clic aquí para leer más acerca de cómo configurar esto"
+
+#: src/Admin/Settings/Settings.php:340
+msgid "Invoice Prefix"
+msgstr "Prefijo de la factura"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:91
+msgid "Click here to read the full documentation page"
+msgstr "Haz clic aquí para leer la página de documentación completa"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:89
+msgid "Click here to create a new PayPal application"
+msgstr "Haz clic aquí para crear una aplicación PayPal nueva"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:87
+msgid "In order to allow users to pay via PayPal on your website, you need to create an application in PayPal's developer portal. After you've done so, please copy the Client ID and Secret and set them here."
+msgstr "Para poder permitir a los usuarios pagar a través de PayPal en tu web, necesitas crear una aplicación en el portal de desarrollador de PayPal. Una vez lo hayas hecho, por favor, copia la ID del cliente y la clave secreta, y configúralos aquí."
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:24
+msgid "Pay with PayPal"
+msgstr "Pagar con PayPal"
+
+#: src/Shop/Shortcode/Checkout.php:71
+msgid "Your payment failed, please try again."
+msgstr "Ha ocurrido un problema con el pago. Por favor, inténtalo de nuevo."
+
+#: src/Shop/Util/Assets.php:42
+msgid "Please complete the fields highlighted in red"
+msgstr "Por favor, completa los campos destacados en color rojo"
+
+#: src/Shop/Util/Assets.php:41
+msgid "Please wait while we process your order"
+msgstr "Por favor, espera mientras procesamos tu pedido"
+
+#: src/Shop/Util/Assets.php:40
+msgid "Placing your order"
+msgstr "Realizando tu pedido"
+
+#: src/Shop/Util/Page.php:110
+msgid "no page"
+msgstr "sin página"
+
+#: src/Shop/Ajax/AdminChangeOrderStatus.php:28
+msgid "You are not allowed to do this."
+msgstr "No tienes permiso para hacer esto."
+
+#: src/Shop/Ajax/PlaceOrder.php:163
+msgid "Payment gateway error: %s"
+msgstr "Error en la pasarela de pago: %s"
+
+#: src/Shop/Helper/Country.php:45
+msgid "Bulgaria"
+msgstr "Bulgaria"
+
+#: src/Shop/Helper/Country.php:57
+msgid "Christmas Island"
+msgstr "Isla de Navidad"
+
+#: src/Shop/Helper/Country.php:44
+msgid "Brunei"
+msgstr "Brunei"
+
+#: src/Shop/Helper/Country.php:43
+msgid "British Virgin Islands"
+msgstr "Islas Vírgenes Británicas"
+
+#: src/Shop/Helper/Country.php:42
+msgid "British Indian Ocean Territory"
+msgstr "Territorio Británico del Océano Índico"
+
+#: src/Shop/Helper/Country.php:41
+msgid "Brazil"
+msgstr "Brasil"
+
+#: src/Shop/Helper/Country.php:39
+msgid "Botswana"
+msgstr "Botsuana"
+
+#: src/Shop/Helper/Country.php:38
+msgid "Bosnia and Herzegovina"
+msgstr "Bosnia-Herzegovina"
+
+#: src/Shop/Helper/Country.php:36
+msgid "Bolivia"
+msgstr "Bolivia"
+
+#: src/Shop/Helper/Country.php:35
+msgid "Bhutan"
+msgstr "Bután"
+
+#: src/Shop/Helper/Country.php:34
+msgid "Bermuda"
+msgstr "Bermudas"
+
+#: src/Shop/Helper/Country.php:33
+msgid "Benin"
+msgstr "Benín"
+
+#: src/Shop/Helper/Country.php:32
+msgid "Belize"
+msgstr "Belice"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:111
+msgid "Application Client ID"
+msgstr "ID de cliente de aplicación"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:100
+msgid "Application Details"
+msgstr "Detalles de la aplicación"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:93
+msgid "The same fields from your PayPal application but from the \"sandbox\" mode."
+msgstr "Los mismos campos de tu aplicación PayPal, pero en el modo «entorno de pruebas»."
+
+#: src/Shop/Ajax/PlaceOrder.php:90
+msgid "Invalid Payment Gateway"
+msgstr "Pasarela de pago no válida"
+
+#: src/Shop/Ajax/PlaceOrder.php:84
+msgid "Not all required fields are set"
+msgstr "No todos los campos obligatorios están completados"
+
+#: src/Shop/Email/VarParser.php:133
+msgid "Payment Gateway"
+msgstr "Pasarela de pago"
+
+#: src/Shop/Email/VarParser.php:126
+msgid "Order Total"
+msgstr "Total del pedido"
+
+#: src/Shop/Email/VarParser.php:122
+#: templates/shop/checkout/order-complete.php:41
+msgid "Order Date"
+msgstr "Fecha del pedido"
+
+#: src/Shop/Email/VarParser.php:118
+#: templates/shop/checkout/order-complete.php:33
+msgid "Order ID"
+msgstr "ID de pedido"
+
+#: src/Shop/Email/VarParser.php:65
+#: templates/shop/checkout/order-complete.php:124
+msgid "Download is no longer available"
+msgstr "La descarga ya no está disponible"
+
+#: src/Shop/Email/Handler.php:25
+msgid "%s: New order"
+msgstr "%s: Nuevo pedido"
+
+#: src/Shop/Email/Handler.php:14
+msgid "Your %s order"
+msgstr "Tu pedido %s"
+
+#: src/Shop/Order/Transaction/Factory.php:42
+msgid "Success"
+msgstr "Correcto"
+
+#: src/Shop/Order/Transaction/Factory.php:39
+msgid "Pending"
+msgstr "Pendiente"
+
+#: src/Shop/Order/Status/Factory.php:33
+msgid "Trash"
+msgstr "Papelera"
+
+#: includes/php-too-low.php:32
+msgid "You can learn more about why it's important that you update and get tips on how to update by %s"
+msgstr "Puedes aprender más acerca del por qué es importante que actualices y obtengas consejos de cómo actualizar por %s"
+
+#: includes/php-too-low.php:24 includes/php-too-low.php:25
+msgid "PHP Version %s"
+msgstr "Versión de PHP %s"
+
+#: includes/php-too-low.php:23
+msgid "Download Monitor can't be loaded because it needs at least %1$s but the server that is hosting your WordPress website is running %2$s"
+msgstr "Download Monitor no ha cargado porque necesita al menos %1$s, pero el servidor que está hospedando tu web de WordPress está ejecutando %2$s"
+
+#: includes/php-too-low.php:19
+msgid "PHP Version too low!"
+msgstr "¡Versión de PHP demasiado antigua!"
+
+#: templates/shop/button/add-to-cart-box.php:29
+#: templates/shop/button/add-to-cart-box.php:31
+msgid "Purchase Now"
+msgstr "Comprar ahora"
+
+#: templates/shop/button/add-to-cart.php:20
+msgid "Purchase &ldquo;%s&rdquo;"
+msgstr "Comprar &ldquo;%s&rdquo;"
+
+#: src/Shop/Helper/Currency.php:69
+msgid "Tanzanian Shilling"
+msgstr "Chelín de Tanzania"
+
+#: src/Shop/Helper/Currency.php:67
+msgid "Turkish Lira"
+msgstr "Lira turca"
+
+#: src/Shop/Helper/Currency.php:68
+msgid "Taiwan New Dollars"
+msgstr "Nuevo dólar taiwanés"
+
+#: src/Shop/Helper/Currency.php:70
+msgid "Ukrainian Hryvnia"
+msgstr "Hryvnia ucraniano"
+
+#: src/Shop/Helper/Currency.php:51
+msgid "Nepali Rupee"
+msgstr "Rupia nepalí"
+
+#: src/Shop/Helper/Currency.php:50
+msgid "Norwegian Krone"
+msgstr "Corona noruega"
+
+#: src/Shop/Helper/Country.php:252
+msgid "Wallis and Futuna"
+msgstr "Islas Wallis y Futuna"
+
+#: src/Shop/Helper/Country.php:244
+msgid "United States (US) Minor Outlying Islands"
+msgstr "Islas Ultramarinas Menores de los Estados Unidos"
+
+#: src/Shop/Helper/Country.php:237
+msgid "Turks and Caicos Islands"
+msgstr "Islas Turcas y Caicos"
+
+#: src/Shop/Helper/Country.php:220
+msgid "Svalbard and Jan Mayen"
+msgstr "Svalbard y Jan Mayen"
+
+#: src/Shop/Helper/Country.php:213
+msgid "South Georgia/Sandwich Islands"
+msgstr "Islas Georgias y Sandwich del Sur"
+
+#: src/Shop/Helper/Country.php:208
+msgid "Slovakia"
+msgstr "Eslovaquia"
+
+#: src/Shop/Helper/Country.php:207
+msgid "Singapore"
+msgstr "Singapur"
+
+#: src/Shop/Helper/Country.php:206
+msgid "Sierra Leone"
+msgstr "Sierra Leona"
+
+#: src/Shop/Helper/Country.php:205
+msgid "Seychelles"
+msgstr "Islas Seychelles"
+
+#: src/Shop/Helper/Country.php:153
+msgid "Moldova"
+msgstr "Moldavia"
+
+#: src/Shop/Helper/Country.php:152
+msgid "Micronesia"
+msgstr "Estados Federados de Micronesia"
+
+#: src/Shop/Helper/Country.php:151
+msgid "Mexico"
+msgstr "México"
+
+#: src/Shop/Helper/Country.php:150
+msgid "Mayotte"
+msgstr "Mayotte"
+
+#: src/Shop/Helper/Country.php:149
+msgid "Mauritius"
+msgstr "Mauricio"
+
+#: src/Shop/Helper/Country.php:134
+msgid "Libya"
+msgstr "Libia"
+
+#: src/Shop/Helper/Country.php:103
+msgid "Guinea-Bissau"
+msgstr "Guinea-Bisáu"
+
+#: src/Shop/Helper/Country.php:102
+msgid "Guinea"
+msgstr "Guinea"
+
+#: src/Shop/Helper/Country.php:101
+msgid "Guernsey"
+msgstr "Guernsey"
+
+#: src/Shop/Helper/Country.php:100
+msgid "Guatemala"
+msgstr "Guatemala"
+
+#: src/Shop/Helper/Country.php:99
+msgid "Guam"
+msgstr "Guam"
+
+#: src/Shop/Helper/Country.php:98
+msgid "Guadeloupe"
+msgstr "Guadalupe"
+
+#: src/Shop/Helper/Country.php:97
+msgid "Grenada"
+msgstr "Granada"
+
+#: src/Shop/Helper/Country.php:96
+msgid "Greenland"
+msgstr "Groenlandia"
+
+#: src/Shop/Helper/Country.php:95
+msgid "Greece"
+msgstr "Grecia"
+
+#: src/Shop/Order/Status/Factory.php:30
+msgid "Refunded"
+msgstr "Reembolsado"
+
+#: src/Shop/Order/Status/Factory.php:21
+msgid "Pending Payment"
+msgstr "Pago pendiente"
+
+#: src/Admin/class-dlm-admin-list-table.php:530
+#: src/Shop/Admin/OrderTable.php:286
+msgid "Empty Trash"
+msgstr "Vaciar papelera"
+
+#: src/Admin/Extensions.php:314 src/Shop/Admin/OrderTable.php:200
+#: src/Widgets/Downloads.php:245
+msgid "All"
+msgstr "Todo"
+
+#: src/Shop/Admin/OrderTable.php:190
+msgid "Orders deleted"
+msgstr "Pedidos borrados"
+
+#: src/Shop/Admin/OrderTable.php:62
+msgid "Trashed orders have been permanently deleted."
+msgstr "Los pedidos de la papelera han sido borrados permanentemente."
+
+#: src/Shop/Helper/Country.php:159
+msgid "Mozambique"
+msgstr "Mozambique"
+
+#: src/Shop/Helper/Country.php:158
+msgid "Morocco"
+msgstr "Marruecos"
+
+#: src/Shop/Helper/Country.php:156
+msgid "Montenegro"
+msgstr "Montenegro"
+
+#: src/Shop/Helper/Country.php:155
+msgid "Mongolia"
+msgstr "Mongolia"
+
+#: src/Shop/Helper/Country.php:154
+msgid "Monaco"
+msgstr "Mónaco"
+
+#: src/Shop/Helper/Country.php:94
+msgid "Gibraltar"
+msgstr "Gibraltar"
+
+#: src/Shop/Helper/Country.php:93
+msgid "Ghana"
+msgstr "Ghana"
+
+#: src/Shop/Helper/Country.php:92
+msgid "Germany"
+msgstr "Alemania"
+
+#: src/Shop/Helper/Country.php:90
+msgid "Gambia"
+msgstr "Gambia"
+
+#: templates/shop/checkout/order-complete.php:114
+#: templates/shop/email/elements/downloads-table.php:22
+msgid "Download name"
+msgstr "Nombre de la descarga"
+
+#: templates/shop/checkout.php:30
+msgid "Your browser does not support JavaScript which our checkout page requires to function properly."
+msgstr "Tu navegador no soporta JavaScript, necesario para que nuestra página de pago funcione correctamente."
+
+#: src/Admin/Settings/Settings.php:366
+msgid "Left (%s)"
+msgstr "Izquierda (%s)"
+
+#: src/Admin/Settings/Settings.php:355
+msgid "In what currency are you selling?"
+msgstr "¿En qué moneda estás vendiendo?"
+
+#: src/Shop/Helper/Currency.php:74
+msgid "Vietnamese Dong"
+msgstr "Dong vietnamita"
+
+#: src/Shop/Helper/Currency.php:73
+msgid "US Dollars"
+msgstr "Dólares de EE.UU."
+
+#: src/Shop/Helper/Currency.php:72
+msgid "United Arab Emirates Dirham"
+msgstr "Dirham de Emiratos Árabes Unidos"
+
+#: src/Shop/Helper/Currency.php:71
+msgid "Ugandan Shilling"
+msgstr "Chelín ugandés"
+
+#: src/Shop/Helper/Country.php:204
+msgid "Serbia"
+msgstr "Serbia"
+
+#: src/Shop/Helper/Country.php:198
+msgid "Saint Pierre and Miquelon"
+msgstr "San Pedro y Miquelón"
+
+#: src/Shop/Helper/Country.php:197
+msgid "Saint Martin (Dutch part)"
+msgstr "San Martín (Países Bajos)"
+
+#: src/Shop/Helper/Country.php:196
+msgid "Saint Martin (French part)"
+msgstr "San Martín (Francia)"
+
+#: src/Shop/Helper/Country.php:194
+msgid "Saint Kitts and Nevis"
+msgstr "San Cristóbal y Nieves"
+
+#: templates/shop/checkout/order-complete.php:17
+msgid "Thank you for your order. Please find your order details below."
+msgstr "Gracias por tu pedido. por favor, busca abajo los detalles de tu pedido."
+
+#: src/Shop/Helper/Country.php:160
+msgid "Myanmar"
+msgstr "Birmania"
+
+#: src/Shop/Helper/Country.php:81
+msgid "Falkland Islands"
+msgstr "Islas Malvinas"
+
+#: src/Shop/Helper/Country.php:74
+msgid "Ecuador"
+msgstr "Ecuador"
+
+#: src/Shop/Helper/Country.php:40
+msgid "Bouvet Island"
+msgstr "Isla Bouvet"
+
+#: src/Shop/Helper/Country.php:37
+msgid "Bonaire, Saint Eustatius and Saba"
+msgstr "Bonaire, San Eustaquio y Saba"
+
+#: src/Shop/Helper/Country.php:31
+msgid "Belau"
+msgstr "Palaos"
+
+#: src/Shop/Helper/Country.php:16
+msgid "Anguilla"
+msgstr "Anguila"
+
+#: src/Shop/Helper/Country.php:10
+msgid "&#197;land Islands"
+msgstr "Islas Åland"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:124
+msgid "Test Settings"
+msgstr "Ajustes de la prueba"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:144
+msgid "Your application sandbox client ID."
+msgstr "ID de cliente del entorno de pruebas de tu aplicación."
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:143
+msgid "Sandbox Client ID"
+msgstr "ID de cliente del entorno de pruebas"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:136
+msgid "Enable Sandbox"
+msgstr "Activar entorno de pruebas"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:135
+msgid "Check to enable PayPal sandbox mode. This allows you to test your PayPal integration."
+msgstr "Marca para activar el modo entorno de pruebas de PayPal. Esto te permite probar tu integración con PayPal."
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:134
+msgid "Sandbox"
+msgstr "Entorno de pruebas"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:119
+msgid "Your application client secret."
+msgstr "La clave secreta del cliente de tu aplicación."
+
+#: src/Admin/Settings/Settings.php:362
+msgid "Currency Position"
+msgstr "Posición del símbolo de la moneda"
+
+#: src/Shop/Helper/Country.php:193
+msgid "Saint Helena"
+msgstr "Santa Elena"
+
+#: src/Shop/Helper/Country.php:192
+msgid "Saint Barth&eacute;lemy"
+msgstr "San Bartolomé"
+
+#: src/Shop/Helper/Country.php:188
+msgid "Reunion"
+msgstr "Reunión"
+
+#: src/Shop/Helper/Country.php:183
+msgid "Pitcairn"
+msgstr "Pitcairn"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:151
+msgid "Your application sandbox client secret."
+msgstr "La clave secreta del entorno de pruebas de tu aplicación."
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:150
+msgid "Sandbox Client Secret"
+msgstr "La clave secreta del cliente del entorno de pruebas"
+
+#: src/Shop/Checkout/PaymentGateway/PayPal/PayPalGateway.php:118
+msgid "Application Client Secret"
+msgstr "La clave secreta del cliente de la aplicación"
+
+#: assets/views/order/page-order-details.php:72
+msgid "Processor ID"
+msgstr "ID del procesador"
+
+#: assets/views/order/page-order-details.php:71
+msgid "Processor"
+msgstr "Procesador"
+
+#: src/Admin/Settings/Settings.php:391
+msgid "If enabled, your customers will be sent to your checkout page directly."
+msgstr "Si se activa, tus clientes serán dirigidos directamente a tu página de pago."
+
+#: src/Shop/Helper/Currency.php:55
+msgid "Polish Zloty"
+msgstr "Esloti polaco"
+
+#: src/Admin/Settings/Settings.php:411
+msgid "Your checkout page, make sure it has the <strong>[dlm_checkout]</strong> shortcode."
+msgstr "Asegúrate de que tu página de pagos tiene el shortcode <strong>[dlm_checkout]</strong>."
+
+#: src/Admin/Settings/Settings.php:403
+msgid "Your cart page, make sure it has the <strong>[dlm_cart]</strong> shortcode."
+msgstr "Asegúrate de que tu página del carrito tiene el shortcode <strong>[dlm_cart]</strong>."
+
+#: src/DownloadPreview/Preview.php:84
+msgid "Select a download first"
+msgstr "Selecciona primero una descarga"
+
+#: src/Gutenberg.php:55
+msgid "Default from settings"
+msgstr "Usar el valor por defecto desde los ajustes"
+
+#: src/Admin/Settings/Settings.php:234
+msgid "If enabled, the counter for each download will only increment and create a log entry once per IP address. Note that this option only works if %1$s is set to %2$s."
+msgstr "Si se activa, el contador para cada descarga solo aumentará y creará una entrada al registro una vez por cada dirección IP. Ten en cuenta que esta opción solo funciona si %1$s está configurado como %2$s."
+
+#: src/Admin/Settings/Settings.php:221
+msgid "Define if and how you like to store IP addresses of users that download your files in your logs."
+msgstr "Define si quieres y de qué modo almacenar en tus registros las direcciones IP de los usuarios que descargan tus archivos."
+
+#: src/Admin/Settings/Settings.php:220 src/Admin/Settings/Settings.php:234
+msgid "IP Address Logging"
+msgstr "Registro de direcciones IP"
+
+#: src/Admin/Settings/Settings.php:226
+msgid "Store no IP address"
+msgstr "No almacenar la dirección IP"
+
+#: src/Admin/Settings/Settings.php:225
+msgid "Store anonymized IP address (remove last 3 digits)"
+msgstr "Almacenar la dirección IP anonimizada (elimina los últimos 3 dígitos)"
+
+#: src/Admin/Settings/Settings.php:224 src/Admin/Settings/Settings.php:234
+msgid "Store full IP address"
+msgstr "Almacenar la dirección IP completa"
+
+#: src/LegacyUpgrader/Page.php:48
+msgid "I'm sure I want to run the upgrader anyway"
+msgstr "Estoy seguro de que quiero ejecutar el actualizador de todos modos"
+
+#: src/LegacyUpgrader/Page.php:46
+msgid "WARNING: We don't think your database needs upgrading. Only continue if you're 100% sure what you're doing!"
+msgstr "ADVERTENCIA: No creemos que tu base de datos necesite actualizarse. ¡Continúa únicamente si estás 100% seguro de lo que estás haciendo!"
+
+#: templates/content-download-no-version.php:50
+msgid "has no version set!"
+msgstr "no tiene establecida ninguna versión!"
+
+#: src/class-dlm-frontend-templates.php:82
+msgid "Please set a version in your WordPress admin"
+msgstr "Por favor, configura una nueva versión en la administración de tu WordPress"
+
+#: src/TaxonomyManager.php:70
+msgid "Download Tags"
+msgstr "Etiquetas de descargas"
+
+#: src/TaxonomyManager.php:32
+msgid "Download Categories"
+msgstr "Categorías de descargas"
+
+#: src/PostTypeManager.php:154
+msgid "Parent Download Version"
+msgstr "Versión de descarga superior"
+
+#: src/PostTypeManager.php:152
+msgid "No Download Versions found in trash"
+msgstr "No se han encontrado versiones de descarga en la papelera"
+
+#: src/PostTypeManager.php:148
+msgid "Search Download Versions"
+msgstr "Buscar versiones de descargas"
+
+#: src/PostTypeManager.php:150
+msgid "No Download Versions found"
+msgstr "No se han encontrado versiones de descargas"
+
+#: src/PostTypeManager.php:144 src/PostTypeManager.php:146
+msgid "View Download Version"
+msgstr "Ver versión de la descarga"
+
+#: src/PostTypeManager.php:142
+msgid "New Download Version"
+msgstr "Nueva versión de la descarga"
+
+#: src/PostTypeManager.php:140
+msgid "Edit Download Version"
+msgstr "Editar versión de la descarga"
+
+#: src/PostTypeManager.php:136
+msgid "Add Download Version"
+msgstr "Añadir versión de la descarga"
+
+#: src/PostTypeManager.php:132
+msgid "Download Version"
+msgstr "Versión de la descarga"
+
+#: src/PostTypeManager.php:130
+msgid "Download Versions"
+msgstr "Versiones de la descarga"
+
+#: src/PostTypeManager.php:128
+msgid "All Download Versions"
+msgstr "Todas las versiones de la descarga"
+
+#: src/Admin/Settings/Settings.php:134
+msgid "Include in Search"
+msgstr "Incluir en la búsqueda"
+
+#: assets/views/notice-lu-upgrade.php:11
+msgid "hide notice"
+msgstr "ocultar aviso"
+
+#: assets/views/notice-lu-upgrade.php:10
+msgid "Take me to the Upgrade Tool"
+msgstr "Llévame a la herramienta de actualización"
+
+#: src/Admin/MediaInsert.php:177
+msgid "Search download"
+msgstr "Buscar descarga"
+
+#: src/Admin/Reports/class-dlm-reports.php:45
+#: src/Admin/Reports/class-dlm-reports.php:46
+#: src/Admin/Settings/Settings.php:215
+msgid "Reports"
+msgstr "Informes"
+
+#: assets/views/notice-lu-upgrade.php:8
+msgid "upgrade your downloads"
+msgstr "actualiza tus descargas"
+
+#: src/Admin/WritePanels.php:194
+msgid "No download information for new downloads."
+msgstr "No hay información de descarga para las nuevas descargas."
+
+#: src/Admin/Settings/Settings.php:136
+msgid "If enabled, downloads will be included in the site's internal search results."
+msgstr "Si se activa se incluirán las descargas en los resultados de búsqueda internos del sitio."
+
+#: assets/views/notice-lu-upgrade.php:9
+msgid "We've created an upgrading tool that will do all the work for you. You can read more about this tool on %sour website (click here)%s or start the upgrade now."
+msgstr "Hemos creado una herramienta de actualizaciones que hará todo el trabajo por ti. Puedes leer más acerca de esta herramienta en %snuestra web (clic aquí)%s o empezar a actualizar ahora."
+
+#: assets/views/notice-lu-upgrade.php:8
+msgid "Currently your downloads don't work like they should, we need to %s before they'll work again."
+msgstr "Actualmente tus descargas no funcionan como deberían, necesitamos antes %s para que vuelvan a funcionar."
+
+#: assets/views/notice-lu-upgrade.php:7
+msgid "It looks like you upgraded to the latest version of Download Monitor from a legacy version (3.x)"
+msgstr "Parece ser que has actualizado a la última versión de Download Monitor desde una versión anterior (3.x)"
+
+#: src/LegacyUpgrader/Page.php:17
+msgid "Legacy Upgrader"
+msgstr "Actualizador de versiones antiguas"
+
+#: src/LegacyUpgrader/Page.php:41
+msgid "Download Monitor - Legacy Upgrade"
+msgstr "Download Monitor - Actualización de versiones anteriores"
+
+#: src/LegacyUpgrader/Page.php:42
+msgid "Welcome to the Download Monitor Legacy Upgrader. On this page we will upgrade your old Download Monitor (legacy) data so it will work with the latest version. If you're on this page, it should mean that you updated to this version from Download Monitor %s. If you're unsure if this is correct, or you want to read more about the legacy upgrade, we've setup a page that will explain this process in a lot more detail. %sClick here%s if to view that page."
+msgstr "Bienvenido al actualizador de versiones antiguas de Download Monitor. En esta página actualizaremos los datos (antiguos) de tu viejo Download Monitor para que funcionen con la última versión. Si estás en esta página debería significar que has actualizado a esta versión desde Download Monitor %s. Si no estás seguro de que esto sea asi, o si quieres leer más sobre las actualizaciones desde versiones anteriores, hemos creado una página que explica este proceso con mucho más detalle. %sHaz clic aquí%s si quieres ver esa página."
+
+#: src/Admin/Settings/Settings.php:208
+msgid "List browser user agents to blacklist, 1 per line.  Partial matches are sufficient. Regex matching is allowed by surrounding the pattern with forward slashes, e.g. <strong>/^Mozilla.+Googlebot/</strong>"
+msgstr "Lista de agentes de usuario para añadir a la lista negra, 1 por línea. Vale con coincidencias parciales. Se permite la coincidencia por regex envolviendo el patrón con barras, p.ej: <strong>/^Mozilla.+Googlebot/</strong>"
+
+#: src/Admin/Settings/Fields/LazySelect.php:61
+msgid "Loading"
+msgstr "Cargando"
+
+#: src/Admin/Settings/Settings.php:207
+msgid "Blacklist user agents"
+msgstr "Agentes de usuario en lista negra"
+
+#: src/Admin/Settings/Page.php:42 src/Admin/Settings/Page.php:43
+#: src/DLM.php:379
+msgid "Settings"
+msgstr "Ajustes"
+
+#: src/Admin/Settings/Page.php:182
+msgid "Settings successfully saved"
+msgstr "Los ajustes se han guardado correctamente"
+
+#: src/Admin/class-dlm-network-settings.php:203 src/Admin/Settings/Page.php:348
+msgid "Save Changes"
+msgstr "Guardar cambios"
+
+#: assets/apps/upsells/components/DetailedLogsFilter.jsx:93
+#: assets/apps/upsells/components/OverviewLogsFilter.jsx:65
+#: assets/js/upsells/upsells.js:1
+msgid "Export CSV"
+msgstr "Exportar CSV"
+
+#: assets/views/order/page-order-details.php:68
+#: src/Admin/class-dlm-admin-list-table.php:1414
+#: src/Shop/Admin/OrderTable.php:153 src/Shop/Admin/ProductTableColumns.php:38
+msgid "Date"
+msgstr "Fecha"
+
+#: assets/views/order/page-order-details.php:69
+#: src/Admin/class-dlm-admin-list-table.php:1758
+#: src/Admin/class-dlm-plugin-status.php:145 src/Shop/Admin/OrderTable.php:154
+#: assets/apps/reports/components/DetailedDownloadsTable.jsx:34
+#: assets/js/reports/reports.js:1
+msgid "Status"
+msgstr "Estado"
+
+#: assets/apps/reports/components/DetailedDownloadsTable.jsx:31
+#: assets/js/reports/reports.js:1
+msgid "User"
+msgstr "Usuario"
+
+#: assets/views/order/page-order-details.php:165
+msgid "IP Address"
+msgstr "Dirección IP"
+
+#: src/Shop/Order/Status/Factory.php:27
+#: src/Shop/Order/Transaction/Factory.php:45
+msgid "Failed"
+msgstr "Fallido"
+
+#: src/Shop/Order/Status/Factory.php:24
+msgid "Completed"
+msgstr "Completada"
+
+#: src/Shop/Admin/OrderTable.php:250
+msgid "Show all dates"
+msgstr "Mostrar todas las fechas"
+
+#: src/Shop/Admin/OrderTable.php:263
+msgid "%1$s %2$d"
+msgstr "%1$s %2$d"
+
+#: src/Shop/Admin/OrderTable.php:271
+msgid "25 per page"
+msgstr "25 por página"
+
+#: src/Shop/Admin/OrderTable.php:272
+msgid "50 per page"
+msgstr "50 por página"
+
+#: src/Shop/Admin/OrderTable.php:273
+msgid "100 per page"
+msgstr "100 por página"
+
+#: src/Shop/Admin/OrderTable.php:274
+msgid "200 per page"
+msgstr "200 por página"
+
+#: src/Shop/Admin/OrderTable.php:275
+msgid "Show All"
+msgstr "Mostrar todo"
+
+#: src/Admin/class-dlm-admin-list-table.php:523
+#: src/Shop/Admin/OrderTable.php:280
+msgid "Filter"
+msgstr "Filtro"
+
+#: assets/views/meta-box/version.php:10
+msgid "Click to toggle"
+msgstr "Pulsa para alternar"
+
+#: assets/views/meta-box/version.php:100
+msgid "Enter one file path/URL per line - multiple files will be used as mirrors (chosen at random)."
+msgstr "Introduce una dirección a archivo/dirección URL por línea; si hay varios archivos se utilizarán como descargas alternativas (elegidas al azar)."
+
+#: assets/views/meta-box/version.php:52 assets/views/meta-box/version.php:105
+#: src/Admin/WritePanels.php:323
+msgid "Upload file"
+msgstr "Subir archivo"
+
+#: assets/views/meta-box/version.php:57 assets/views/meta-box/version.php:110
+#: src/Admin/WritePanels.php:328
+msgid "Choose a file"
+msgstr "Selecciona un archivo"
+
+#: assets/views/meta-box/version.php:58 assets/views/meta-box/version.php:111
+#: src/Admin/WritePanels.php:329
+msgid "Insert file URL"
+msgstr "Introduce la dirección URL del archivo"
+
+#: assets/views/meta-box/version.php:67 assets/views/meta-box/version.php:117
+#: src/Admin/WritePanels.php:338
+msgid "Browse for file"
+msgstr "Buscar archivo"
+
+#: assets/views/meta-box/version.php:158
+msgid "File Date"
+msgstr "Fecha del archivo"
+
+#: assets/views/meta-box/version.php:164
+msgid "h"
+msgstr "h"
+
+#: assets/views/meta-box/version.php:170
+msgid "m"
+msgstr "m"
+
+#: src/DownloadHandler.php:488
+msgid "Password Required"
+msgstr "Necesaria contraseña"
+
+#: src/class-dlm-download-error-handler.php:114
+#: src/class-dlm-download-error-handler.php:121 src/DLM.php:533
+#: src/DownloadHandler.php:420 src/DownloadHandler.php:431
+#: src/RestAPI/class-dlm-download-rest.php:175
+#: src/RestAPI/class-dlm-download-rest.php:198
+#: src/RestAPI/class-dlm-download-rest.php:258
+msgid "Download does not exist."
+msgstr "La descarga no existe."
+
+#: src/class-dlm-download-error-handler.php:69
+#: src/class-dlm-download-error-handler.php:98
+#: src/class-dlm-download-error-handler.php:124
+#: src/class-dlm-download-error-handler.php:151
+#: src/class-dlm-download-error-handler.php:178
+#: src/class-dlm-download-error-handler.php:206 src/DownloadHandler.php:436
+#: src/DownloadHandler.php:901 src/DownloadHandler.php:980
+msgid "Go to homepage &rarr;"
+msgstr "Ir a la página web &rarr;"
+
+#: src/class-dlm-download-error-handler.php:71
+#: src/class-dlm-download-error-handler.php:100
+#: src/class-dlm-download-error-handler.php:126
+#: src/class-dlm-download-error-handler.php:153
+#: src/class-dlm-download-error-handler.php:180
+#: src/class-dlm-download-error-handler.php:208
+#: src/class-dlm-download-error-handler.php:234 src/DownloadHandler.php:440
+#: src/DownloadHandler.php:905 src/DownloadHandler.php:982
+msgid "Download Error"
+msgstr "Error en la descarga"
+
+#: src/class-dlm-download-error-handler.php:66
+#: src/class-dlm-download-error-handler.php:93
+#: src/class-dlm-download-error-handler.php:95 src/DLM.php:537
+msgid "No file paths defined."
+msgstr "No se ha definido una dirección de archivo."
+
+#: src/DLM.php:547 src/DownloadHandler.php:963 src/DownloadHandler.php:978
+msgid "File not found."
+msgstr "Archivo no encontrado."
+
+#: src/PostTypeManager.php:56
+msgid "All Downloads"
+msgstr "Todas las descargas"
+
+#: assets/views/meta-box/product-information.php:13
+#: src/Admin/class-dlm-admin-list-table.php:2005
+#: src/Admin/class-dlm-network-settings.php:57
+#: src/Admin/class-dlm-network-settings.php:58 src/Admin/Extensions.php:416
+#: src/Admin/Reports/class-dlm-reports.php:591 src/PostTypeManager.php:58
+#: assets/apps/reports-widget/components/BarChartComponent.jsx:66
+#: assets/apps/reports/components/BarChartComponent.jsx:120
+#: assets/apps/reports/components/DetailedDownloadsTable.jsx:197
+#: assets/js/reports-widget/reports-widget.js:1 assets/js/reports/reports.js:1
+msgid "Downloads"
+msgstr "Descargas"
+
+#: src/Admin/DownloadPaths/class-dlm-downloads-path-table.php:245
+#: src/Admin/DownloadPaths/class-dlm-downloads-path.php:278
+#: src/PostTypeManager.php:62 src/PostTypeManager.php:134
+msgid "Add New"
+msgstr "Añadir nueva"
+
+#: src/PostTypeManager.php:64
+msgid "Add Download"
+msgstr "Añadir descarga"
+
+#: src/Admin/class-dlm-admin-list-table.php:477
+#: src/Admin/class-dlm-admin-list-table.php:1174
+#: src/Admin/class-dlm-plugin-status.php:157
+#: src/Admin/class-dlm-plugin-status.php:213
+#: src/Admin/DownloadPaths/class-dlm-downloads-path-table.php:146
+#: src/PostTypeManager.php:66 src/PostTypeManager.php:138
+#: src/Shop/Admin/DownloadOption.php:38 src/Shop/Util/PostType.php:22
+msgid "Edit"
+msgstr "Editar"
+
+#: src/PostTypeManager.php:68
+msgid "Edit Download"
+msgstr "Editar descarga"
+
+#: src/PostTypeManager.php:70
+msgid "New Download"
+msgstr "Descarga nueva"
+
+#: src/PostTypeManager.php:72 src/PostTypeManager.php:74
+msgid "View Download"
+msgstr "Ver descarga"
+
+#: src/PostTypeManager.php:76
+msgid "Search Downloads"
+msgstr "Buscar descargas"
+
+#: src/PostTypeManager.php:78
+msgid "No Downloads found"
+msgstr "No se han encontrado descargas"
+
+#: src/PostTypeManager.php:80
+msgid "No Downloads found in trash"
+msgstr "No se han encontrado descargas en la papelera"
+
+#: src/PostTypeManager.php:82
+msgid "Parent Download"
+msgstr "Descarga superior"
+
+#: src/PostTypeManager.php:85
+msgid "This is where you can create and manage downloads for your site."
+msgstr "Aquí puedes crear y gestionar las descargas de tu página web."
+
+#: src/Shortcodes.php:196 src/Shortcodes.php:335
+msgid "Download not found"
+msgstr "Descarga no encontrada"
+
+#: src/TaxonomyManager.php:34
+msgid "Download Category"
+msgstr "Categoría de descarga"
+
+#: src/TaxonomyManager.php:35
+msgid "Search Download Categories"
+msgstr "Buscar categorías de descarga"
+
+#: src/TaxonomyManager.php:36
+msgid "All Download Categories"
+msgstr "Todas las categorías de descarga"
+
+#: src/TaxonomyManager.php:37 src/TaxonomyManager.php:38
+msgid "Parent Download Category"
+msgstr "Categoría de descarga superior"
+
+#: src/TaxonomyManager.php:39
+msgid "Edit Download Category"
+msgstr "Editar categoría de descarga"
+
+#: src/TaxonomyManager.php:40
+msgid "Update Download Category"
+msgstr "Actualizar categoría de descarga"
+
+#: src/TaxonomyManager.php:41
+msgid "Add New Download Category"
+msgstr "Añadir una categoría de descarga nueva"
+
+#: src/TaxonomyManager.php:42
+msgid "New Download Category Name"
+msgstr "Nombre de la nueva categoría de descarga"
+
+#: src/TaxonomyManager.php:72
+msgid "Download Tag"
+msgstr "Etiqueta de descarga"
+
+#: src/TaxonomyManager.php:73
+msgid "Search Download Tags"
+msgstr "Buscar etiquetas de descarga"
+
+#: src/TaxonomyManager.php:74
+msgid "All Download Tags"
+msgstr "Todas las etiquetas de descarga"
+
+#: src/TaxonomyManager.php:75 src/TaxonomyManager.php:76
+msgid "Parent Download Tag"
+msgstr "Etiqueta de descarga superior"
+
+#: src/TaxonomyManager.php:77
+msgid "Edit Download Tag"
+msgstr "Editar etiqueta de descarga"
+
+#: src/TaxonomyManager.php:78
+msgid "Update Download Tag"
+msgstr "Actualizar etiqueta de descarga"
+
+#: src/TaxonomyManager.php:79
+msgid "Add New Download Tag"
+msgstr "Añadir una etiqueta de descarga nueva"
+
+#: src/TaxonomyManager.php:80
+msgid "New Download Tag Name"
+msgstr "Nombre de la nueva etiqueta de descarga"
+
+#: src/Widgets/Downloads.php:28
+msgid "Display a list of your downloads."
+msgstr "Muestra una lista de tus descargas."
+
+#: src/Widgets/Downloads.php:30
+msgid "Downloads List"
+msgstr "Lista de descargas"
+
+#: src/Widgets/Downloads.php:55 src/Widgets/Downloads.php:171
+msgid "Featured Downloads"
+msgstr "Descargas destacadas"
+
+#: src/Admin/class-dlm-admin-list-table.php:1621 src/Widgets/Downloads.php:204
+msgid "Default template"
+msgstr "Plantilla predeterminada"
+
+#: src/Widgets/Downloads.php:219
+msgid "Date added"
+msgstr "Fecha de creación"
+
+#: src/Widgets/Downloads.php:221
+msgid "Date modified"
+msgstr "Fecha de modificación"
+
+#: src/Widgets/Downloads.php:263
+msgid "Show only featured downloads"
+msgstr "Solo mostrar las descargas destacadas"
+
+#: src/Widgets/Downloads.php:270
+msgid "Show only members only downloads"
+msgstr "Solo mostrar las descargas a los miembros"
+
+#: templates/content-download-box.php:39
+#: templates/content-download-filename.php:49 templates/content-download.php:49
+msgid "1 download"
+msgid_plural "%d downloads"
+msgstr[0] "1 descarga"
+msgstr[1] "%d descargas"
+
+#: src/TemplateHandler.php:141
+msgid "Version %s"
+msgstr "Versión %s"
+
+#: src/Shop/Email/VarParser.php:70 templates/content-download-box.php:68
+#: templates/shop/checkout/order-complete.php:129
+msgid "Download File"
+msgstr "Descargar archivo"
+
+#: templates/content-download-button.php:48
+msgid "Download &ldquo;%s&rdquo;"
+msgstr "Descargar &ldquo;%s&rdquo;"
+
+#: src/class-dlm-frontend-templates.php:88
+#: templates/content-download-button.php:52
+msgid "Downloaded 1 time"
+msgid_plural "Downloaded %d times"
+msgstr[0] "Descargado 1 vez"
+msgstr[1] "Descargado %d veces"
+
+#. Plugin Name of the plugin
+#: download-monitor.php src/Admin/class-dlm-media-library.php:219
+#: src/Admin/class-dlm-media-library.php:541
+#: src/Admin/Reports/class-dlm-reports.php:656
+msgid "Download Monitor"
+msgstr "Download Monitor"
+
+#. Plugin URI of the plugin
+#: download-monitor.php
+msgid "https://www.download-monitor.com"
+msgstr "https://www.download-monitor.com"
+
+#: src/Shop/Admin/OrderTable.php:99
+msgid "Delete"
+msgstr "Borrar"
+
+#: src/Admin/class-dlm-admin-list-table.php:2021 src/Admin/Extensions.php:157
+#: src/Admin/Extensions.php:422
+msgid "Extensions"
+msgstr "Extensiones"
+
+#: src/Admin/class-dlm-admin-list-table.php:1594
+#: src/Shop/Admin/OrderTable.php:152 src/Widgets/Downloads.php:228
+msgid "Order"
+msgstr "Ordenar"
+
+#: src/Admin/Settings/Page.php:376
+msgid "Because your server is running on nginx, our .htaccess file can't protect your downloads."
+msgstr "Como tu servidor se ejecuta en nginx nuestro archivo .htaccess no puede proteger tus descargas."
+
+#: src/Admin/Settings/Page.php:377 src/Admin/Settings/Page.php:572
+msgid "Please add the following rules to your nginx config to disable direct file access: %s"
+msgstr "Por favor, añade las siguientes reglas al archivo de configuración de nginx para desactivar el acceso directo a archivos: %s"
+
+#: src/Admin/Admin.php:253
+msgid "If you like %sDownload Monitor%s please leave us a %s★★★★★%s rating. A huge thank you from us in advance!"
+msgstr "Si te gusta %sDownload Monitor%s, por favor, déjanos una puntuación de %s★★★★★%s. ¡Nuestro más enorme agradecimiento por adelantado!"
+
+#: src/Util/PageCreator.php:14
+msgid "No Access"
+msgstr "Sin acceso"
+
+#: src/Product/Product.php:221
+msgid "License successfully activated."
+msgstr "Licencia activada con éxito."
+
+#: src/Widgets/Downloads.php:191
+msgid "Limit"
+msgstr "Límite"
+
+#: src/Widgets/Downloads.php:199
+msgid "Output template"
+msgstr "Plantilla de salida"
+
+#: src/Widgets/Downloads.php:208
+msgid "Order by"
+msgstr "Ordenar por"
+
+#. Description of the plugin
+#: download-monitor.php
+msgid "A full solution for managing and selling downloadable files, monitoring downloads and outputting download links and file information on your WordPress powered site."
+msgstr "Una solución completa para gestionar archivos descargables, supervisar descargas y exportar enlaces de descarga e información de archivos en tu sitio creado con WordPress."
+
+#: assets/views/meta-box/version.php:14 assets/views/meta-box/version.php:142
+msgid "n/a"
+msgstr "n/d"
+
+#: src/Widgets/Downloads.php:235
+msgid "DESC"
+msgstr "DESC"
+
+#: src/Widgets/Downloads.php:233
+msgid "ASC"
+msgstr "ASC"
+
+#. Translators: %s represents the time elapsed (e.g., "5 minutes", "2 hours",
+#. "1 day").
+#: includes/admin/wpchill/class-wpchill-notifications.php:131
+msgid "%s ago"
+msgstr "hace %s"
+
+#: src/Widgets/Downloads.php:215
+msgid "Random"
+msgstr "Aleatorio"
+
+#: src/Admin/class-dlm-admin-list-table.php:1057
+msgid "Remote"
+msgstr "Remoto"
+
+#: src/Admin/Settings/Settings.php:200
+msgid "List IP Addresses to blacklist, 1 per line. Use IP/CIDR netmask format for ranges. IPv4 examples: <strong>198.51.100.1</strong> or <strong>198.51.100.0/24</strong>. IPv6 examples: <strong>2001:db8::1</strong> or <strong>2001:db8::/32</strong>."
+msgstr "Lista de direcciones IP para añadir a la lista negra, 1 por línea. Usa el formato de máscara de red IP/CIDR para aplicar a rangos. Ejemplos IPv4: <strong>198.51.100.1</strong> o <strong>198.51.100.0/24</strong>. Ejemplos IPv6: <strong>2001:db8::1</strong> o <strong>2001:db8::/32</strong>."
+
+#: src/Admin/CustomActions.php:78
+msgid "Select a category"
+msgstr "Selecciona una categoría"
+
+#: src/Admin/CustomLabels.php:24
+msgid "Download title"
+msgstr "Título de la descarga"
+
+#: src/Admin/CustomLabels.php:44 src/Admin/CustomLabels.php:47
+msgid "Download updated."
+msgstr "Descarga actualizada."
+
+#: src/Admin/CustomLabels.php:45
+msgid "Custom field updated."
+msgstr "Apartado personalizado actualizado."
+
+#: src/Admin/CustomLabels.php:46
+msgid "Custom field deleted."
+msgstr "Apartado personalizado eliminado."
+
+#: src/Admin/CustomLabels.php:48
+msgid "Download restored to revision from %s"
+msgstr "Descarga recuperada desde la revisión %s"
+
+#: src/Admin/CustomLabels.php:49
+msgid "Download published."
+msgstr "Descarga publicada."
+
+#: src/Admin/CustomLabels.php:50
+msgid "Download saved."
+msgstr "Descarga guardada."
+
+#: src/Admin/CustomLabels.php:51
+msgid "Download submitted."
+msgstr "Descarga enviada."
+
+#: src/Admin/CustomLabels.php:52
+msgid "Download scheduled for: <strong>%1$s</strong>."
+msgstr "Descarga prevista para: <strong>%1$s</strong>."
+
+#: src/Admin/CustomLabels.php:53
+msgid "M j, Y @ G:i"
+msgstr "j \"\"d\"\"e F \"\"d\"\"e Y, G:i"
+
+#: src/Admin/CustomLabels.php:54
+msgid "Download draft updated."
+msgstr "Borrador de descarga actualizado."
+
+#: src/Shop/Admin/ProductTableColumns.php:34
+msgid "Image"
+msgstr "Imagen"
+
+#: src/Admin/class-dlm-admin-list-table.php:597
+#: src/Admin/class-dlm-admin-list-table.php:1385
+#: src/Shop/Admin/ProductTableColumns.php:35 src/Widgets/Downloads.php:183
+#: src/Widgets/Downloads.php:213
+#: assets/apps/reports/components/OverviewDownloadsTable.jsx:35
+#: assets/js/reports/reports.js:1
+msgid "Title"
+msgstr "Título"
+
+#: assets/views/order/page-order-details.php:67 src/Admin/WritePanels.php:149
+#: src/Shop/Admin/WritePanels.php:205 src/Widgets/Downloads.php:217
+#: assets/apps/reports/components/OverviewDownloadsTable.jsx:34
+#: assets/js/reports/reports.js:1
+msgid "ID"
+msgstr "ID"
+
+#: assets/views/meta-box/version.php:139
+#: src/Admin/class-dlm-admin-list-table.php:599 src/Admin/MediaInsert.php:264
+#: templates/shop/email/elements/downloads-table.php:23
+#: assets/blocks/dist/blocks.js:1 assets/blocks/src/blocks.js:90
+msgid "Version"
+msgstr "Versión"
+
+#: src/Admin/class-dlm-admin-list-table.php:598 src/TaxonomyManager.php:30
+#: src/TaxonomyManager.php:33
+msgid "Categories"
+msgstr "Categorías"
+
+#: src/Admin/class-dlm-admin-list-table.php:604 src/TaxonomyManager.php:68
+#: src/TaxonomyManager.php:71
+msgid "Tags"
+msgstr "Etiquetas"
+
+#: src/Admin/class-dlm-admin-list-table.php:605 src/Widgets/Downloads.php:223
+msgid "Download count"
+msgstr "Cantidad de descargas"
+
+#: src/Admin/class-dlm-admin-list-table.php:606
+msgid "Featured"
+msgstr "Destacado"
+
+#: src/Admin/CustomActions.php:241 src/Admin/WritePanels.php:235
+msgid "Members only"
+msgstr "Solo para miembros"
+
+#: src/Admin/class-dlm-admin-list-table.php:608
+msgid "Redirect only"
+msgstr "Solo redirigir"
+
+#: src/Admin/class-dlm-admin-list-table.php:609
+msgid "Date posted"
+msgstr "Publicación"
+
+#: src/Admin/AdminScripts.php:334 src/Admin/MediaBrowser.php:34
+msgid "Browse for a file"
+msgstr "Buscar un archivo"
+
+#: src/Admin/MediaBrowser.php:123
+msgid "No files found"
+msgstr "No se han encontrado archivos"
+
+#: src/Admin/AdminScripts.php:328 src/Admin/MediaInsert.php:36
+#: src/Admin/MediaInsert.php:57
+msgid "Insert Download"
+msgstr "Insertar descarga"
+
+#: src/Admin/MediaInsert.php:68 src/Admin/MediaInsert.php:227
+msgid "Insert Shortcode"
+msgstr "Insertar código rápido"
+
+#: src/Admin/MediaInsert.php:73
+msgid "Quick-add download"
+msgstr "Añadir descarga rápidamente"
+
+#: src/Admin/MediaInsert.php:122
+msgid "Error: File was not created."
+msgstr "Error: No se ha creado el archivo."
+
+#: src/Admin/MediaInsert.php:148
+msgid "Download successfully created."
+msgstr "Descarga creada correctamente."
+
+#: src/Admin/MediaInsert.php:151
+msgid "Error: Download was not created."
+msgstr "Error: No se ha creado la descarga."
+
+#: src/Admin/MediaInsert.php:185
+msgid "Choose a download"
+msgstr "Selecciona una descarga"
+
+#: src/Admin/class-dlm-admin-list-table.php:1611 src/Admin/MediaInsert.php:210
+#: assets/blocks/dist/blocks.js:1 assets/blocks/src/blocks.js:102
+#: assets/blocks/src/blocks.js:105
+msgid "Template"
+msgstr "Plantilla"
+
+#: src/Admin/MediaInsert.php:220
+msgid "Template Name"
+msgstr "Nombre de la plantilla"
+
+#: src/Admin/MediaInsert.php:222
+msgid "Leaving this blank will use the default <code>content-download.php</code> template file. If you enter, for example, <code>image</code>, the <code>content-download-image.php</code> template will be used instead."
+msgstr "Si dejas este cuadro en blanco, se utilizará el archivo de plantilla predeterminado <code>content-download.php</code>. Si, por ejemplo, escribes <code>image</code>, se utilizará en su lugar la plantilla <code>content-download-image.php</code>."
+
+#: src/Admin/MediaInsert.php:238
+msgid "Drop file here"
+msgstr "suelta aquí el archivo"
+
+#: src/Admin/MediaInsert.php:241
+msgid "Select File"
+msgstr "Seleccionar archivo"
+
+#: src/Admin/MediaInsert.php:249
+msgid "Enter URL manually"
+msgstr "Introducir la dirección URL manualmente"
+
+#: src/Admin/MediaInsert.php:254
+msgid "Download URL"
+msgstr "URL de descarga"
+
+#: src/Admin/MediaInsert.php:255
+msgid "Required URL"
+msgstr "URL necesaria"
+
+#: src/Admin/MediaInsert.php:259
+msgid "Download Title"
+msgstr "Título de la descarga"
+
+#: src/Admin/MediaInsert.php:260
+msgid "Required title"
+msgstr "Título necesario"
+
+#: src/Admin/MediaInsert.php:265
+msgid "Optional version number"
+msgstr "Número de versión opcional"
+
+#: src/Admin/MediaInsert.php:270
+msgid "Save Download"
+msgstr "Guardar descarga"
+
+#: src/Admin/MediaInsert.php:341
+msgid "Allowed Files"
+msgstr "Archivos permitidos"
+
+#: src/Admin/MediaInsert.php:244
+msgid "Please wait..."
+msgstr "Espera, por favor..."
+
+#: src/Admin/WritePanels.php:81
+msgid "Download Options"
+msgstr "Opciones de descarga"
+
+#: src/Admin/WritePanels.php:89
+msgid "Downloadable Files/Versions"
+msgstr "Archivos descargables/Versiones"
+
+#: src/Admin/CustomActions.php:240 src/Admin/WritePanels.php:229
+msgid "Featured download"
+msgstr "Descarga destacada"
+
+#: src/Admin/WritePanels.php:230
+msgid "Mark this download as featured. Used by shortcodes and widgets."
+msgstr "Marcar esta descarga como destacada. Utilizado por los códigos rápidos y los widgets."
+
+#: src/Admin/WritePanels.php:236
+msgid "Only logged in users will be able to access the file via a download link if this is enabled."
+msgstr "Al activar esta opción solo podrán acceder al archivo los usuarios que hayan iniciado sesión y tengan acceso al enlace de descarga."
+
+#: src/Admin/CustomActions.php:242 src/Admin/WritePanels.php:241
+msgid "Redirect to file"
+msgstr "Redirigir al archivo"
+
+#: src/Admin/WritePanels.php:378
+msgid "Add file"
+msgstr "Añadir archivo"
+
+#: src/Admin/Settings/Settings.php:90 src/Admin/Settings/Settings.php:316
+msgid "General"
+msgstr "General"
+
+#: src/Admin/Settings/Settings.php:117
+msgid "Default Template"
+msgstr "Plantilla predeterminada"
+
+#: src/TemplateHandler.php:18
+msgid "Default - Title and count"
+msgstr "Predeterminado: Título y cantidad de descargas"
+
+#: src/TemplateHandler.php:19
+msgid "Button - CSS styled button showing title and count"
+msgstr "Botón: Botón con estilo CSS que muestra el título y la cantidad de descargas."
+
+#: src/TemplateHandler.php:21
+msgid "Filename - Filename and download count"
+msgstr "Nombre de archivo: Nombre de archivo y cantidad de descargas."
+
+#: src/TemplateHandler.php:22
+msgid "Title - Shows download title only"
+msgstr "Título: Solo muestra el título de la descarga."
+
+#: src/TemplateHandler.php:23
+msgid "Version list - Lists all download versions in an unordered list"
+msgstr "Lista de versiones: Muestra todas las versiones de descarga en una lista sin ordenar."
+
+#: src/TemplateHandler.php:24
+msgid "Custom template"
+msgstr "Plantilla personalizada"
+
+#: src/Admin/Settings/Settings.php:127 assets/blocks/dist/blocks.js:1
+#: assets/blocks/src/blocks.js:118
+msgid "Custom Template"
+msgstr "Plantilla personalizada"
+
+#: src/Admin/DownloadPaths/class-dlm-downloads-path-table.php:144
+msgid "Enable"
+msgstr "Activar"
+
+#: src/Admin/Settings/Settings.php:99 assets/blocks/dist/blocks.js:1
+#: assets/blocks/src/blocks.js:21
+msgid "download"
+msgstr "descarga"
+
+#: src/Admin/Settings/Settings.php:110
+msgid "Download ID"
+msgstr "ID de descarga"
+
+#: src/Admin/Settings/Settings.php:111
+msgid "Download slug"
+msgstr "Slug de descarga"
+
+#: src/Admin/MediaInsert.php:239
+msgctxt "Drop file here *or* select file"
+msgid "or"
+msgstr "o"
+
+#: src/Admin/DownloadPaths/class-dlm-downloads-path-table.php:122
+#: src/Admin/WritePanels.php:164
+msgid "URL"
+msgstr "URL"
+
+#: src/Admin/Settings/Settings.php:605
+#: src/TermsAndConditions/classes/class-dlm-tc-options.php:67
+msgid "Select Page"
+msgstr "Seleccionar página"
+
+#: src/Admin/Settings/Settings.php:162
+msgid "No Access Page"
+msgstr "Página de no acceso"
+
+#: src/UpgradeManager.php:64
+msgid "You do not have permission to access this download. %sGo to homepage%s"
+msgstr "No tienes suficientes permisos para acceder a esta descarga. %sVe a la portada%s"
+
+#: src/Admin/Settings/Settings.php:192
+msgid "No access message"
+msgstr "Mensaje de no acceso"
+
+#: src/Admin/Settings/Settings.php:193
+msgid "The message that will be displayed to visitors when they don't have access to a file."
+msgstr "El mensaje que se mostrará a los visitantes cuando no tengan acceso a un archivo."
+
+#: src/Admin/CustomActions.php:239
+msgid "Download Monitor Data"
+msgstr "Datos de Download Monitor"
+
+#: src/Admin/Extensions.php:156 src/Admin/Extensions.php:269
+msgid "Download Monitor Extensions"
+msgstr "Extensiones de Download Monitor"
+
+#: src/Admin/AdminScripts.php:333
+msgid "Are you sure you want to delete this file ? "
+msgstr "¿Estás seguro de querer borrar este archivo?"
+
+#: src/Admin/WritePanels.php:73 assets/blocks/dist/blocks.js:1
+#: assets/blocks/src/blocks.js:71
+msgid "Download Information"
+msgstr "Información de la descarga"
+
+#: src/Admin/class-dlm-admin-list-table.php:600 src/Admin/WritePanels.php:179
+#: src/Shop/Admin/ProductTableColumns.php:36 src/Shop/Admin/WritePanels.php:210
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: src/Admin/WritePanels.php:242
+msgid "Don't force download. If the <code>dlm_uploads</code> folder is protected you may need to move your file."
+msgstr "No fuerces la descarga. Si la carpeta <code>dlm_uploads</code> está protegida puede que tengas que mover el archivo."
+
+#: src/Admin/Settings/Settings.php:232
+msgid "Count unique IPs only"
+msgstr "Contar solamente las IPs únicas"
+
+#: src/Admin/Settings/Settings.php:186
+msgid "Access"
+msgstr "Acceso"
+
+#: src/Admin/Settings/Settings.php:106
+msgid "Endpoint Value"
+msgstr "Valor de la variable"
+
+#: src/Admin/Settings/Settings.php:100
+msgid "Download Endpoint"
+msgstr "Variable de la descarga"
+
+#: src/Admin/WritePanels.php:110
+msgid "Short Description"
+msgstr "Descripción corta"
+
+#: src/PostTypeManager.php:60 assets/blocks/dist/blocks.js:1
+#: assets/blocks/src/blocks.js:78
+msgid "Download"
+msgstr "Descargar"
+
+#: src/Admin/Settings/Settings.php:199
+msgid "Blacklist IPs"
+msgstr "Añadir IPs a la lista negra"
+
+#: src/Admin/Settings/Settings.php:118
+msgid "Choose which template is used for <strong>[download]</strong> shortcodes by default (this can be overridden by the <strong>format</strong> argument)."
+msgstr "Selecciona que plantilla utilizarán los códigos rápidos <strong>[download]</strong> de forma predeterminada (puede anularse con la cadena <strong>format</strong>)."
+
+#: src/Admin/Settings/Settings.php:163
+msgid "Choose what page is displayed when the user has no access to a file. Don't forget to add the <strong>[dlm_no_access]</strong> shortcode to the page."
+msgstr "Elige qué página se mostrará cuando el usuario no tenga acceso a un archivo. No olvides añadr el shortcode <strong>[dlm_no_access]</strong> a la página."
+
+#: src/Admin/Settings/Settings.php:128
+msgid "Leaving this blank will use the default <strong>content-download.php</strong> template file. If you enter, for example, <strong>button</strong>, the <strong>content-download-button.php</strong> template will be used instead. You can add custom templates inside your theme folder."
+msgstr "Si dejas este cuadro en blanco, se utilizará el archivo de plantilla predeterminado <strong>content-download.php</strong>. Si, por ejemplo, escribes <strong>button</strong>, se utilizará en su lugar la plantilla <strong>content-download-button.php</strong>. Puedes añadir plantillas personalizadas dentro de la carpeta de tu tema."
+
+#: src/Admin/Settings/Settings.php:107
+msgid "Define what unique value should be used on the end of your endpoint to identify the downloadable file. e.g. ID would give a link like <strong>10</strong> ( %1$s%2$s )"
+msgstr "Define qué valor único debería utilizarse al final de tu variable para identificar el archivo descargable. Por ejemplo, una ID mostraría un enlace similar a <strong>10</strong> ( %1$s%2$s )"
+
+#: src/Admin/Settings/Settings.php:101
+msgid "Define what endpoint should be used for download links. By default this will be %1$s( %2$s )."
+msgstr "Define qué variable se utilizará para los enlaces de descarga. Por defecto se utilizará %1$s( %2$s )."

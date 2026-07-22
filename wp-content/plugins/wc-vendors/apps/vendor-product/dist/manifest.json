@@ -1,0 +1,92 @@
+{
+  "Dashboard.css": {
+    "file": "assets/Dashboard-7a942db1.css",
+    "src": "Dashboard.css"
+  },
+  "ProductsTable.css": {
+    "file": "assets/ProductsTable-4042ced9.css",
+    "src": "ProductsTable.css"
+  },
+  "_Dashboard.e7ef6e61.js": {
+    "css": [
+      "assets/Dashboard-7a942db1.css"
+    ],
+    "dynamicImports": [
+      "_ProductsTable.f681faf0.js"
+    ],
+    "file": "common/Dashboard.e7ef6e61.js",
+    "imports": [
+      "src/main.ts",
+      "_vendor.015340d9.js"
+    ],
+    "isDynamicEntry": true
+  },
+  "_ProductsTable.f681faf0.js": {
+    "css": [
+      "assets/ProductsTable-4042ced9.css"
+    ],
+    "dynamicImports": [
+      "src/components/RequestChangeModal.vue",
+      "src/components/AIReview/AIReviewDrawer.vue"
+    ],
+    "file": "common/ProductsTable.f681faf0.js",
+    "imports": [
+      "src/main.ts",
+      "_vendor.015340d9.js",
+      "_antd.0267aafb.js",
+      "_Dashboard.e7ef6e61.js"
+    ],
+    "isDynamicEntry": true
+  },
+  "_antd.0267aafb.js": {
+    "file": "common/antd.0267aafb.js",
+    "imports": [
+      "_vendor.015340d9.js"
+    ]
+  },
+  "_vendor.015340d9.js": {
+    "file": "common/vendor.015340d9.js"
+  },
+  "src/components/AIReview/AIReviewDrawer.css": {
+    "file": "assets/AIReviewDrawer-2ee2bf85.css",
+    "src": "src/components/AIReview/AIReviewDrawer.css"
+  },
+  "src/components/AIReview/AIReviewDrawer.vue": {
+    "css": [
+      "assets/AIReviewDrawer-2ee2bf85.css"
+    ],
+    "file": "components/AIReview/AIReviewDrawer.83e25de3.js",
+    "imports": [
+      "_vendor.015340d9.js",
+      "_ProductsTable.f681faf0.js",
+      "_Dashboard.e7ef6e61.js",
+      "_antd.0267aafb.js",
+      "src/main.ts"
+    ],
+    "isDynamicEntry": true,
+    "src": "src/components/AIReview/AIReviewDrawer.vue"
+  },
+  "src/components/RequestChangeModal.vue": {
+    "file": "components/RequestChangeModal.619683ff.js",
+    "imports": [
+      "_vendor.015340d9.js",
+      "_ProductsTable.f681faf0.js",
+      "src/main.ts",
+      "_antd.0267aafb.js",
+      "_Dashboard.e7ef6e61.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "src/components/RequestChangeModal.vue"
+  },
+  "src/main.ts": {
+    "dynamicImports": [
+      "_Dashboard.e7ef6e61.js"
+    ],
+    "file": "main.c1853b91.js",
+    "imports": [
+      "_vendor.015340d9.js"
+    ],
+    "isEntry": true,
+    "src": "src/main.ts"
+  }
+}

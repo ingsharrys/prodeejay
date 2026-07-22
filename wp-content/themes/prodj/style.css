@@ -1,0 +1,14 @@
+/*
+Theme Name: Prodj
+Theme URI: http://example.com/guaracha-hijo/
+Description: Creado por ING Sharrys
+Author: Dario Charry
+Author URI: http://example.com
+Template:     hello-elementor
+ Version:      1.0.0
+*/
+
+/* Importa el CSS del tema padre */
+@import url("../hello-elementor/style.css");
+
+

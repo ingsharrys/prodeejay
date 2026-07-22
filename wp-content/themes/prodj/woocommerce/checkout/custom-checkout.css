@@ -1,0 +1,33 @@
+/* custom-checkout.css */
+
+/* Estilo para el botón de remover producto */
+.woocommerce-checkout-review-order-table .remove {
+    color: #ff0000;
+    font-weight: bold;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.woocommerce-checkout-review-order-table .remove:hover {
+    color: #cc0000;
+}
+
+/* Estilos adicionales para personalizar el checkout */
+.woocommerce-checkout #customer_details {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.woocommerce-checkout #customer_details .col-1, 
+.woocommerce-checkout #customer_details .col-2 {
+    flex: 1 1 50%;
+    padding: 0 10px;
+}
+
+.woocommerce-checkout .woocommerce-checkout-payment, 
+.woocommerce-checkout .woocommerce-checkout-review-order {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}

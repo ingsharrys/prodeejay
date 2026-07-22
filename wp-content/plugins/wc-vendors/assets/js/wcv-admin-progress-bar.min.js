@@ -1,0 +1,1 @@
+jQuery(function(i){var n={init:function(){i(document).on("click",".wcv-dismiss-sync-notice .notice-dismiss",n.dismissNotice)},dismissNotice:function(){i.ajax({type:"POST",url:window.wcv_progress_bar.ajax_url,dataType:"json",data:{nonce:window.wcv_progress_bar.nonce,action:"wcv_dismiss_sync_notice"}})}};n.init()});
