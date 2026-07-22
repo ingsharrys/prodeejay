@@ -57,7 +57,9 @@ get_header();
     <div id="products-list">
     <?php 
          $per_page = 50;
-        $current_page = isset($_GET['mypage']) ? (int)$_GET['mypage'] : 1;
+        // URL amigable: /page/2/ (con compatibilidad para los enlaces antiguos ?mypage=2)
+        $current_page = max(1, (int) get_query_var('paged'), (int) get_query_var('page'));
+        if (isset($_GET['mypage'])) { $current_page = max($current_page, (int) $_GET['mypage']); }
         $search_term =  'video';
         $selected_category = isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '';
 
@@ -291,14 +293,14 @@ get_header();
 
             echo '<div class="woocommerce-pagination">';
 
-            if ($current_page > 1) { echo '<a class="prev-page" href="' . get_permalink() . '?mypage=' . ($current_page - 1) . '"><<</a> '; }
+            if ($current_page > 1) { echo '<a class="prev-page" href="' . esc_url(pdj_enlace_pagina($current_page - 1)) . '"><<</a> '; }
 
             for ($i = $start; $i <= $end; $i++) {
                 $class = ($i == $current_page) ? 'active' : '';
-                echo '<a class="' . $class . '" href="' . get_permalink() . '?mypage=' . $i . '&buscando=' . urlencode($search_term) . '&category=' . urlencode($selected_category) . '">' . $i . '</a> ';
+                echo '<a class="' . $class . '" href="' . esc_url(pdj_enlace_pagina($i)) . '">' . $i . '</a> ';
             }
 
-            if ($current_page < $total_pages) { echo '<a class="next-page" href="' . get_permalink() . '?mypage=' . ($current_page + 1) . '">>></a> '; }
+            if ($current_page < $total_pages) { echo '<a class="next-page" href="' . esc_url(pdj_enlace_pagina($current_page + 1)) . '">>></a> '; }
             echo '</div>';
         }
     ?>
@@ -454,7 +456,7 @@ jQuery(document).ready(function (e) {
         $("#searchButton").click(function () {
             let e = $("#searchBox").val();
             let c = $("#categoryFilter").val();
-            window.location.href = "?buscando=" + encodeURIComponent(e) + "&category=" + encodeURIComponent(c) + "&mypage=1";
+            window.location.href = "<?php echo esc_url(get_permalink()); ?>?buscando=" + encodeURIComponent(e) + "&category=" + encodeURIComponent(c);
         });
         $("#searchBox").keypress(function (e) {
             13 === e.which && $("#searchButton").click();
