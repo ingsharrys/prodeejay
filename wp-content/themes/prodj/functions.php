@@ -12,6 +12,9 @@ require_once get_stylesheet_directory() . '/inc/productos.php';
 /* SEO: datos estructurados (schema.org) */
 require_once get_stylesheet_directory() . '/inc/seo.php';
 
+/* Reporte de ventas por DJ (WooCommerce → Ventas por DJ) */
+require_once get_stylesheet_directory() . '/inc/reporte-ventas.php';
+
 /**
  * Activa la página pública de cada DJ con URL amigable /dj/nombre-del-dj/
  * (usa la plantilla taxonomy-pa_dj.php).
