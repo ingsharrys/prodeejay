@@ -17,6 +17,7 @@ El código personalizado vive en el tema hijo `wp-content/themes/prodj`.
 | `inc/productos.php` | Helpers para leer DJ, artista, BPM y preview de los productos |
 | `inc/suscripciones.php` | Límites de descarga por plan con reinicio mensual |
 | `inc/seo.php` | Datos estructurados schema.org (Organization, WebSite, MusicGroup) |
+| `inc/reporte-ventas.php` | Reporte mensual de ventas por DJ (WooCommerce → Ventas por DJ) |
 
 ## Funcionalidades
 
