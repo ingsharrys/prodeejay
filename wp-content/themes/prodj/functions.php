@@ -6,6 +6,64 @@
 /* Sistema de suscripciones (límites de descarga por membresía) */
 require_once get_stylesheet_directory() . '/inc/suscripciones.php';
 
+/* Helpers de productos (DJ, artista, BPM, preview) y páginas clave */
+require_once get_stylesheet_directory() . '/inc/productos.php';
+
+/* SEO: datos estructurados (schema.org) */
+require_once get_stylesheet_directory() . '/inc/seo.php';
+
+/**
+ * Activa la página pública de cada DJ con URL amigable /dj/nombre-del-dj/
+ * (usa la plantilla taxonomy-pa_dj.php).
+ */
+add_filter('woocommerce_taxonomy_args_pa_dj', 'pdj_activar_paginas_dj');
+function pdj_activar_paginas_dj($args) {
+    $args['public']             = true;
+    $args['publicly_queryable'] = true;
+    $args['query_var']          = true;
+    $args['show_in_nav_menus']  = true;
+    $args['rewrite']            = array(
+        'slug'       => 'dj',
+        'with_front' => false,
+    );
+    return $args;
+}
+
+/**
+ * Crea una sola vez las páginas "Música" (reproductor) y "DJs", y
+ * refresca las reglas de URL para que /dj/... funcione de inmediato.
+ */
+add_action('init', 'pdj_instalar_paginas', 99);
+function pdj_instalar_paginas() {
+    if (get_option('pdj_instalacion') === '1') {
+        return;
+    }
+
+    $paginas = array(
+        array('titulo' => 'Música', 'slug' => 'musica', 'plantilla' => 'home-prodj.php'),
+        array('titulo' => 'DJs',    'slug' => 'djs',    'plantilla' => 'djs.php'),
+    );
+
+    foreach ($paginas as $pagina) {
+        if (get_page_by_path($pagina['slug'])) {
+            continue;
+        }
+        $id = wp_insert_post(array(
+            'post_title'  => $pagina['titulo'],
+            'post_name'   => $pagina['slug'],
+            'post_type'   => 'page',
+            'post_status' => 'publish',
+            'post_content'=> '',
+        ));
+        if ($id && !is_wp_error($id)) {
+            update_post_meta($id, '_wp_page_template', $pagina['plantilla']);
+        }
+    }
+
+    flush_rewrite_rules();
+    update_option('pdj_instalacion', '1');
+}
+
 /**
  * Enlace de paginación amigable (/page/2/) conservando la búsqueda
  * y la categoría seleccionadas.
