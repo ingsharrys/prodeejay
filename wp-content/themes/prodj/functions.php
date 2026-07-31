@@ -3,99 +3,6 @@
  * Funciones del tema hijo.
  */
 
-/* Sistema de suscripciones (límites de descarga por membresía) */
-require_once get_stylesheet_directory() . '/inc/suscripciones.php';
-
-/* Helpers de productos (DJ, artista, BPM, preview) y páginas clave */
-require_once get_stylesheet_directory() . '/inc/productos.php';
-
-/* SEO: datos estructurados (schema.org) */
-require_once get_stylesheet_directory() . '/inc/seo.php';
-
-/* Reporte de ventas por DJ (WooCommerce → Ventas por DJ) */
-require_once get_stylesheet_directory() . '/inc/reporte-ventas.php';
-
-/**
- * Activa la página pública de cada DJ con URL amigable /dj/nombre-del-dj/
- * (usa la plantilla taxonomy-pa_dj.php).
- */
-add_filter('woocommerce_taxonomy_args_pa_dj', 'pdj_activar_paginas_dj');
-function pdj_activar_paginas_dj($args) {
-    $args['public']             = true;
-    $args['publicly_queryable'] = true;
-    $args['query_var']          = true;
-    $args['show_in_nav_menus']  = true;
-    $args['rewrite']            = array(
-        'slug'       => 'dj',
-        'with_front' => false,
-    );
-    return $args;
-}
-
-/**
- * Crea una sola vez las páginas "Música" (reproductor) y "DJs", y
- * refresca las reglas de URL para que /dj/... funcione de inmediato.
- */
-add_action('init', 'pdj_instalar_paginas', 99);
-function pdj_instalar_paginas() {
-    if (get_option('pdj_instalacion') === '1') {
-        return;
-    }
-
-    $paginas = array(
-        array('titulo' => 'Música', 'slug' => 'musica', 'plantilla' => 'home-prodj.php'),
-        array('titulo' => 'DJs',    'slug' => 'djs',    'plantilla' => 'djs.php'),
-    );
-
-    foreach ($paginas as $pagina) {
-        if (get_page_by_path($pagina['slug'])) {
-            continue;
-        }
-        $id = wp_insert_post(array(
-            'post_title'  => $pagina['titulo'],
-            'post_name'   => $pagina['slug'],
-            'post_type'   => 'page',
-            'post_status' => 'publish',
-            'post_content'=> '',
-        ));
-        if ($id && !is_wp_error($id)) {
-            update_post_meta($id, '_wp_page_template', $pagina['plantilla']);
-        }
-    }
-
-    flush_rewrite_rules();
-    update_option('pdj_instalacion', '1');
-}
-
-/**
- * Enlace de paginación amigable (/page/2/) conservando la búsqueda
- * y la categoría seleccionadas.
- */
-function pdj_enlace_pagina($numero) {
-    $enlace = get_pagenum_link(max(1, (int) $numero));
-    $args = array();
-    if (!empty($_GET['buscando'])) {
-        $args['buscando'] = sanitize_text_field(wp_unslash($_GET['buscando']));
-    }
-    if (!empty($_GET['category'])) {
-        $args['category'] = sanitize_text_field(wp_unslash($_GET['category']));
-    }
-    return $args ? add_query_arg($args, $enlace) : $enlace;
-}
-
-/**
- * Evita que WordPress redirija /page/2/ a la portada en las
- * plantillas con paginación propia.
- */
-add_filter('redirect_canonical', 'pdj_permitir_paginacion_amigable', 10, 1);
-function pdj_permitir_paginacion_amigable($redirect_url) {
-    $pagina = max((int) get_query_var('paged'), (int) get_query_var('page'));
-    if ($pagina > 1 && (is_front_page() || is_page_template(array('home-prodj.php', 'packs.php', 'sets.php', 'video.php')))) {
-        return false;
-    }
-    return $redirect_url;
-}
-
 /* Enqueue styles */
 function hello_elementor_child_enqueue_styles() {
     wp_enqueue_style('hello-elementor-child-style', get_stylesheet_uri(), array('hello-elementor-style'), wp_get_theme()->get('Version'));
@@ -120,11 +27,10 @@ add_action('wp_enqueue_scripts', 'enqueue_bootstrap_scripts');
 // Enqueue jQuery y nuestros scripts personalizados
 function custom_enqueue_scripts() {
     wp_enqueue_script('jquery');
+ //   wp_enqueue_script('custom-ajax-add-to-cart', 'https://prodeejayremix.com/wp-content/themes/prodj/js/custom-ajax-add-to-cart.js', array('jquery'), null, true );
 
-    // Garantiza que woocommerce_params.ajax_url exista en todas las
-    // plantillas del tema (antes se asociaba a un script comentado y
-    // podía quedar sin definir).
-    wp_localize_script('jquery', 'woocommerce_params', array(
+    // Localize script to pass AJAX URL
+    wp_localize_script('custom-ajax-add-to-cart', 'woocommerce_params', array(
         'ajax_url' => admin_url('admin-ajax.php')
     ));
 }
@@ -294,11 +200,33 @@ add_action('wp_head', 'custom_checkout_styles');
 
 
 
-/*
- * El límite de descargas por membresía ahora vive en
- * inc/suscripciones.php, con reinicio mensual del contador e
- * integración con Download Monitor.
- */
+function limitar_descargas_por_membresia() {
+    if (is_user_logged_in() && is_product() && isset($_GET['download_file'])) {
+        $user_id = get_current_user_id();
+        $membership_level = pmpro_getMembershipLevelForUser($user_id);
+        $limite = 0;
+
+        if ($membership_level) {
+            if ($membership_level->name == 'Basico') {
+                $limite = 100;
+            } elseif ($membership_level->name == 'Premium') {
+                $limite = 200; // Ejemplo para otro plan
+            }
+        }
+
+        if ($limite > 0) {
+            $descargas = get_user_meta($user_id, 'descargas_realizadas', true);
+            $descargas = $descargas ? $descargas : 0;
+
+            if ($descargas >= $limite) {
+                wp_die('Has alcanzado tu límite de descargas para tu plan.');
+            } else {
+                update_user_meta($user_id, 'descargas_realizadas', $descargas + 1);
+            }
+        }
+    }
+}
+add_action('template_redirect', 'limitar_descargas_por_membresia');
 
 
 
