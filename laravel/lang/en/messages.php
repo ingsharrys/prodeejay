@@ -80,7 +80,17 @@ return [
     'send_reset'        => 'Send reset link',
     'reset_password'    => 'Reset password',
     'reset_sent'        => 'If the email exists, we sent a link to reset your password.',
-    'password_updated'  => 'Password updated. You can now log in.',
+    'password_updated'  => 'Password updated.',
+
+    // Profile
+    'my_profile'        => 'My profile',
+    'my_data'           => 'My info',
+    'save'              => 'Save',
+    'change_password'   => 'Change password',
+    'current_password'  => 'Current password',
+    'new_password'      => 'New password',
+    'min_8'             => 'minimum 8 characters',
+    'profile_updated'   => 'Profile updated.',
     'migrated_notice'   => 'Coming from the previous site? Use "Forgot your password?" with the same email to activate your account.',
 
     // Reports

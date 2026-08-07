@@ -7,6 +7,7 @@
     <div class="phead">
         <p class="tipo">{{ $user->email }}</p>
         <h1>{{ $user->name }}</h1>
+        <p class="sub"><a href="{{ route('profile') }}" style="color:#1db954;">{{ __('messages.my_profile') }} · {{ __('messages.change_password') }}</a></p>
     </div>
 
     <section class="bloque">

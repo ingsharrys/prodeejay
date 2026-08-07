@@ -12,7 +12,7 @@
         <div>
             <p class="tipo">Panel del DJ</p>
             <h1>{{ $dj->name }}</h1>
-            <p class="sub">Tus ventas y tu música, en tiempo real.</p>
+            <p class="sub">Tus ventas y tu música, en tiempo real. · <a href="{{ route('profile') }}" style="color:#1db954;">{{ __('messages.my_profile') }}</a></p>
         </div>
     </div>
 

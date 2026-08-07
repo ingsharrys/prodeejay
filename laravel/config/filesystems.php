@@ -47,6 +47,18 @@ return [
             'report' => false,
         ],
 
+        // Archivos subidos desde el admin (música, previews, fotos de DJ).
+        // En el servidor se apunta a una carpeta real dentro del docroot
+        // para servirlos directo, sin depender de enlaces simbólicos.
+        'media' => [
+            'driver' => 'local',
+            'root' => env('MEDIA_ROOT', public_path('media')),
+            'url' => rtrim(env('MEDIA_URL', rtrim(env('APP_URL', 'http://localhost'), '/').'/media'), '/'),
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

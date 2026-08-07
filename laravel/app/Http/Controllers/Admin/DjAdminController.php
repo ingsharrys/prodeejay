@@ -121,11 +121,23 @@ class DjAdminController extends Controller
 
     private function validated(Request $request): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'name'      => ['required', 'string', 'max:255'],
             'bio'       => ['nullable', 'string', 'max:5000'],
             'image_url' => ['nullable', 'url', 'max:2000'],
+            'foto'      => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'], // 8 MB
         ]);
+
+        // Si se subió una foto, su URL reemplaza al campo de texto.
+        if ($request->hasFile('foto')) {
+            $archivo = $request->file('foto');
+            $nombre  = Str::slug($data['name']) . '-' . time() . '.' . strtolower($archivo->getClientOriginalExtension());
+            $ruta    = $archivo->storeAs('djs', $nombre, 'media');
+            $data['image_url'] = rtrim(config('filesystems.disks.media.url'), '/') . '/' . $ruta;
+        }
+        unset($data['foto']);
+
+        return $data;
     }
 
     private function slugUnico(string $nombre): string

@@ -41,6 +41,7 @@
         <a class="{{ request()->routeIs('admin.genres*') ? 'on' : '' }}" href="{{ route('admin.genres') }}"><i class="fas fa-tags"></i> Géneros</a>
         <div class="abajo">
             <div class="sep"></div>
+            <a class="{{ request()->routeIs('profile') ? 'on' : '' }}" href="{{ route('profile') }}"><i class="fas fa-user-gear"></i> Mi perfil</a>
             <a href="{{ route('home') }}"><i class="fas fa-arrow-up-right-from-square"></i> Ver el sitio</a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

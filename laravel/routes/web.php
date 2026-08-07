@@ -53,6 +53,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/salir', [AuthController::class, 'logout'])->name('logout');
     Route::get('/mi-cuenta', [AccountController::class, 'index'])->name('account');
 
+    Route::get('/perfil', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile');
+    Route::put('/perfil', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/perfil/contrasena', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.password');
+
     Route::get('/pagar', [CheckoutController::class, 'checkout'])->name('checkout');
     Route::get('/pago-exitoso', [CheckoutController::class, 'success'])->name('checkout.success');
 

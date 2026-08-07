@@ -80,7 +80,17 @@ return [
     'send_reset'        => 'Enviar enlace de recuperación',
     'reset_password'    => 'Restablecer contraseña',
     'reset_sent'        => 'Si el correo existe, te enviamos un enlace para restablecer la contraseña.',
-    'password_updated'  => 'Contraseña actualizada. Ya puedes iniciar sesión.',
+    'password_updated'  => 'Contraseña actualizada.',
+
+    // Perfil
+    'my_profile'        => 'Mi perfil',
+    'my_data'           => 'Mis datos',
+    'save'              => 'Guardar',
+    'change_password'   => 'Cambiar contraseña',
+    'current_password'  => 'Contraseña actual',
+    'new_password'      => 'Contraseña nueva',
+    'min_8'             => 'mínimo 8 caracteres',
+    'profile_updated'   => 'Perfil actualizado.',
     'migrated_notice'   => '¿Vienes del sitio anterior? Usa "¿Olvidaste tu contraseña?" con tu mismo correo para activar tu cuenta.',
 
     // Reportes
