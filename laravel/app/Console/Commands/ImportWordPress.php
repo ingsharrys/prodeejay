@@ -137,29 +137,36 @@ class ImportWordPress extends Command
             $bpm       = $this->nombreDeTermino($this->primerTerminoDe($p->ID, 'pa_bpm'));
 
             // Atributos personalizados (serializados en _product_attributes).
+            // Se identifican POR NOMBRE: "Preview" = url del preview,
+            // cualquier otra URL = archivo completo, y BPM/Artista como
+            // respaldo si no vinieron por taxonomía.
             $attrs       = $this->atributosPersonalizados($meta['_product_attributes'] ?? '');
             $previewUrl  = null;
             $fileUrl     = null;
 
-            // Posición 3 = preview; primera otra URL = archivo completo.
-            $posicion = 0;
             foreach ($attrs as $attr) {
-                $valor = trim((string) ($attr['value'] ?? ''));
+                $nombre = Str::lower(trim((string) ($attr['name'] ?? '')));
+                $valor  = trim((string) ($attr['value'] ?? ''));
                 if ($valor === '') {
-                    $posicion++;
                     continue;
                 }
                 $esUrl = Str::startsWith($valor, ['http://', 'https://']) || Str::contains($valor, '<iframe');
-                if ($posicion === 3 && $esUrl) {
+
+                if ($esUrl && (Str::contains($nombre, 'preview') || Str::contains($nombre, 'demo'))) {
                     $previewUrl = $valor;
-                } elseif ($esUrl && ! $fileUrl && $posicion !== 3) {
+                } elseif ($esUrl && ! $fileUrl) {
                     $fileUrl = $valor;
-                } elseif ($posicion === 0 && ! $bpm) {
+                } elseif (! $bpm && Str::contains($nombre, 'bpm')) {
                     $bpm = $valor;
-                } elseif ($posicion === 1 && ! $artista) {
+                } elseif (! $artista && (Str::contains($nombre, 'artista') || Str::contains($nombre, 'artist'))) {
                     $artista = $valor;
                 }
-                $posicion++;
+            }
+
+            // Respaldo final: si solo había una URL y parece un demo, es preview.
+            if (! $previewUrl && $fileUrl && Str::contains(Str::lower($fileUrl), 'demo')) {
+                $previewUrl = $fileUrl;
+                $fileUrl    = null;
             }
 
             // Respaldo: archivos descargables de WooCommerce.
