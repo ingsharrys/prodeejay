@@ -63,4 +63,18 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/reportes', [ReportController::class, 'index'])->name('admin.reports');
     Route::get('/reportes/exportar', [ReportController::class, 'export'])->name('admin.reports.export');
+
+    Route::get('/tracks', [\App\Http\Controllers\Admin\TrackAdminController::class, 'index'])->name('admin.tracks');
+    Route::get('/tracks/nuevo', [\App\Http\Controllers\Admin\TrackAdminController::class, 'create'])->name('admin.tracks.create');
+    Route::post('/tracks', [\App\Http\Controllers\Admin\TrackAdminController::class, 'store'])->name('admin.tracks.store');
+    Route::get('/tracks/{track}/editar', [\App\Http\Controllers\Admin\TrackAdminController::class, 'edit'])->name('admin.tracks.edit');
+    Route::put('/tracks/{track}', [\App\Http\Controllers\Admin\TrackAdminController::class, 'update'])->name('admin.tracks.update');
+    Route::delete('/tracks/{track}', [\App\Http\Controllers\Admin\TrackAdminController::class, 'destroy'])->name('admin.tracks.destroy');
+
+    Route::get('/djs', [\App\Http\Controllers\Admin\DjAdminController::class, 'index'])->name('admin.djs');
+    Route::get('/djs/nuevo', [\App\Http\Controllers\Admin\DjAdminController::class, 'create'])->name('admin.djs.create');
+    Route::post('/djs', [\App\Http\Controllers\Admin\DjAdminController::class, 'store'])->name('admin.djs.store');
+    Route::get('/djs/{dj}', [\App\Http\Controllers\Admin\DjAdminController::class, 'show'])->name('admin.djs.show');
+    Route::get('/djs/{dj}/editar', [\App\Http\Controllers\Admin\DjAdminController::class, 'edit'])->name('admin.djs.edit');
+    Route::put('/djs/{dj}', [\App\Http\Controllers\Admin\DjAdminController::class, 'update'])->name('admin.djs.update');
 });
