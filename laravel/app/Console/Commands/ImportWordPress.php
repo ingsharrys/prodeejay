@@ -150,12 +150,15 @@ class ImportWordPress extends Command
                 if ($valor === '') {
                     continue;
                 }
-                $esUrl = Str::startsWith($valor, ['http://', 'https://']) || Str::contains($valor, '<iframe');
 
-                if ($esUrl && (Str::contains($nombre, 'preview') || Str::contains($nombre, 'demo'))) {
-                    $previewUrl = $valor;
-                } elseif ($esUrl && ! $fileUrl) {
-                    $fileUrl = $valor;
+                // Los videos guardan el preview como HTML <video>/<iframe>:
+                // se extrae la URL real del src.
+                $url = $this->extraerUrl($valor);
+
+                if ($url && (Str::contains($nombre, 'preview') || Str::contains($nombre, 'demo'))) {
+                    $previewUrl = $url;
+                } elseif ($url && ! $fileUrl) {
+                    $fileUrl = $url;
                 } elseif (! $bpm && Str::contains($nombre, 'bpm')) {
                     $bpm = $valor;
                 } elseif (! $artista && (Str::contains($nombre, 'artista') || Str::contains($nombre, 'artist'))) {
@@ -395,6 +398,22 @@ class ImportWordPress extends Command
         $fila = $this->wp('terms')->where('term_id', $termId)->first(['name']);
 
         return $fila?->name;
+    }
+
+    /**
+     * Extrae la URL de un valor de atributo: una URL directa, o el src
+     * de un bloque HTML <video>/<source>/<iframe>.
+     */
+    private function extraerUrl(string $valor): ?string
+    {
+        if (preg_match('/src\s*=\s*["\']([^"\']+)["\']/i', $valor, $m)) {
+            return trim($m[1]);
+        }
+        if (Str::startsWith($valor, ['http://', 'https://'])) {
+            return $valor;
+        }
+
+        return null;
     }
 
     /**

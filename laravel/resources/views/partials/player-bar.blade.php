@@ -18,6 +18,15 @@
 </div>
 <audio id="pbAudio" preload="none"></audio>
 
+<!-- Modal para previews de video -->
+<div class="vmodal" id="vModal">
+    <div class="vmodal-caja">
+        <button type="button" class="vmodal-cerrar" onclick="cerrarVideo()" aria-label="Cerrar"><i class="fas fa-xmark"></i></button>
+        <h3 id="vTitulo"></h3>
+        <video id="vPlayer" controls playsinline></video>
+    </div>
+</div>
+
 <script>
 (function () {
     var audio = document.getElementById('pbAudio');
@@ -64,6 +73,24 @@
         }
         audio.play();
     };
+
+    // Previews de video: modal centrado (pausa el audio si estaba sonando).
+    var vModal = document.getElementById('vModal');
+    var vPlayer = document.getElementById('vPlayer');
+
+    window.playVideo = function (track) {
+        audio.pause();
+        document.getElementById('vTitulo').textContent = track.titulo + (track.artista ? ' — ' + track.artista : '');
+        vPlayer.src = track.url;
+        vModal.classList.add('abierto');
+        vPlayer.play();
+    };
+    window.cerrarVideo = function () {
+        vPlayer.pause();
+        vModal.classList.remove('abierto');
+    };
+    vModal.addEventListener('click', function (e) { if (e.target === vModal) cerrarVideo(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') cerrarVideo(); });
 
     btn.addEventListener('click', function () {
         if (!audio.src) return;
