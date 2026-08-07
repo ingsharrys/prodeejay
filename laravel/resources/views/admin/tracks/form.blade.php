@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="form" style="max-width:720px;margin:0;">
-    <form method="POST" action="{{ $track->exists ? route('admin.tracks.update', $track) : route('admin.tracks.store') }}">
+    <form method="POST" action="{{ $track->exists ? route('admin.tracks.update', $track) : route('admin.tracks.store') }}" enctype="multipart/form-data">
         @csrf
         @if ($track->exists) @method('PUT') @endif
 
@@ -53,10 +53,20 @@
             </div>
         </div>
 
-        <label>URL del preview (lo que se escucha gratis en el reproductor)</label>
+        <label><i class="fas fa-upload" style="color:#1db954;"></i> Subir preview (MP3 — lo que se escucha gratis)</label>
+        <input type="file" name="preview_file" accept=".mp3,.wav,.ogg,.m4a" style="padding:8px;">
+        @if ($track->preview_url)
+            <p style="color:#1db954;font-size:12px;margin:4px 0 0;">✓ Ya tiene preview. Subir uno nuevo lo reemplaza.</p>
+        @endif
+        <label style="color:#777;font-size:12px;">…o pegar la URL del preview</label>
         <input type="url" name="preview_url" value="{{ old('preview_url', $track->preview_url) }}" placeholder="https://.../preview.mp3">
 
-        <label>URL del archivo completo (lo que se descarga al comprar)</label>
+        <label style="margin-top:22px;"><i class="fas fa-upload" style="color:#1db954;"></i> Subir archivo completo (MP3/ZIP/MP4 — lo que se descarga al comprar)</label>
+        <input type="file" name="archivo" accept=".mp3,.wav,.ogg,.m4a,.zip,.mp4" style="padding:8px;">
+        @if ($track->file_url)
+            <p style="color:#1db954;font-size:12px;margin:4px 0 0;">✓ Ya tiene archivo completo. Subir uno nuevo lo reemplaza.</p>
+        @endif
+        <label style="color:#777;font-size:12px;">…o pegar la URL del archivo</label>
         <input type="url" name="file_url" value="{{ old('file_url', $track->file_url) }}" placeholder="https://.../track-completo.mp3">
 
         <label>Fecha de lanzamiento</label>

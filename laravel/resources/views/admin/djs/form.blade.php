@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="form" style="max-width:620px;margin:0;">
-    <form method="POST" action="{{ $dj->exists ? route('admin.djs.update', $dj) : route('admin.djs.store') }}">
+    <form method="POST" action="{{ $dj->exists ? route('admin.djs.update', $dj) : route('admin.djs.store') }}" enctype="multipart/form-data">
         @csrf
         @if ($dj->exists) @method('PUT') @endif
 
@@ -15,7 +15,12 @@
         <label>Biografía</label>
         <textarea name="bio" rows="4" style="width:100%;background:#242424;border:1px solid #333;color:#fff;border-radius:8px;padding:11px 14px;font-size:14px;">{{ old('bio', $dj->bio) }}</textarea>
 
-        <label>URL de la foto</label>
+        <label><i class="fas fa-upload" style="color:#1db954;"></i> Subir foto del DJ (JPG/PNG)</label>
+        <input type="file" name="foto" accept="image/*" style="padding:8px;">
+        @if ($dj->image_url)
+            <p style="margin:8px 0 0;"><img src="{{ $dj->image_url }}" alt="{{ $dj->name }}" style="width:70px;height:70px;border-radius:50%;object-fit:cover;"> <span style="color:#1db954;font-size:12px;">Foto actual — subir una nueva la reemplaza.</span></p>
+        @endif
+        <label style="color:#777;font-size:12px;">…o pegar la URL de la foto</label>
         <input type="url" name="image_url" value="{{ old('image_url', $dj->image_url) }}" placeholder="https://.../foto.jpg">
 
         <button class="btn" type="submit">{{ $dj->exists ? 'Guardar cambios' : 'Crear DJ' }}</button>
