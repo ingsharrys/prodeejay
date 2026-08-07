@@ -23,22 +23,17 @@ class ReportController extends Controller
             'unidades' => $filas->sum('unidades'),
         ];
 
-        // Serie de los últimos 12 meses para la gráfica.
+        // Serie de los últimos 12 meses para la gráfica (expresión según el motor).
+        $expresionPeriodo = config('database.default') === 'sqlite'
+            ? "strftime('%Y-%m', orders.paid_at)"
+            : "date_format(orders.paid_at, '%Y-%m')";
+
         $serie = OrderItem::query()
             ->join('orders', 'orders.id', '=', 'order_items.order_id')
             ->where('orders.status', 'paid')
             ->where('orders.paid_at', '>=', now()->subMonths(11)->startOfMonth())
-            ->selectRaw("strftime('%Y-%m', orders.paid_at) as periodo, sum(order_items.price * order_items.quantity) as ingresos")
+            ->selectRaw("$expresionPeriodo as periodo, sum(order_items.price * order_items.quantity) as ingresos")
             ->groupBy('periodo')->orderBy('periodo')->pluck('ingresos', 'periodo');
-
-        if (config('database.default') !== 'sqlite') {
-            $serie = OrderItem::query()
-                ->join('orders', 'orders.id', '=', 'order_items.order_id')
-                ->where('orders.status', 'paid')
-                ->where('orders.paid_at', '>=', now()->subMonths(11)->startOfMonth())
-                ->selectRaw("date_format(orders.paid_at, '%Y-%m') as periodo, sum(order_items.price * order_items.quantity) as ingresos")
-                ->groupBy('periodo')->orderBy('periodo')->pluck('ingresos', 'periodo');
-        }
 
         return view('admin.reports', compact('filas', 'totales', 'anio', 'mes', 'serie'));
     }
