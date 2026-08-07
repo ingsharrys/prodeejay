@@ -24,8 +24,15 @@
         $datosTrack = ['id' => $track->id, 'url' => $track->preview_url, 'titulo' => $track->title, 'artista' => $track->artist ?? $track->dj?->name];
     @endphp
     <div class="tfila" id="fila-{{ $track->id }}">
+        @php
+            $esVideo = 'video' === $track->type || Str::endsWith(Str::lower((string) $track->preview_url), '.mp4');
+        @endphp
         <div style="text-align:center;">
-            @if ($track->preview_url)
+            @if ($track->preview_url && $esVideo)
+                <button type="button" class="tplay" onclick='playVideo(@json($datosTrack))' aria-label="Ver video">
+                    <i class="fas fa-play"></i>
+                </button>
+            @elseif ($track->preview_url)
                 <button type="button" class="tplay" onclick='playTrack(@json($datosTrack))' aria-label="Play">
                     <i class="fas fa-play"></i>
                 </button>
