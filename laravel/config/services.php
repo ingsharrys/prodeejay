@@ -28,6 +28,18 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // Interruptores de métodos de pago (el de Stripe queda apagado
+    // hasta que se quiera escalar a suscripciones con tarjeta).
+    'payments' => [
+        'stripe' => env('PAYMENT_STRIPE', false),
+    ],
+
+    'square' => [
+        'access_token' => env('SQUARE_ACCESS_TOKEN'),
+        'location_id' => env('SQUARE_LOCATION_ID'),
+        'mode' => env('SQUARE_MODE', 'sandbox'),
+    ],
+
     'paypal' => [
         'client_id' => env('PAYPAL_CLIENT_ID'),
         'secret' => env('PAYPAL_SECRET'),
