@@ -63,6 +63,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/pagar-paypal', [\App\Http\Controllers\PayPalController::class, 'checkout'])->name('paypal.checkout');
     Route::get('/paypal-retorno', [\App\Http\Controllers\PayPalController::class, 'return'])->name('paypal.return');
 
+    Route::get('/pagar-square', [\App\Http\Controllers\SquareController::class, 'checkout'])->name('square.checkout');
+    Route::get('/square-retorno', [\App\Http\Controllers\SquareController::class, 'return'])->name('square.return');
+
     Route::get('/suscribirme/{plan}', [SubscriptionController::class, 'subscribe'])->name('subscribe');
     Route::get('/facturacion', [SubscriptionController::class, 'portal'])->name('billing');
 

@@ -26,9 +26,15 @@ class PayPalController extends Controller
 
     private function accessToken(): ?string
     {
-        $respuesta = Http::asForm()
-            ->withBasicAuth(config('services.paypal.client_id'), config('services.paypal.secret'))
-            ->post($this->baseUrl() . '/v1/oauth2/token', ['grant_type' => 'client_credentials']);
+        try {
+            $respuesta = Http::asForm()
+                ->withBasicAuth(config('services.paypal.client_id'), config('services.paypal.secret'))
+                ->post($this->baseUrl() . '/v1/oauth2/token', ['grant_type' => 'client_credentials']);
+        } catch (\Throwable $e) {
+            report($e);
+
+            return null;
+        }
 
         return $respuesta->successful() ? $respuesta->json('access_token') : null;
     }
@@ -71,22 +77,27 @@ class PayPalController extends Controller
             ]);
         }
 
-        $respuesta = Http::withToken($token)->post($this->baseUrl() . '/v2/checkout/orders', [
-            'intent'         => 'CAPTURE',
-            'purchase_units' => [[
-                'reference_id' => (string) $order->id,
-                'description'  => 'Prodeejay Remix — ' . $tracks->count() . ' track(s)',
-                'amount'       => ['currency_code' => 'USD', 'value' => $total],
-            ]],
-            'application_context' => [
-                'brand_name'  => 'Prodeejay Remix',
-                'user_action' => 'PAY_NOW',
-                'return_url'  => route('paypal.return'),
-                'cancel_url'  => route('cart.index'),
-            ],
-        ]);
+        try {
+            $respuesta = Http::withToken($token)->post($this->baseUrl() . '/v2/checkout/orders', [
+                'intent'         => 'CAPTURE',
+                'purchase_units' => [[
+                    'reference_id' => (string) $order->id,
+                    'description'  => 'Prodeejay Remix — ' . $tracks->count() . ' track(s)',
+                    'amount'       => ['currency_code' => 'USD', 'value' => $total],
+                ]],
+                'application_context' => [
+                    'brand_name'  => 'Prodeejay Remix',
+                    'user_action' => 'PAY_NOW',
+                    'return_url'  => route('paypal.return'),
+                    'cancel_url'  => route('cart.index'),
+                ],
+            ]);
+        } catch (\Throwable $e) {
+            report($e);
+            $respuesta = null;
+        }
 
-        if (! $respuesta->successful()) {
+        if (! $respuesta || ! $respuesta->successful()) {
             $order->delete();
 
             return redirect()->route('cart.index')->withErrors(['pago' => __('messages.paypal_error')]);
@@ -116,10 +127,15 @@ class PayPalController extends Controller
 
         if ($order->status === 'pending') {
             $token = $this->accessToken();
-            $captura = $token
-                ? Http::withToken($token)->withBody('', 'application/json')
-                    ->post($this->baseUrl() . "/v2/checkout/orders/{$paypalOrderId}/capture")
-                : null;
+            try {
+                $captura = $token
+                    ? Http::withToken($token)->withBody('', 'application/json')
+                        ->post($this->baseUrl() . "/v2/checkout/orders/{$paypalOrderId}/capture")
+                    : null;
+            } catch (\Throwable $e) {
+                report($e);
+                $captura = null;
+            }
 
             $estado = $captura?->json('status');
             if ($estado === 'COMPLETED' || ($captura && $captura->json('details.0.issue') === 'ORDER_ALREADY_CAPTURED')) {

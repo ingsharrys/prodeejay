@@ -13,6 +13,11 @@ class CheckoutController extends Controller
      */
     public function checkout(Request $request)
     {
+        // Stripe está apagado por ahora (interruptor PAYMENT_STRIPE).
+        if (! config('services.payments.stripe')) {
+            return redirect()->route('cart.index')->withErrors(['pago' => __('messages.stripe_disabled')]);
+        }
+
         $trackIds = array_keys($request->session()->get('cart', []));
         $tracks = Track::whereIn('id', $trackIds)->where('price', '>', 0)->get();
 

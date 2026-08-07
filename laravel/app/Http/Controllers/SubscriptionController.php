@@ -16,6 +16,11 @@ class SubscriptionController extends Controller
 
     public function subscribe(Request $request, Plan $plan)
     {
+        // Las suscripciones usan Stripe; mientras esté apagado se avisa.
+        if (! config('services.payments.stripe')) {
+            return back()->withErrors(['plan' => __('messages.subs_coming_soon')]);
+        }
+
         if (! $plan->stripe_price_id) {
             return back()->withErrors(['plan' => __('messages.plan_not_ready')]);
         }
