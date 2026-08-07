@@ -1,3 +1,31 @@
+{{-- Estilos críticos del reproductor incrustados: llegan con git pull,
+     sin depender de copiar css/app.css al docroot. --}}
+<style>
+.tplay{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#232323;border:none;color:#fff;cursor:pointer;font-size:11px;padding:0;transition:background .15s,transform .15s,color .15s}
+.tplay:hover{background:#1db954;color:#000;transform:scale(1.12)}
+.tfila:hover .tplay{background:#1db954;color:#000}
+.tfila.sonando .tplay{background:rgba(29,185,84,.15)}
+.eq{display:inline-flex;align-items:flex-end;gap:2px;height:14px}
+.eq span{width:3px;background:#1db954;border-radius:1px;animation:pdj-eq 1.1s ease-in-out infinite}
+.eq span:nth-child(1){animation-delay:0s}
+.eq span:nth-child(2){animation-delay:.25s}
+.eq span:nth-child(3){animation-delay:.5s}
+.eq span:nth-child(4){animation-delay:.15s}
+@keyframes pdj-eq{0%,100%{height:4px}50%{height:14px}}
+.tfila.sonando .icono-pausa{display:none}
+.tfila.sonando:hover .eq{display:none}
+.tfila.sonando:hover .icono-pausa{display:inline}
+.eq-barra{margin-left:8px;height:11px}
+.eq-barra span{width:2px}
+.vmodal{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;z-index:10001;padding:20px}
+.vmodal.abierto{display:flex}
+.vmodal-caja{background:#181818;border:1px solid #282828;border-radius:14px;max-width:880px;width:100%;padding:18px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.vmodal-caja h3{color:#fff;font-size:15px;font-weight:700;margin:0 44px 12px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vmodal-caja video{width:100%;max-height:70vh;border-radius:10px;background:#000;display:block}
+.vmodal-cerrar{position:absolute;top:12px;right:14px;background:#242424;border:none;color:#b3b3b3;font-size:15px;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.vmodal-cerrar:hover{background:#1db954;color:#000}
+</style>
+
 <div class="barra">
     <div>
         <div class="bt" id="pbTitulo">{{ __('messages.choose_song') }}<span class="eq eq-barra" id="pbEq" style="display:none;"><span></span><span></span><span></span><span></span></span></div>
