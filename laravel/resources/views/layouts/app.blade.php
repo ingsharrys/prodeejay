@@ -31,8 +31,10 @@
             <span class="n">{{ count(session('cart', [])) }}</span>
         </a>
         @auth
-            @if (auth()->user()->is_admin)
-                <a class="item" href="{{ route('admin.reports') }}">{{ __('messages.admin') }}</a>
+            @if (auth()->user()->isAdmin())
+                <a class="item" href="{{ route('admin.dashboard') }}">{{ __('messages.admin') }}</a>
+            @elseif (auth()->user()->isDj())
+                <a class="item" href="{{ route('dj.panel') }}">Mi panel DJ</a>
             @endif
             <a class="item" href="{{ route('account') }}">{{ __('messages.my_account') }}</a>
             <form method="POST" action="{{ route('logout') }}" style="display:inline">

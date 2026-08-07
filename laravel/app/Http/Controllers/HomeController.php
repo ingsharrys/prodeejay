@@ -13,7 +13,7 @@ class HomeController extends Controller
     {
         return view('home', [
             'genres'  => Genre::withCount('tracks')->orderByDesc('tracks_count')->take(10)->get(),
-            'djs'     => Dj::withCount('tracks')->orderByDesc('tracks_count')->take(8)->get(),
+            'djs'     => Dj::where('active', true)->withCount('tracks')->orderByDesc('tracks_count')->take(8)->get(),
             'ultimos' => Track::active()->latest('released_at')->take(8)->get(),
             'plans'   => Plan::where('active', true)->orderBy('price')->get(),
         ]);
