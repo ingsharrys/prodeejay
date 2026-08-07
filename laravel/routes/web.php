@@ -60,6 +60,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/pagar', [CheckoutController::class, 'checkout'])->name('checkout');
     Route::get('/pago-exitoso', [CheckoutController::class, 'success'])->name('checkout.success');
 
+    Route::get('/pagar-paypal', [\App\Http\Controllers\PayPalController::class, 'checkout'])->name('paypal.checkout');
+    Route::get('/paypal-retorno', [\App\Http\Controllers\PayPalController::class, 'return'])->name('paypal.return');
+
     Route::get('/suscribirme/{plan}', [SubscriptionController::class, 'subscribe'])->name('subscribe');
     Route::get('/facturacion', [SubscriptionController::class, 'portal'])->name('billing');
 

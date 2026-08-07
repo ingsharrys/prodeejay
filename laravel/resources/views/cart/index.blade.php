@@ -43,9 +43,10 @@
                     </tr>
                 </tbody>
             </table>
-            <p style="margin-top:24px;">
+            <p style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;">
                 @auth
                     <a class="btn" href="{{ route('checkout') }}"><i class="fas fa-credit-card"></i> {{ __('messages.pay_with_stripe') }}</a>
+                    <a class="btn" style="background:#ffc439;color:#003087;" href="{{ route('paypal.checkout') }}"><i class="fab fa-paypal"></i> {{ __('messages.pay_with_paypal') }}</a>
                 @else
                     <a class="btn" href="{{ route('login') }}">{{ __('messages.login') }}</a>
                 @endauth
