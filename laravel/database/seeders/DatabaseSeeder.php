@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
                     'name'     => 'Admin',
                     'password' => env('ADMIN_PASSWORD', Str::random(24)),
                     'is_admin' => true,
+                    'role'     => 'admin',
                 ]
             );
         }

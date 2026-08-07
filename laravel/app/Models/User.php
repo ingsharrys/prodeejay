@@ -13,7 +13,7 @@ class User extends Authenticatable
     use Billable, HasFactory, Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'locale', 'wp_user_id', 'is_admin',
+        'name', 'email', 'password', 'locale', 'wp_user_id', 'is_admin', 'role', 'dj_id',
     ];
 
     protected $hidden = [
@@ -27,6 +27,21 @@ class User extends Authenticatable
             'password'          => 'hashed',
             'is_admin'          => 'boolean',
         ];
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin' || $this->is_admin;
+    }
+
+    public function isDj(): bool
+    {
+        return $this->role === 'dj' && $this->dj_id !== null;
+    }
+
+    public function dj()
+    {
+        return $this->belongsTo(Dj::class);
     }
 
     public function orders(): HasMany

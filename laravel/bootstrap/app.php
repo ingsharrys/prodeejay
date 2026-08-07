@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->alias([
             'admin' => \App\Http\Middleware\EnsureAdmin::class,
+            'dj'    => \App\Http\Middleware\EnsureDj::class,
         ]);
         // Stripe envía los webhooks sin token CSRF.
         $middleware->validateCsrfTokens(except: [

@@ -10,12 +10,14 @@ class DjController extends Controller
     public function index()
     {
         return view('djs.index', [
-            'djs' => Dj::withCount('tracks')->whereHas('tracks')->orderByDesc('tracks_count')->get(),
+            'djs' => Dj::where('active', true)->withCount('tracks')->whereHas('tracks')->orderByDesc('tracks_count')->get(),
         ]);
     }
 
     public function show(Request $request, Dj $dj)
     {
+        abort_unless($dj->active, 404);
+
         $tracks = $dj->tracks()
             ->active()
             ->with(['dj', 'genre'])

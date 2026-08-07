@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Dj;
 use App\Models\OrderItem;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -15,6 +16,44 @@ class DjAdminController extends Controller
         return view('admin.djs.index', [
             'djs' => Dj::withCount('tracks')->orderBy('name')->get(),
         ]);
+    }
+
+    /**
+     * Habilita o deshabilita un DJ (deja de mostrarse en el sitio).
+     */
+    public function toggle(Dj $dj)
+    {
+        $dj->update(['active' => ! $dj->active]);
+
+        return back()->with('status', $dj->active ? 'DJ habilitado.' : 'DJ deshabilitado.');
+    }
+
+    /**
+     * Crea o restablece el acceso del DJ a su panel (rol dj).
+     */
+    public function acceso(Request $request, Dj $dj)
+    {
+        $data = $request->validate([
+            'email'    => ['required', 'email'],
+            'password' => ['required', 'string', 'min:8'],
+        ]);
+
+        $existente = User::where('email', $data['email'])->first();
+        if ($existente && $existente->dj_id !== null && $existente->dj_id !== $dj->id) {
+            return back()->withErrors(['email' => 'Ese correo ya pertenece al acceso de otro DJ.']);
+        }
+
+        User::updateOrCreate(
+            ['email' => $data['email']],
+            [
+                'name'     => $dj->name,
+                'password' => $data['password'],
+                'role'     => 'dj',
+                'dj_id'    => $dj->id,
+            ]
+        );
+
+        return back()->with('status', 'Acceso del DJ listo. Entrega el correo y la contraseña al DJ; entrará por la página normal de "Entrar".');
     }
 
     public function create()
@@ -75,7 +114,9 @@ class DjAdminController extends Controller
             ->orderByDesc('ingresos')
             ->take(15)->get();
 
-        return view('admin.djs.show', compact('dj', 'tracks', 'ventasMes', 'topTracks'));
+        $usuarioDj = User::where('dj_id', $dj->id)->first();
+
+        return view('admin.djs.show', compact('dj', 'tracks', 'ventasMes', 'topTracks', 'usuarioDj'));
     }
 
     private function validated(Request $request): array

@@ -24,6 +24,9 @@ Route::get('/dj/{dj}', [DjController::class, 'show'])->name('djs.show');
 
 Route::get('/planes', [SubscriptionController::class, 'plans'])->name('plans');
 
+Route::get('/playlists', [\App\Http\Controllers\PlaylistController::class, 'index'])->name('playlists');
+Route::get('/playlist/{playlist}', [\App\Http\Controllers\PlaylistController::class, 'show'])->name('playlists.show');
+
 /* Idioma */
 Route::get('/idioma/{locale}', [AccountController::class, 'setLocale'])->name('locale');
 
@@ -59,8 +62,31 @@ Route::middleware('auth')->group(function () {
     Route::get('/descargar/{track}', [DownloadController::class, 'download'])->name('download');
 });
 
+/* Panel del DJ (cada DJ ve solo sus reportes) */
+Route::middleware(['auth', 'dj'])->prefix('panel-dj')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Dj\PanelController::class, 'index'])->name('dj.panel');
+});
+
 /* Administración */
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+
+    Route::get('/generos', [\App\Http\Controllers\Admin\GenreAdminController::class, 'index'])->name('admin.genres');
+    Route::post('/generos', [\App\Http\Controllers\Admin\GenreAdminController::class, 'store'])->name('admin.genres.store');
+    Route::put('/generos/{genre}', [\App\Http\Controllers\Admin\GenreAdminController::class, 'update'])->name('admin.genres.update');
+    Route::delete('/generos/{genre}', [\App\Http\Controllers\Admin\GenreAdminController::class, 'destroy'])->name('admin.genres.destroy');
+
+    Route::get('/playlists', [\App\Http\Controllers\Admin\PlaylistAdminController::class, 'index'])->name('admin.playlists');
+    Route::post('/playlists', [\App\Http\Controllers\Admin\PlaylistAdminController::class, 'store'])->name('admin.playlists.store');
+    Route::get('/playlists/{playlist}', [\App\Http\Controllers\Admin\PlaylistAdminController::class, 'edit'])->name('admin.playlists.edit');
+    Route::put('/playlists/{playlist}', [\App\Http\Controllers\Admin\PlaylistAdminController::class, 'update'])->name('admin.playlists.update');
+    Route::delete('/playlists/{playlist}', [\App\Http\Controllers\Admin\PlaylistAdminController::class, 'destroy'])->name('admin.playlists.destroy');
+    Route::post('/playlists/{playlist}/tracks/{track}', [\App\Http\Controllers\Admin\PlaylistAdminController::class, 'addTrack'])->name('admin.playlists.add');
+    Route::delete('/playlists/{playlist}/tracks/{track}', [\App\Http\Controllers\Admin\PlaylistAdminController::class, 'removeTrack'])->name('admin.playlists.remove');
+
+    Route::post('/djs/{dj}/toggle', [\App\Http\Controllers\Admin\DjAdminController::class, 'toggle'])->name('admin.djs.toggle');
+    Route::post('/djs/{dj}/acceso', [\App\Http\Controllers\Admin\DjAdminController::class, 'acceso'])->name('admin.djs.acceso');
+
     Route::get('/reportes', [ReportController::class, 'index'])->name('admin.reports');
     Route::get('/reportes/exportar', [ReportController::class, 'export'])->name('admin.reports.export');
 
