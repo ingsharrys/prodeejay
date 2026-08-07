@@ -1,6 +1,6 @@
 <div class="barra">
     <div>
-        <div class="bt" id="pbTitulo">{{ __('messages.choose_song') }}</div>
+        <div class="bt" id="pbTitulo">{{ __('messages.choose_song') }}<span class="eq eq-barra" id="pbEq" style="display:none;"><span></span><span></span><span></span><span></span></span></div>
         <div class="ba" id="pbArtista"></div>
     </div>
     <div class="bcentro">
@@ -35,11 +35,15 @@
         var m = Math.floor(s / 60), r = Math.floor(s % 60);
         return m + ':' + (r < 10 ? '0' : '') + r;
     }
+    var eqBarra = document.getElementById('pbEq');
+    var htmlEq = '<span class="eq"><span></span><span></span><span></span><span></span></span><i class="fas fa-pause icono-pausa"></i>';
+
     function icons(playing) {
         btn.innerHTML = playing ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+        if (eqBarra) eqBarra.style.display = playing ? 'inline-flex' : 'none';
         if (fila) {
-            var i = fila.querySelector('.tplay i');
-            if (i) i.className = playing ? 'fas fa-pause' : 'fas fa-play';
+            var holder = fila.querySelector('.tplay');
+            if (holder) holder.innerHTML = playing ? htmlEq : '<i class="fas fa-play"></i>';
         }
     }
 
@@ -49,8 +53,8 @@
         if (audio.src !== track.url) {
             if (fila) {
                 fila.classList.remove('sonando');
-                var prev = fila.querySelector('.tplay i');
-                if (prev) prev.className = 'fas fa-play';
+                var prev = fila.querySelector('.tplay');
+                if (prev) prev.innerHTML = '<i class="fas fa-play"></i>';
             }
             audio.src = track.url;
             lt.textContent = track.titulo;

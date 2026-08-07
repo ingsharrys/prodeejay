@@ -11,7 +11,7 @@
 @endphp
 
 <div class="tcab">
-    <div>#</div>
+    <div></div>
     <div>{{ __('messages.title') }}</div>
     <div class="c-art">{{ __('messages.artist') }}</div>
     <div class="c-dj">{{ __('messages.dj') }}</div>
@@ -25,13 +25,12 @@
     @endphp
     <div class="tfila" id="fila-{{ $track->id }}">
         <div style="text-align:center;">
-            <span class="tnum">{{ $tracks->firstItem() + $i }}</span>
             @if ($track->preview_url)
                 <button type="button" class="tplay" onclick='playTrack(@json($datosTrack))' aria-label="Play">
                     <i class="fas fa-play"></i>
                 </button>
             @else
-                <span class="tplay"><i class="fas fa-headphones"></i></span>
+                <span class="tplay" style="opacity:.4;cursor:default;"><i class="fas fa-headphones"></i></span>
             @endif
         </div>
         <div class="tnombre">{{ $track->title }}</div>
