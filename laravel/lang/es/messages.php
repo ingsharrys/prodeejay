@@ -96,6 +96,7 @@ return [
     'save'              => 'Guardar',
     'change_password'   => 'Cambiar contraseña',
     'current_password'  => 'Contraseña actual',
+    'valid_until'       => 'Vigente hasta',
     'new_password'      => 'Contraseña nueva',
     'min_8'             => 'mínimo 8 caracteres',
     'profile_updated'   => 'Perfil actualizado.',

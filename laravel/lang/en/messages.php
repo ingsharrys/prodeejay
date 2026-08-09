@@ -96,6 +96,7 @@ return [
     'save'              => 'Save',
     'change_password'   => 'Change password',
     'current_password'  => 'Current password',
+    'valid_until'       => 'Valid until',
     'new_password'      => 'New password',
     'min_8'             => 'minimum 8 characters',
     'profile_updated'   => 'Profile updated.',

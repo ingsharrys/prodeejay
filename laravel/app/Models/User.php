@@ -14,6 +14,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name', 'email', 'password', 'locale', 'wp_user_id', 'is_admin', 'role', 'dj_id',
+        'plan_id', 'plan_expires_at',
     ];
 
     protected $hidden = [
@@ -26,6 +27,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
             'is_admin'          => 'boolean',
+            'plan_expires_at'   => 'datetime',
         ];
     }
 
@@ -55,10 +57,18 @@ class User extends Authenticatable
     }
 
     /**
-     * Plan activo del usuario (según su suscripción de Stripe).
+     * Plan activo del usuario: primero la suscripción asignada por el
+     * administrador (con vigencia), y si no, la suscripción de Stripe.
      */
     public function currentPlan(): ?Plan
     {
+        if ($this->plan_id && (! $this->plan_expires_at || $this->plan_expires_at->isFuture())) {
+            $plan = Plan::find($this->plan_id);
+            if ($plan && $plan->active) {
+                return $plan;
+            }
+        }
+
         $subscription = $this->subscription('default');
         if (! $subscription || ! $subscription->valid()) {
             return null;

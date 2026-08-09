@@ -94,6 +94,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/playlists/{playlist}/tracks/{track}', [\App\Http\Controllers\Admin\PlaylistAdminController::class, 'addTrack'])->name('admin.playlists.add');
     Route::delete('/playlists/{playlist}/tracks/{track}', [\App\Http\Controllers\Admin\PlaylistAdminController::class, 'removeTrack'])->name('admin.playlists.remove');
 
+    Route::get('/suscripciones', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'index'])->name('admin.subs');
+    Route::post('/suscripciones/planes', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'storePlan'])->name('admin.subs.plan.store');
+    Route::put('/suscripciones/planes/{plan}', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'updatePlan'])->name('admin.subs.plan.update');
+    Route::post('/suscripciones/planes/{plan}/toggle', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'togglePlan'])->name('admin.subs.plan.toggle');
+    Route::post('/suscripciones/asignar', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'assign'])->name('admin.subs.assign');
+    Route::delete('/suscripciones/{user}', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'revoke'])->name('admin.subs.revoke');
+
     Route::post('/djs/{dj}/toggle', [\App\Http\Controllers\Admin\DjAdminController::class, 'toggle'])->name('admin.djs.toggle');
     Route::post('/djs/{dj}/acceso', [\App\Http\Controllers\Admin\DjAdminController::class, 'acceso'])->name('admin.djs.acceso');
 

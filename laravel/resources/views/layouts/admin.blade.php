@@ -37,6 +37,7 @@
         <a class="{{ request()->routeIs('admin.reports*') ? 'on' : '' }}" href="{{ route('admin.reports') }}"><i class="fas fa-chart-line"></i> Ventas por DJ</a>
         <a class="{{ request()->routeIs('admin.tracks*') ? 'on' : '' }}" href="{{ route('admin.tracks') }}"><i class="fas fa-music"></i> Música</a>
         <a class="{{ request()->routeIs('admin.djs*') ? 'on' : '' }}" href="{{ route('admin.djs') }}"><i class="fas fa-headphones"></i> DJs</a>
+        <a class="{{ request()->routeIs('admin.subs*') ? 'on' : '' }}" href="{{ route('admin.subs') }}"><i class="fas fa-id-card"></i> Suscripciones</a>
         <a class="{{ request()->routeIs('admin.playlists*') ? 'on' : '' }}" href="{{ route('admin.playlists') }}"><i class="fas fa-list-ul"></i> Playlists</a>
         <a class="{{ request()->routeIs('admin.genres*') ? 'on' : '' }}" href="{{ route('admin.genres') }}"><i class="fas fa-tags"></i> Géneros</a>
         <div class="abajo">
