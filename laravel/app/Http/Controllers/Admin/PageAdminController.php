@@ -131,13 +131,19 @@ class PageAdminController extends Controller
     private function validated(Request $request): array
     {
         $data = $request->validate([
-            'title_es'   => ['required', 'string', 'max:180'],
-            'title_en'   => ['nullable', 'string', 'max:180'],
-            'content_es' => ['nullable', 'string'],
-            'content_en' => ['nullable', 'string'],
-            'blocks'     => ['nullable', 'string'],
+            'title_es'           => ['required', 'string', 'max:180'],
+            'title_en'           => ['nullable', 'string', 'max:180'],
+            'content_es'         => ['nullable', 'string'],
+            'content_en'         => ['nullable', 'string'],
+            'blocks'             => ['nullable', 'string'],
+            'seo_title_es'       => ['nullable', 'string', 'max:190'],
+            'seo_title_en'       => ['nullable', 'string', 'max:190'],
+            'seo_description_es' => ['nullable', 'string', 'max:300'],
+            'seo_description_en' => ['nullable', 'string', 'max:300'],
+            'og_image'           => ['nullable', 'string', 'max:500'],
         ]);
         $data['active'] = $request->boolean('active');
+        $data['noindex'] = $request->boolean('noindex');
         $data['blocks'] = $this->bloquesLimpios($request->input('blocks'));
 
         return $data;

@@ -72,6 +72,57 @@
         <button class="btn" type="submit" style="margin:0;"><i class="fas fa-floppy-disk"></i> {{ $page->exists ? 'Guardar' : 'Crear página' }}</button>
     </div>
 
+    @php
+        $seoInfo = $page->exists ? \App\Support\SeoAnalisis::analizar($page) : null;
+        $seoColor = $seoInfo ? \App\Support\SeoAnalisis::color($seoInfo['puntos']) : '#8a8a8a';
+    @endphp
+    <details class="seo-box" style="background:#181818;border:1px solid #242424;border-radius:12px;padding:12px 16px;margin-bottom:16px;" {{ $errors->any() ? 'open' : '' }}>
+        <summary style="cursor:pointer;color:#fff;font-weight:700;font-size:14px;">
+            <i class="fas fa-magnifying-glass-chart" style="color:#1db954;"></i> SEO de la página
+            @if ($seoInfo)
+                <span style="color:{{ $seoColor }};font-weight:800;margin-left:8px;">{{ $seoInfo['puntos'] }}/100</span>
+                <span style="display:inline-block;vertical-align:middle;background:#242424;border-radius:99px;height:8px;width:110px;overflow:hidden;margin-left:6px;"><i style="display:block;height:100%;width:{{ $seoInfo['puntos'] }}%;background:{{ $seoColor }};border-radius:99px;"></i></span>
+            @endif
+        </summary>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;">
+            <div class="bld-f">
+                <label>Título SEO (español) · <span id="cSeoTitEs">0</span>/60</label>
+                <input type="text" name="seo_title_es" maxlength="190" value="{{ old('seo_title_es', $page->seo_title_es) }}" oninput="contarSeo(this,'cSeoTitEs',60)" placeholder="Si lo dejas vacío se usa el título de la página">
+            </div>
+            <div class="bld-f">
+                <label>SEO title (English) · <span id="cSeoTitEn">0</span>/60</label>
+                <input type="text" name="seo_title_en" maxlength="190" value="{{ old('seo_title_en', $page->seo_title_en) }}" oninput="contarSeo(this,'cSeoTitEn',60)">
+            </div>
+            <div class="bld-f">
+                <label>Meta descripción (español) · <span id="cSeoDescEs">0</span>/160</label>
+                <textarea name="seo_description_es" maxlength="300" oninput="contarSeo(this,'cSeoDescEs',160)" placeholder="El texto que Google muestra bajo el título en los resultados (50–160 caracteres)">{{ old('seo_description_es', $page->seo_description_es) }}</textarea>
+            </div>
+            <div class="bld-f">
+                <label>Meta description (English) · <span id="cSeoDescEn">0</span>/160</label>
+                <textarea name="seo_description_en" maxlength="300" oninput="contarSeo(this,'cSeoDescEn',160)">{{ old('seo_description_en', $page->seo_description_en) }}</textarea>
+            </div>
+            <div class="bld-f">
+                <label>Imagen al compartir (URL, opcional — Facebook/WhatsApp)</label>
+                <input type="text" name="og_image" maxlength="500" value="{{ old('og_image', $page->og_image) }}" placeholder="https://...">
+            </div>
+            <label style="display:flex;align-items:center;gap:8px;color:#b3b3b3;font-size:13px;">
+                <input type="checkbox" name="noindex" value="1" style="width:auto;" @checked(old('noindex', $page->noindex))>
+                Ocultar de Google (noindex) — solo para páginas privadas
+            </label>
+        </div>
+        @if ($seoInfo)
+            <div style="margin-top:8px;">
+                @foreach ($seoInfo['checks'] as $c)
+                    <div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px solid #202020;color:#ddd;font-size:13px;line-height:1.5;">
+                        <i class="fas {{ $c['estado'] === 'ok' ? 'fa-circle-check' : ($c['estado'] === 'medio' ? 'fa-triangle-exclamation' : 'fa-circle-xmark') }}" style="margin-top:2px;color:{{ $c['estado'] === 'ok' ? '#1db954' : ($c['estado'] === 'medio' ? '#e8b433' : '#e05252') }};"></i>
+                        <span>{{ $c['texto'] }}</span>
+                    </div>
+                @endforeach
+                <p style="color:#8a8a8a;font-size:12px;margin:8px 0 0;">El puntaje se recalcula al guardar. Vista completa en Administración → SEO.</p>
+            </div>
+        @endif
+    </details>
+
     <div class="bld">
         <aside class="bld-panel">
             <h3><i class="fas fa-plus" style="color:#1db954;"></i> Añadir bloque</h3>
@@ -367,6 +418,18 @@ function verPrevia() {
         document.getElementById('pvModal').classList.add('on');
     }).catch(() => alert('No se pudo generar la vista previa. Intenta de nuevo.'));
 }
+
+// Contadores de longitud de los campos SEO.
+function contarSeo(el, idSpan, ideal) {
+    const s = document.getElementById(idSpan);
+    s.textContent = el.value.length;
+    s.style.color = el.value.length > ideal ? '#e8b433' : '#8a8a8a';
+}
+['cSeoTitEs','cSeoTitEn','cSeoDescEs','cSeoDescEn'].forEach(id => {
+    const s = document.getElementById(id);
+    const campo = s?.closest('.bld-f')?.querySelector('input,textarea');
+    if (campo) contarSeo(campo, id, id.includes('Desc') ? 160 : 60);
+});
 
 pintarCanvas();
 pintarAjustes();

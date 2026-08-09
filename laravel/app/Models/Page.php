@@ -10,11 +10,34 @@ class Page extends Model
     /** Tipos de bloque que el builder puede renderizar. */
     public const BLOQUES = ['hero', 'titulo', 'texto', 'imagen', 'botones', 'djs', 'musica', 'planes', 'generos', 'html'];
 
-    protected $fillable = ['slug', 'title_es', 'title_en', 'content_es', 'content_en', 'blocks', 'active'];
+    protected $fillable = [
+        'slug', 'title_es', 'title_en', 'content_es', 'content_en', 'blocks', 'active',
+        'seo_title_es', 'seo_title_en', 'seo_description_es', 'seo_description_en', 'og_image', 'noindex',
+    ];
 
     protected function casts(): array
     {
-        return ['active' => 'boolean', 'blocks' => 'array'];
+        return ['active' => 'boolean', 'blocks' => 'array', 'noindex' => 'boolean'];
+    }
+
+    /** Título SEO en el idioma actual (vacío si no se definió). */
+    public function seoTitle(): string
+    {
+        if (app()->getLocale() === 'en' && $this->seo_title_en) {
+            return (string) $this->seo_title_en;
+        }
+
+        return (string) ($this->seo_title_es ?? '');
+    }
+
+    /** Meta descripción en el idioma actual (vacía si no se definió). */
+    public function seoDescription(): string
+    {
+        if (app()->getLocale() === 'en' && $this->seo_description_en) {
+            return (string) $this->seo_description_en;
+        }
+
+        return (string) ($this->seo_description_es ?? '');
     }
 
     /** Título en el idioma actual (con respaldo al español). */

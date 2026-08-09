@@ -45,6 +45,7 @@
         <div class="sep"></div>
         <a class="{{ request()->routeIs('admin.pages*') ? 'on' : '' }}" href="{{ route('admin.pages') }}"><i class="fas fa-file-lines"></i> Páginas</a>
         <a class="{{ request()->routeIs('admin.menu*') ? 'on' : '' }}" href="{{ route('admin.menu') }}"><i class="fas fa-bars"></i> Menú</a>
+        <a class="{{ request()->routeIs('admin.seo*') ? 'on' : '' }}" href="{{ route('admin.seo') }}"><i class="fas fa-magnifying-glass-chart"></i> SEO</a>
         <a class="{{ request()->routeIs('admin.site*') ? 'on' : '' }}" href="{{ route('admin.site') }}"><i class="fas fa-gear"></i> Sitio</a>
         <div class="abajo">
             <div class="sep"></div>
