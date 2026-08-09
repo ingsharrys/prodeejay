@@ -34,6 +34,12 @@ return [
         'stripe' => env('PAYMENT_STRIPE', false),
     ],
 
+    // Porcentajes del reporte de liquidación por DJ.
+    'reporte' => [
+        'impuesto_pct' => env('REPORTE_IMPUESTO_PCT', 0.3),   // % sobre el neto
+        'comision_pct' => env('REPORTE_COMISION_PCT', 30),    // % de la plataforma
+    ],
+
     'square' => [
         'access_token' => env('SQUARE_ACCESS_TOKEN'),
         'location_id' => env('SQUARE_LOCATION_ID'),

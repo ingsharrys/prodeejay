@@ -72,70 +72,88 @@
     @endforeach
 </div>
 
-<div class="rp-panel">
-    <h3><i class="fas fa-chart-area" style="color:#1db954;"></i> Ingresos por día</h3>
-    <div class="rp-chart"><canvas id="chartDias"></canvas></div>
+<div class="rp-tabs">
+    <button type="button" class="rp-tab on" onclick="rpTab('resumen', this)"><i class="fas fa-chart-pie"></i> Resumen</button>
+    <button type="button" class="rp-tab" onclick="rpTab('canciones', this)"><i class="fas fa-music"></i> Canciones vendidas</button>
+    <button type="button" class="rp-tab" onclick="rpTab('djs', this)"><i class="fas fa-headphones"></i> DJs que vendieron</button>
 </div>
 
-<div class="rp-2col">
+<div class="rp-pane on" data-pane="resumen">
     <div class="rp-panel">
-        <h3><i class="fas fa-headphones" style="color:#1db954;"></i> Top DJs del período</h3>
-        <div class="rp-chart-sm"><canvas id="chartDjs"></canvas></div>
+        <h3><i class="fas fa-chart-area" style="color:#1db954;"></i> Ingresos por día</h3>
+        <div class="rp-chart"><canvas id="chartDias"></canvas></div>
     </div>
+
+    <div class="rp-2col">
+        <div class="rp-panel">
+            <h3><i class="fas fa-headphones" style="color:#1db954;"></i> Top DJs del período</h3>
+            <div class="rp-chart-sm"><canvas id="chartDjs"></canvas></div>
+        </div>
+        <div class="rp-panel">
+            <h3><i class="fas fa-credit-card" style="color:#1db954;"></i> Ingresos por método de pago</h3>
+            <div class="rp-chart-sm"><canvas id="chartMetodos"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<div class="rp-pane" data-pane="canciones">
     <div class="rp-panel">
-        <h3><i class="fas fa-credit-card" style="color:#1db954;"></i> Ingresos por método de pago</h3>
-        <div class="rp-chart-sm"><canvas id="chartMetodos"></canvas></div>
+        <h3><i class="fas fa-music" style="color:#1db954;"></i> Canciones vendidas en el período</h3>
+        <table class="tabla">
+            <thead><tr><th>#</th><th>Canción</th><th>DJ</th><th class="num">Unidades</th><th class="num">Ingresos</th></tr></thead>
+            <tbody>
+                @forelse ($porCancion as $i => $c)
+                    <tr>
+                        <td style="color:#666;">{{ $i + 1 }}</td>
+                        <td>{{ Str::limit($c->cancion, 70) }}</td>
+                        <td>{{ $c->dj }}</td>
+                        <td class="num">{{ number_format($c->unidades) }}</td>
+                        <td class="num">${{ number_format((float) $c->ingresos, 2) }}</td>
+                    </tr>
+                @empty
+                    <tr><td colspan="5">Sin ventas en este período.</td></tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
 </div>
 
-<div class="rp-panel">
-    <h3><i class="fas fa-user-group" style="color:#1db954;"></i> Hoja de reporte por DJ</h3>
-    <table class="tabla">
-        <thead><tr><th>DJ</th><th class="num">Unidades</th><th class="num">Ingresos</th><th>% del total</th><th></th></tr></thead>
-        <tbody>
-            @forelse ($porDj as $fila)
-                @php $pct = $totales['ingresos'] > 0 ? ($fila->ingresos / $totales['ingresos']) * 100 : 0; @endphp
-                <tr>
-                    <td><strong>{{ $fila->dj }}</strong></td>
-                    <td class="num">{{ number_format($fila->unidades) }}</td>
-                    <td class="num">${{ number_format((float) $fila->ingresos, 2) }}</td>
-                    <td>
-                        <div class="barra-pct"><span style="width:{{ max(1, round($pct)) }}%"></span></div>
-                        {{ number_format($pct, 1) }}%
-                    </td>
-                    <td style="text-align:right;">
-                        @if ($fila->dj_id)
-                            <a class="btn-sec btn-sm" href="{{ route('admin.reports.dj', ['dj' => $fila->dj_id, 'desde' => $desde, 'hasta' => $hasta]) }}">
-                                Ver hoja del DJ »
-                            </a>
-                        @endif
-                    </td>
-                </tr>
-            @empty
-                <tr><td colspan="5">No hay ventas en este período.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
-</div>
-
-<div class="rp-panel">
-    <h3><i class="fas fa-music" style="color:#1db954;"></i> Canciones más vendidas del período</h3>
-    <table class="tabla">
-        <thead><tr><th>#</th><th>Canción</th><th>DJ</th><th class="num">Unidades</th><th class="num">Ingresos</th></tr></thead>
-        <tbody>
-            @forelse ($porCancion as $i => $c)
-                <tr>
-                    <td style="color:#666;">{{ $i + 1 }}</td>
-                    <td>{{ Str::limit($c->cancion, 70) }}</td>
-                    <td>{{ $c->dj }}</td>
-                    <td class="num">{{ number_format($c->unidades) }}</td>
-                    <td class="num">${{ number_format((float) $c->ingresos, 2) }}</td>
-                </tr>
-            @empty
-                <tr><td colspan="5">Sin ventas en este período.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
+<div class="rp-pane" data-pane="djs">
+    <div class="rp-panel">
+        <h3><i class="fas fa-user-group" style="color:#1db954;"></i> DJs que vendieron en el período</h3>
+        <p style="color:#8a8a8a;font-size:13px;margin:0 0 12px;">Haz clic en un DJ para ver el detalle de cada canción vendida (precio, método de pago y cliente) y descargar su Excel de liquidación.</p>
+        <table class="tabla">
+            <thead><tr><th>DJ</th><th class="num">Unidades</th><th class="num">Ingresos</th><th>% del total</th><th></th></tr></thead>
+            <tbody>
+                @forelse ($porDj as $fila)
+                    @php $pct = $totales['ingresos'] > 0 ? ($fila->ingresos / $totales['ingresos']) * 100 : 0; @endphp
+                    <tr>
+                        <td>
+                            @if ($fila->dj_id)
+                                <a href="{{ route('admin.reports.dj', ['dj' => $fila->dj_id, 'desde' => $desde, 'hasta' => $hasta]) }}" style="color:#fff;"><strong>{{ $fila->dj }}</strong></a>
+                            @else
+                                <strong>{{ $fila->dj }}</strong>
+                            @endif
+                        </td>
+                        <td class="num">{{ number_format($fila->unidades) }}</td>
+                        <td class="num">${{ number_format((float) $fila->ingresos, 2) }}</td>
+                        <td>
+                            <div class="barra-pct"><span style="width:{{ max(1, round($pct)) }}%"></span></div>
+                            {{ number_format($pct, 1) }}%
+                        </td>
+                        <td style="text-align:right;white-space:nowrap;">
+                            @if ($fila->dj_id)
+                                <a class="btn-sec btn-sm" href="{{ route('admin.reports.dj', ['dj' => $fila->dj_id, 'desde' => $desde, 'hasta' => $hasta]) }}">Ver detalle »</a>
+                                <a class="btn-sec btn-sm" style="border-color:#1db954;color:#1db954;" href="{{ route('admin.reports.dj.excel', ['dj' => $fila->dj_id, 'desde' => $desde, 'hasta' => $hasta]) }}"><i class="fas fa-file-excel"></i> Excel</a>
+                            @endif
+                        </td>
+                    </tr>
+                @empty
+                    <tr><td colspan="5">No hay ventas en este período.</td></tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
