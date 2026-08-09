@@ -15,4 +15,13 @@ class Plan extends Model
             'price'  => 'decimal:2',
         ];
     }
+
+    /** Suscriptores con este plan asignado y vigente. */
+    public function users()
+    {
+        return $this->hasMany(User::class)
+            ->where(function ($q) {
+                $q->whereNull('plan_expires_at')->orWhere('plan_expires_at', '>', now());
+            });
+    }
 }

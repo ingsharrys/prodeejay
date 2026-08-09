@@ -17,6 +17,9 @@
                 <strong style="color:#1db954;">{{ $plan->name }}</strong> —
                 {{ __('messages.downloads_left', ['count' => $restantes]) }}
                 ({{ $plan->downloads_per_month }} / {{ __('messages.month') }})
+                @if ($user->plan_expires_at)
+                    · {{ __('messages.valid_until') }} {{ $user->plan_expires_at->format('d-m-Y') }}
+                @endif
             </p>
             <p><a class="btn-sec" href="{{ route('billing') }}">{{ __('messages.manage_billing') }}</a></p>
         @else
