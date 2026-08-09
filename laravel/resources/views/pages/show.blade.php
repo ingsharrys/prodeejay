@@ -3,16 +3,26 @@
 @section('title', $page->title() . ' — ' . config('app.name', 'Prodeejay Remix'))
 
 @section('content')
-<div class="container">
-    <div class="phead">
-        <p class="tipo">Prodeejay</p>
-        <h1>{{ $page->title() }}</h1>
-    </div>
+@if ($page->hasBlocks())
+    {{-- Página construida con el builder de bloques --}}
+    @foreach ($page->blocks as $bi => $b)
+        @if (in_array($b['type'] ?? '', \App\Models\Page::BLOQUES, true))
+            @include('pages.blocks.' . $b['type'], ['b' => $b, 'bi' => $bi])
+        @endif
+    @endforeach
+@else
+    {{-- Página clásica de solo texto --}}
+    <div class="container">
+        <div class="phead">
+            <p class="tipo">Prodeejay</p>
+            <h1>{{ $page->title() }}</h1>
+        </div>
 
-    <article class="cms-contenido" style="padding:26px 0 60px;max-width:900px;">
-        {!! $page->content() !!}
-    </article>
-</div>
+        <article class="cms-contenido" style="padding:26px 0 60px;max-width:900px;">
+            {!! $page->content() !!}
+        </article>
+    </div>
+@endif
 
 <style>
 .cms-contenido{color:#ddd;font-size:15px;line-height:1.75}

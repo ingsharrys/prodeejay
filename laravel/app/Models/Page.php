@@ -3,14 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Page extends Model
 {
-    protected $fillable = ['slug', 'title_es', 'title_en', 'content_es', 'content_en', 'active'];
+    /** Tipos de bloque que el builder puede renderizar. */
+    public const BLOQUES = ['hero', 'titulo', 'texto', 'imagen', 'botones', 'djs', 'musica', 'planes', 'generos', 'html'];
+
+    protected $fillable = ['slug', 'title_es', 'title_en', 'content_es', 'content_en', 'blocks', 'active'];
 
     protected function casts(): array
     {
-        return ['active' => 'boolean'];
+        return ['active' => 'boolean', 'blocks' => 'array'];
     }
 
     /** Título en el idioma actual (con respaldo al español). */
@@ -23,6 +27,33 @@ class Page extends Model
     public function content(): string
     {
         return (string) ((app()->getLocale() === 'en' && $this->content_en) ? $this->content_en : $this->content_es);
+    }
+
+    /** ¿La página fue construida con el builder de bloques? */
+    public function hasBlocks(): bool
+    {
+        return is_array($this->blocks) && count($this->blocks) > 0;
+    }
+
+    /** Valor de un campo bilingüe de un bloque, en el idioma actual. */
+    public static function campo(array $bloque, string $campo): string
+    {
+        if (app()->getLocale() === 'en' && ! empty($bloque[$campo . '_en'])) {
+            return (string) $bloque[$campo . '_en'];
+        }
+
+        return (string) ($bloque[$campo . '_es'] ?? '');
+    }
+
+    /** Convierte el enlace de un bloque en URL absoluta (respeta externos y anclas). */
+    public static function enlace(?string $url): string
+    {
+        $url = trim((string) $url);
+        if ($url === '') {
+            return url('/');
+        }
+
+        return Str::startsWith($url, ['http://', 'https://', '#', 'mailto:', 'tel:']) ? $url : url($url);
     }
 
     public function getRouteKeyName(): string

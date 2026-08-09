@@ -107,6 +107,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('/paginas', [\App\Http\Controllers\Admin\PageAdminController::class, 'index'])->name('admin.pages');
     Route::get('/paginas/nueva', [\App\Http\Controllers\Admin\PageAdminController::class, 'create'])->name('admin.pages.create');
+    Route::post('/paginas/instalar', [\App\Http\Controllers\Admin\PageAdminController::class, 'instalar'])->name('admin.pages.instalar');
+    Route::post('/paginas/vista-previa', [\App\Http\Controllers\Admin\PageAdminController::class, 'previewStore'])->name('admin.pages.preview.store');
+    Route::get('/paginas/vista-previa', [\App\Http\Controllers\Admin\PageAdminController::class, 'previewShow'])->name('admin.pages.preview');
     Route::post('/paginas', [\App\Http\Controllers\Admin\PageAdminController::class, 'store'])->name('admin.pages.store');
     Route::get('/paginas/{page}/editar', [\App\Http\Controllers\Admin\PageAdminController::class, 'edit'])->name('admin.pages.edit');
     Route::put('/paginas/{page}', [\App\Http\Controllers\Admin\PageAdminController::class, 'update'])->name('admin.pages.update');
@@ -150,3 +153,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/djs/{dj}/editar', [\App\Http\Controllers\Admin\DjAdminController::class, 'edit'])->name('admin.djs.edit');
     Route::put('/djs/{dj}', [\App\Http\Controllers\Admin\DjAdminController::class, 'update'])->name('admin.djs.update');
 });
+
+/*
+ * URLs bonitas para las páginas del CMS (/packs, /sets-mixes, /video, ...).
+ * Va al final: cualquier ruta explícita definida arriba tiene prioridad.
+ */
+Route::get('/{pagina:slug}', [\App\Http\Controllers\PageController::class, 'show'])
+    ->where('pagina', '[a-z0-9\-]+')
+    ->name('pages.pretty');

@@ -9,6 +9,12 @@ class DjController extends Controller
 {
     public function index()
     {
+        // Si el administrador creó la página "djs" en el builder, esa manda.
+        $pagina = \App\Models\Page::where('slug', 'djs')->where('active', true)->first();
+        if ($pagina && $pagina->hasBlocks()) {
+            return view('pages.show', ['page' => $pagina]);
+        }
+
         return view('djs.index', [
             'djs' => Dj::where('active', true)->withCount('tracks')->whereHas('tracks')->orderByDesc('tracks_count')->get(),
         ]);
