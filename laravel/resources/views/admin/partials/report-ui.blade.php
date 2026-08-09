@@ -17,6 +17,13 @@
 @media(max-width:900px){.rp-2col{grid-template-columns:1fr}}
 .rp-chart{position:relative;height:280px}
 .rp-chart-sm{position:relative;height:240px}
+/* Pestañas */
+.rp-tabs{display:flex;gap:6px;border-bottom:1px solid #262626;margin:6px 0 22px;flex-wrap:wrap}
+.rp-tab{background:none;border:none;border-bottom:3px solid transparent;color:#8a8a8a;font-size:14px;font-weight:700;padding:10px 18px;cursor:pointer}
+.rp-tab:hover{color:#fff}
+.rp-tab.on{color:#1db954;border-bottom-color:#1db954}
+.rp-pane{display:none}
+.rp-pane.on{display:block}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
@@ -24,6 +31,12 @@ function rpPreset(desde, hasta) {
     document.querySelector('input[name=desde]').value = desde;
     document.querySelector('input[name=hasta]').value = hasta;
     document.getElementById('rpForm').submit();
+}
+function rpTab(nombre, btn) {
+    document.querySelectorAll('.rp-pane').forEach(p => p.classList.toggle('on', p.dataset.pane === nombre));
+    document.querySelectorAll('.rp-tab').forEach(t => t.classList.remove('on'));
+    btn.classList.add('on');
+    window.dispatchEvent(new Event('resize')); // reajusta las gráficas
 }
 window.rpChartDefaults = function () {
     if (!window.Chart) return;

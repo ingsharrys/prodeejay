@@ -109,6 +109,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/reportes', [ReportController::class, 'index'])->name('admin.reports');
     Route::get('/reportes/exportar', [ReportController::class, 'export'])->name('admin.reports.export');
     Route::get('/reportes/dj/{dj:id}', [ReportController::class, 'dj'])->name('admin.reports.dj');
+    Route::get('/reportes/dj/{dj:id}/excel', [ReportController::class, 'djExcel'])->name('admin.reports.dj.excel');
 
     Route::get('/tracks', [\App\Http\Controllers\Admin\TrackAdminController::class, 'index'])->name('admin.tracks');
     Route::get('/tracks/nuevo', [\App\Http\Controllers\Admin\TrackAdminController::class, 'create'])->name('admin.tracks.create');

@@ -31,7 +31,7 @@
     </div>
     <div style="margin-left:auto;display:flex;gap:10px;">
         <a class="btn-sec btn-sm" href="{{ route('admin.reports', ['desde' => $desde, 'hasta' => $hasta]) }}">« Volver al panel</a>
-        <a class="btn-sec btn-sm" href="{{ route('admin.reports.export', ['desde' => $desde, 'hasta' => $hasta, 'dj' => $dj->id]) }}"><i class="fas fa-file-csv"></i> Exportar</a>
+        <a class="btn btn-sm" href="{{ route('admin.reports.dj.excel', ['dj' => $dj->id, 'desde' => $desde, 'hasta' => $hasta]) }}"><i class="fas fa-file-excel"></i> Descargar Excel de liquidación</a>
     </div>
 </div>
 
@@ -101,6 +101,29 @@
                     <td class="num"><strong>${{ number_format((float) $porCancion->sum('ingresos'), 2) }}</strong></td>
                 </tr>
             @endif
+        </tbody>
+    </table>
+</div>
+
+<div class="rp-panel">
+    <h3><i class="fas fa-list" style="color:#1db954;"></i> Detalle venta por venta ({{ $ventasDetalle->count() }})</h3>
+    <p style="color:#8a8a8a;font-size:13px;margin:0 0 12px;">Cada canción vendida con su precio, método de pago y el cliente que la compró. Este es el detalle que baja en el Excel de liquidación.</p>
+    <table class="tabla">
+        <thead>
+            <tr><th>Fecha</th><th>Canción</th><th class="num">Precio</th><th>Método de pago</th><th>Cliente</th></tr>
+        </thead>
+        <tbody>
+            @forelse ($ventasDetalle as $v)
+                <tr>
+                    <td style="white-space:nowrap;">{{ substr($v->fecha, 0, 10) }}</td>
+                    <td>{{ Str::limit($v->cancion, 60) }}</td>
+                    <td class="num">${{ number_format((float) $v->neto, 2) }}</td>
+                    <td>{{ $v->metodo }}</td>
+                    <td>{{ $v->cliente ?: 'Invitado' }} @if ($v->correo)<br><span style="color:#8a8a8a;font-size:12px;">{{ $v->correo }}</span>@endif</td>
+                </tr>
+            @empty
+                <tr><td colspan="5">Sin ventas en el período.</td></tr>
+            @endforelse
         </tbody>
     </table>
 </div>
