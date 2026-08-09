@@ -4,12 +4,37 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', config('app.name', 'Prodeejay Remix'))</title>
+    @php
+        $ajustesSeo = \Illuminate\Support\Facades\Schema::hasTable('settings') ? [
+            'ga'   => \App\Models\Setting::get('ga4_id'),
+            'gsc'  => \App\Models\Setting::get('gsc_verification'),
+            'desc' => \App\Models\Setting::get(app()->getLocale() === 'en' ? 'seo_desc_en' : 'seo_desc_es'),
+        ] : ['ga' => null, 'gsc' => null, 'desc' => null];
+    @endphp
     @hasSection('meta_description')
         <meta name="description" content="@yield('meta_description')">
+    @elseif (!empty($ajustesSeo['desc']))
+        <meta name="description" content="{{ $ajustesSeo['desc'] }}">
     @endif
+    @if (!empty($ajustesSeo['gsc']))
+        <meta name="google-site-verification" content="{{ $ajustesSeo['gsc'] }}">
+    @endif
+    <link rel="canonical" href="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('title', config('app.name', 'Prodeejay Remix'))">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     @stack('head')
+    @if (!empty($ajustesSeo['ga']))
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $ajustesSeo['ga'] }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', @json($ajustesSeo['ga']));
+        </script>
+    @endif
 </head>
 <body>
 

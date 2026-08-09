@@ -1,6 +1,19 @@
 @extends('layouts.app')
 
-@section('title', $page->title() . ' — ' . config('app.name', 'Prodeejay Remix'))
+@section('title', ($page->seoTitle() !== '' ? $page->seoTitle() : $page->title()) . ' — ' . config('app.name', 'Prodeejay Remix'))
+
+@if ($page->seoDescription() !== '')
+    @section('meta_description', $page->seoDescription())
+@endif
+
+@push('head')
+    @if ($page->noindex)
+        <meta name="robots" content="noindex,follow">
+    @endif
+    @if ($page->og_image)
+        <meta property="og:image" content="{{ $page->og_image }}">
+    @endif
+@endpush
 
 @section('content')
 @if ($page->hasBlocks())

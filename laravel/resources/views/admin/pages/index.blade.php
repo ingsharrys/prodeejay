@@ -31,7 +31,7 @@
 </div>
 
 <table class="tabla">
-    <thead><tr><th>Página</th><th>URL</th><th>Tipo</th><th>Estado</th><th></th></tr></thead>
+    <thead><tr><th>Página</th><th>URL</th><th>Tipo</th><th>SEO</th><th>Estado</th><th></th></tr></thead>
     <tbody>
         @forelse ($pages as $p)
             <tr>
@@ -47,6 +47,14 @@
                         Texto
                     @endif
                 </td>
+                @php
+                    $seoP = \App\Support\SeoAnalisis::analizar($p);
+                    $seoC = \App\Support\SeoAnalisis::color($seoP['puntos']);
+                @endphp
+                <td style="white-space:nowrap;">
+                    <span style="color:{{ $seoC }};font-weight:800;font-size:13px;">{{ $seoP['puntos'] }}</span>
+                    <span style="display:inline-block;vertical-align:middle;background:#242424;border-radius:99px;height:8px;width:60px;overflow:hidden;margin-left:4px;"><i style="display:block;height:100%;width:{{ $seoP['puntos'] }}%;background:{{ $seoC }};border-radius:99px;"></i></span>
+                </td>
                 <td>
                     @if ($p->active) <span style="color:#1db954;">● Publicada</span>
                     @else <span style="color:#a33;">● Borrador</span> @endif
@@ -61,7 +69,7 @@
                 </td>
             </tr>
         @empty
-            <tr><td colspan="5">Aún no hay páginas. Crea la primera (por ejemplo: Contacto, Sobre nosotros, Términos).</td></tr>
+            <tr><td colspan="6">Aún no hay páginas. Crea la primera (por ejemplo: Contacto, Sobre nosotros, Términos).</td></tr>
         @endforelse
     </tbody>
 </table>

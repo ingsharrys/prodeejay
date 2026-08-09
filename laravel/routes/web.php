@@ -30,6 +30,9 @@ Route::get('/playlist/{playlist}', [\App\Http\Controllers\PlaylistController::cl
 /* Páginas del CMS */
 Route::get('/p/{pagina:slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
 
+/* Sitemap para buscadores */
+Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
+
 /* Idioma */
 Route::get('/idioma/{locale}', [AccountController::class, 'setLocale'])->name('locale');
 
@@ -123,6 +126,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('/sitio', [\App\Http\Controllers\Admin\SiteAdminController::class, 'index'])->name('admin.site');
     Route::put('/sitio', [\App\Http\Controllers\Admin\SiteAdminController::class, 'update'])->name('admin.site.update');
+
+    Route::get('/seo', [\App\Http\Controllers\Admin\SeoAdminController::class, 'index'])->name('admin.seo');
+    Route::put('/seo', [\App\Http\Controllers\Admin\SeoAdminController::class, 'update'])->name('admin.seo.update');
 
     Route::get('/suscripciones', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'index'])->name('admin.subs');
     Route::post('/suscripciones/planes', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'storePlan'])->name('admin.subs.plan.store');
