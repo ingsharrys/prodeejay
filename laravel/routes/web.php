@@ -27,6 +27,9 @@ Route::get('/planes', [SubscriptionController::class, 'plans'])->name('plans');
 Route::get('/playlists', [\App\Http\Controllers\PlaylistController::class, 'index'])->name('playlists');
 Route::get('/playlist/{playlist}', [\App\Http\Controllers\PlaylistController::class, 'show'])->name('playlists.show');
 
+/* Páginas del CMS */
+Route::get('/p/{pagina:slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
+
 /* Idioma */
 Route::get('/idioma/{locale}', [AccountController::class, 'setLocale'])->name('locale');
 
@@ -101,6 +104,22 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('/impuestos', [\App\Http\Controllers\Admin\TaxAdminController::class, 'index'])->name('admin.taxes');
     Route::put('/impuestos', [\App\Http\Controllers\Admin\TaxAdminController::class, 'update'])->name('admin.taxes.update');
+
+    Route::get('/paginas', [\App\Http\Controllers\Admin\PageAdminController::class, 'index'])->name('admin.pages');
+    Route::get('/paginas/nueva', [\App\Http\Controllers\Admin\PageAdminController::class, 'create'])->name('admin.pages.create');
+    Route::post('/paginas', [\App\Http\Controllers\Admin\PageAdminController::class, 'store'])->name('admin.pages.store');
+    Route::get('/paginas/{page}/editar', [\App\Http\Controllers\Admin\PageAdminController::class, 'edit'])->name('admin.pages.edit');
+    Route::put('/paginas/{page}', [\App\Http\Controllers\Admin\PageAdminController::class, 'update'])->name('admin.pages.update');
+    Route::delete('/paginas/{page}', [\App\Http\Controllers\Admin\PageAdminController::class, 'destroy'])->name('admin.pages.destroy');
+    Route::post('/paginas/portada', [\App\Http\Controllers\Admin\PageAdminController::class, 'setHome'])->name('admin.pages.home');
+
+    Route::get('/menu', [\App\Http\Controllers\Admin\MenuAdminController::class, 'index'])->name('admin.menu');
+    Route::post('/menu', [\App\Http\Controllers\Admin\MenuAdminController::class, 'store'])->name('admin.menu.store');
+    Route::put('/menu/{item}', [\App\Http\Controllers\Admin\MenuAdminController::class, 'update'])->name('admin.menu.update');
+    Route::delete('/menu/{item}', [\App\Http\Controllers\Admin\MenuAdminController::class, 'destroy'])->name('admin.menu.destroy');
+
+    Route::get('/sitio', [\App\Http\Controllers\Admin\SiteAdminController::class, 'index'])->name('admin.site');
+    Route::put('/sitio', [\App\Http\Controllers\Admin\SiteAdminController::class, 'update'])->name('admin.site.update');
 
     Route::get('/suscripciones', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'index'])->name('admin.subs');
     Route::post('/suscripciones/planes', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'storePlan'])->name('admin.subs.plan.store');

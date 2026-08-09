@@ -42,6 +42,10 @@
         <a class="{{ request()->routeIs('admin.playlists*') ? 'on' : '' }}" href="{{ route('admin.playlists') }}"><i class="fas fa-list-ul"></i> Playlists</a>
         <a class="{{ request()->routeIs('admin.genres*') ? 'on' : '' }}" href="{{ route('admin.genres') }}"><i class="fas fa-tags"></i> Géneros</a>
         <a class="{{ request()->routeIs('admin.taxes*') ? 'on' : '' }}" href="{{ route('admin.taxes') }}"><i class="fas fa-percent"></i> Impuestos</a>
+        <div class="sep"></div>
+        <a class="{{ request()->routeIs('admin.pages*') ? 'on' : '' }}" href="{{ route('admin.pages') }}"><i class="fas fa-file-lines"></i> Páginas</a>
+        <a class="{{ request()->routeIs('admin.menu*') ? 'on' : '' }}" href="{{ route('admin.menu') }}"><i class="fas fa-bars"></i> Menú</a>
+        <a class="{{ request()->routeIs('admin.site*') ? 'on' : '' }}" href="{{ route('admin.site') }}"><i class="fas fa-gear"></i> Sitio</a>
         <div class="abajo">
             <div class="sep"></div>
             <a class="{{ request()->routeIs('profile') ? 'on' : '' }}" href="{{ route('profile') }}"><i class="fas fa-user-gear"></i> Mi perfil</a>

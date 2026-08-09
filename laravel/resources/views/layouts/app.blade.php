@@ -13,14 +13,32 @@
 </head>
 <body>
 
+@php
+    $logoSitio = \Illuminate\Support\Facades\Schema::hasTable('settings') ? \App\Models\Setting::get('logo_url') : null;
+    $menuCms = \Illuminate\Support\Facades\Schema::hasTable('menu_items')
+        ? \App\Models\MenuItem::where('active', true)->orderBy('position')->get()
+        : collect();
+@endphp
 <nav class="nav">
     <div class="nav-inner">
-        <a class="logo" href="{{ route('home') }}">PRODEEJAY</a>
-        <a class="item {{ request()->routeIs('player') ? 'active' : '' }}" href="{{ route('player') }}">{{ __('messages.music') }}</a>
-        <a class="item" href="{{ route('player.type', 'pack') }}">{{ __('messages.packs') }}</a>
-        <a class="item" href="{{ route('player.type', 'video') }}">{{ __('messages.videos') }}</a>
-        <a class="item {{ request()->routeIs('djs') ? 'active' : '' }}" href="{{ route('djs') }}">{{ __('messages.djs') }}</a>
-        <a class="item {{ request()->routeIs('plans') ? 'active' : '' }}" href="{{ route('plans') }}">{{ __('messages.plans') }}</a>
+        <a class="logo" href="{{ route('home') }}">
+            @if ($logoSitio)
+                <img src="{{ $logoSitio }}" alt="{{ config('app.name', 'Prodeejay') }}" style="height:36px;max-width:180px;object-fit:contain;display:block;">
+            @else
+                PRODEEJAY
+            @endif
+        </a>
+        @if ($menuCms->isNotEmpty())
+            @foreach ($menuCms as $itemMenu)
+                <a class="item {{ url()->current() === url($itemMenu->url) ? 'active' : '' }}" href="{{ url($itemMenu->url) }}">{{ $itemMenu->label() }}</a>
+            @endforeach
+        @else
+            <a class="item {{ request()->routeIs('player') ? 'active' : '' }}" href="{{ route('player') }}">{{ __('messages.music') }}</a>
+            <a class="item" href="{{ route('player.type', 'pack') }}">{{ __('messages.packs') }}</a>
+            <a class="item" href="{{ route('player.type', 'video') }}">{{ __('messages.videos') }}</a>
+            <a class="item {{ request()->routeIs('djs') ? 'active' : '' }}" href="{{ route('djs') }}">{{ __('messages.djs') }}</a>
+            <a class="item {{ request()->routeIs('plans') ? 'active' : '' }}" href="{{ route('plans') }}">{{ __('messages.plans') }}</a>
+        @endif
         <div class="spacer"></div>
         <span class="lang">
             <a href="{{ route('locale', 'es') }}" class="{{ app()->getLocale() === 'es' ? 'on' : '' }}">ES</a>
