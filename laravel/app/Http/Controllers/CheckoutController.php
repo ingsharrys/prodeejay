@@ -29,10 +29,13 @@ class CheckoutController extends Controller
 
         // Pedido local en estado pendiente.
         $order = Order::create([
-            'user_id'  => $user->id,
-            'status'   => 'pending',
-            'total'    => $tracks->sum('price'),
-            'currency' => config('cashier.currency', 'usd'),
+            'user_id'        => $user->id,
+            'status'         => 'pending',
+            'total'          => $tracks->sum('price'),
+            'currency'       => config('cashier.currency', 'usd'),
+            'payment_title'  => 'Stripe',
+            'customer_name'  => $user->name,
+            'customer_email' => $user->email,
         ]);
         foreach ($tracks as $track) {
             $order->items()->create([

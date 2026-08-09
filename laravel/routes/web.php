@@ -94,6 +94,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/playlists/{playlist}/tracks/{track}', [\App\Http\Controllers\Admin\PlaylistAdminController::class, 'addTrack'])->name('admin.playlists.add');
     Route::delete('/playlists/{playlist}/tracks/{track}', [\App\Http\Controllers\Admin\PlaylistAdminController::class, 'removeTrack'])->name('admin.playlists.remove');
 
+    Route::get('/pedidos', [\App\Http\Controllers\Admin\OrderAdminController::class, 'index'])->name('admin.orders');
+
     Route::get('/suscripciones', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'index'])->name('admin.subs');
     Route::post('/suscripciones/planes', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'storePlan'])->name('admin.subs.plan.store');
     Route::put('/suscripciones/planes/{plan}', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'updatePlan'])->name('admin.subs.plan.update');

@@ -56,6 +56,9 @@ class SquareController extends Controller
             'total'          => $total,
             'currency'       => 'usd',
             'payment_method' => 'square',
+            'payment_title'  => 'Tarjeta (Square)',
+            'customer_name'  => $request->user()->name,
+            'customer_email' => $request->user()->email,
         ]);
         foreach ($tracks as $track) {
             $order->items()->create([

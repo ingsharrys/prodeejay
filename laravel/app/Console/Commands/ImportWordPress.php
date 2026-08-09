@@ -272,23 +272,34 @@ class ImportWordPress extends Command
         $importados = 0;
 
         if (Schema::connection('wordpress')->hasTable($this->prefix . 'wc_orders')) {
-            // WooCommerce moderno (HPOS)
+            // WooCommerce moderno (HPOS): datos del cliente y método de
+            // pago vienen en wc_orders y wc_order_addresses.
             $pedidos = $this->wp('wc_orders')
                 ->whereIn('status', ['wc-completed', 'wc-processing', 'wc-refunded'])
-                ->get(['id', 'status', 'total_amount', 'currency', 'customer_id', 'date_created_gmt']);
+                ->get(['id', 'status', 'total_amount', 'currency', 'customer_id', 'billing_email', 'payment_method', 'payment_method_title', 'date_created_gmt']);
 
             foreach ($pedidos as $p) {
-                $importados += $this->guardarPedido(
-                    (int) $p->id,
-                    (string) $p->status,
-                    (float) $p->total_amount,
-                    (string) ($p->currency ?: 'USD'),
-                    (int) $p->customer_id,
-                    (string) $p->date_created_gmt
-                );
+                $direccion = DB::connection('wordpress')
+                    ->table($this->prefix . 'wc_order_addresses')
+                    ->where('order_id', $p->id)
+                    ->where('address_type', 'billing')
+                    ->first(['first_name', 'last_name']);
+
+                $importados += $this->guardarPedido([
+                    'wp_id'          => (int) $p->id,
+                    'status'         => (string) $p->status,
+                    'total'          => (float) $p->total_amount,
+                    'currency'       => (string) ($p->currency ?: 'USD'),
+                    'wp_user_id'     => (int) $p->customer_id,
+                    'fecha'          => (string) $p->date_created_gmt,
+                    'customer_name'  => trim(($direccion->first_name ?? '') . ' ' . ($direccion->last_name ?? '')) ?: null,
+                    'customer_email' => (string) $p->billing_email ?: null,
+                    'payment_method' => (string) $p->payment_method ?: null,
+                    'payment_title'  => (string) $p->payment_method_title ?: null,
+                ]);
             }
         } else {
-            // Almacenamiento clásico (posts)
+            // Almacenamiento clásico (posts + postmeta)
             $pedidos = $this->wp('posts')
                 ->where('post_type', 'shop_order')
                 ->whereIn('post_status', ['wc-completed', 'wc-processing', 'wc-refunded'])
@@ -296,35 +307,49 @@ class ImportWordPress extends Command
 
             foreach ($pedidos as $p) {
                 $meta = $this->metaDePost($p->ID);
-                $importados += $this->guardarPedido(
-                    (int) $p->ID,
-                    (string) $p->post_status,
-                    (float) ($meta['_order_total'] ?? 0),
-                    (string) ($meta['_order_currency'] ?? 'USD'),
-                    (int) ($meta['_customer_user'] ?? 0),
-                    (string) $p->post_date_gmt
-                );
+                $importados += $this->guardarPedido([
+                    'wp_id'          => (int) $p->ID,
+                    'status'         => (string) $p->post_status,
+                    'total'          => (float) ($meta['_order_total'] ?? 0),
+                    'currency'       => (string) ($meta['_order_currency'] ?? 'USD'),
+                    'wp_user_id'     => (int) ($meta['_customer_user'] ?? 0),
+                    'fecha'          => (string) $p->post_date_gmt,
+                    'customer_name'  => trim(($meta['_billing_first_name'] ?? '') . ' ' . ($meta['_billing_last_name'] ?? '')) ?: null,
+                    'customer_email' => ($meta['_billing_email'] ?? null) ?: null,
+                    'payment_method' => ($meta['_payment_method'] ?? null) ?: null,
+                    'payment_title'  => ($meta['_payment_method_title'] ?? null) ?: null,
+                ]);
             }
         }
 
         $this->info("Pedidos importados: {$importados}");
     }
 
-    private function guardarPedido(int $wpId, string $status, float $total, string $currency, int $wpUserId, string $fecha): int
+    private function guardarPedido(array $d): int
     {
-        $user = $wpUserId ? User::where('wp_user_id', $wpUserId)->first() : null;
+        // Vincular al usuario: por su id de WordPress, o por el correo
+        // de facturación (para compras hechas como invitado).
+        $user = $d['wp_user_id'] ? User::where('wp_user_id', $d['wp_user_id'])->first() : null;
+        if (! $user && $d['customer_email']) {
+            $user = User::where('email', $d['customer_email'])->first();
+        }
 
         $order = Order::updateOrCreate(
-            ['wp_order_id' => $wpId],
+            ['wp_order_id' => $d['wp_id']],
             [
-                'user_id'  => $user?->id,
-                'status'   => $status === 'wc-refunded' ? 'refunded' : 'paid',
-                'total'    => $total,
-                'currency' => strtolower($currency),
-                'paid_at'  => $fecha,
-                'created_at' => $fecha,
+                'user_id'        => $user?->id,
+                'status'         => $d['status'] === 'wc-refunded' ? 'refunded' : 'paid',
+                'total'          => $d['total'],
+                'currency'       => strtolower($d['currency']),
+                'paid_at'        => $d['fecha'],
+                'created_at'     => $d['fecha'],
+                'customer_name'  => $d['customer_name'] ?? $user?->name,
+                'customer_email' => $d['customer_email'] ?? $user?->email,
+                'payment_method' => $d['payment_method'] ?? 'wordpress',
+                'payment_title'  => $d['payment_title'],
             ]
         );
+        $wpId = $d['wp_id'];
 
         // Artículos del pedido
         $items = $this->wp('woocommerce_order_items')
