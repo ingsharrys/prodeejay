@@ -33,48 +33,35 @@ class SquareController extends Controller
     }
 
     /**
-     * Crea el enlace de pago de Square y redirige a su página de pago.
+     * Ruta antigua: ahora el flujo pasa por el checkout con facturación.
      */
     public function checkout(Request $request)
     {
+        return redirect()->route('checkout.page');
+    }
+
+    /**
+     * Crea el enlace de pago de Square para un pedido ya calculado
+     * (total con impuestos). Devuelve la URL de pago o null si falla.
+     */
+    public function iniciar(Order $order): ?string
+    {
         if (! config('services.square.access_token') || ! config('services.square.location_id')) {
-            return redirect()->route('cart.index')->withErrors(['pago' => __('messages.square_not_configured')]);
+            return null;
         }
 
-        $trackIds = array_keys($request->session()->get('cart', []));
-        $tracks = Track::whereIn('id', $trackIds)->where('price', '>', 0)->get();
-
-        if ($tracks->isEmpty()) {
-            return redirect()->route('cart.index');
-        }
-
-        $total = (float) $tracks->sum('price');
-
-        $order = Order::create([
-            'user_id'        => $request->user()->id,
-            'status'         => 'pending',
-            'total'          => $total,
-            'currency'       => 'usd',
-            'payment_method' => 'square',
-            'payment_title'  => 'Tarjeta (Square)',
-            'customer_name'  => $request->user()->name,
-            'customer_email' => $request->user()->email,
-        ]);
-        foreach ($tracks as $track) {
-            $order->items()->create([
-                'track_id' => $track->id,
-                'name'     => $track->title,
-                'price'    => $track->price,
-            ]);
+        $nombre = 'Prodeejay Remix — ' . $order->items()->count() . ' track(s)';
+        if ((float) $order->tax_amount > 0) {
+            $nombre .= ' (incluye impuesto)';
         }
 
         try {
             $respuesta = $this->api()->post($this->baseUrl() . '/v2/online-checkout/payment-links', [
                 'idempotency_key' => (string) Str::uuid(),
                 'quick_pay' => [
-                    'name'        => 'Prodeejay Remix — ' . $tracks->count() . ' track(s)',
+                    'name'        => $nombre,
                     'price_money' => [
-                        'amount'   => (int) round($total * 100),
+                        'amount'   => (int) round((float) $order->total * 100),
                         'currency' => 'USD',
                     ],
                     'location_id' => config('services.square.location_id'),
@@ -89,14 +76,12 @@ class SquareController extends Controller
         }
 
         if (! $respuesta || ! $respuesta->successful()) {
-            $order->delete();
-
-            return redirect()->route('cart.index')->withErrors(['pago' => __('messages.square_error')]);
+            return null;
         }
 
         $order->update(['square_order_id' => $respuesta->json('payment_link.order_id')]);
 
-        return redirect()->away($respuesta->json('payment_link.url'));
+        return $respuesta->json('payment_link.url');
     }
 
     /**

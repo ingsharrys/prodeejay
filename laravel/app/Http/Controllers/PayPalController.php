@@ -40,44 +40,38 @@ class PayPalController extends Controller
     }
 
     /**
-     * Crea la orden en PayPal y redirige a la página de aprobación.
+     * Ruta antigua: ahora el flujo pasa por el checkout con facturación.
      */
     public function checkout(Request $request)
     {
+        return redirect()->route('checkout.page');
+    }
+
+    /**
+     * Crea la orden en PayPal para un pedido ya calculado, con el
+     * desglose subtotal + impuesto. Devuelve la URL de aprobación.
+     */
+    public function iniciar(Order $order): ?string
+    {
         if (! config('services.paypal.client_id')) {
-            return redirect()->route('cart.index')->withErrors(['pago' => __('messages.paypal_not_configured')]);
-        }
-
-        $trackIds = array_keys($request->session()->get('cart', []));
-        $tracks = Track::whereIn('id', $trackIds)->where('price', '>', 0)->get();
-
-        if ($tracks->isEmpty()) {
-            return redirect()->route('cart.index');
+            return null;
         }
 
         $token = $this->accessToken();
         if (! $token) {
-            return redirect()->route('cart.index')->withErrors(['pago' => __('messages.paypal_error')]);
+            return null;
         }
 
-        $total = number_format((float) $tracks->sum('price'), 2, '.', '');
+        $subtotal = number_format((float) ($order->subtotal ?? $order->total), 2, '.', '');
+        $impuesto = number_format((float) $order->tax_amount, 2, '.', '');
+        $total    = number_format((float) $order->total, 2, '.', '');
 
-        $order = Order::create([
-            'user_id'        => $request->user()->id,
-            'status'         => 'pending',
-            'total'          => $total,
-            'currency'       => 'usd',
-            'payment_method' => 'paypal',
-            'payment_title'  => 'PayPal',
-            'customer_name'  => $request->user()->name,
-            'customer_email' => $request->user()->email,
-        ]);
-        foreach ($tracks as $track) {
-            $order->items()->create([
-                'track_id' => $track->id,
-                'name'     => $track->title,
-                'price'    => $track->price,
-            ]);
+        $amount = ['currency_code' => 'USD', 'value' => $total];
+        if ((float) $impuesto > 0) {
+            $amount['breakdown'] = [
+                'item_total' => ['currency_code' => 'USD', 'value' => $subtotal],
+                'tax_total'  => ['currency_code' => 'USD', 'value' => $impuesto],
+            ];
         }
 
         try {
@@ -85,14 +79,14 @@ class PayPalController extends Controller
                 'intent'         => 'CAPTURE',
                 'purchase_units' => [[
                     'reference_id' => (string) $order->id,
-                    'description'  => 'Prodeejay Remix — ' . $tracks->count() . ' track(s)',
-                    'amount'       => ['currency_code' => 'USD', 'value' => $total],
+                    'description'  => 'Prodeejay Remix — ' . $order->items()->count() . ' track(s)',
+                    'amount'       => $amount,
                 ]],
                 'application_context' => [
                     'brand_name'  => 'Prodeejay Remix',
                     'user_action' => 'PAY_NOW',
                     'return_url'  => route('paypal.return'),
-                    'cancel_url'  => route('cart.index'),
+                    'cancel_url'  => route('checkout.page'),
                 ],
             ]);
         } catch (\Throwable $e) {
@@ -101,19 +95,14 @@ class PayPalController extends Controller
         }
 
         if (! $respuesta || ! $respuesta->successful()) {
-            $order->delete();
-
-            return redirect()->route('cart.index')->withErrors(['pago' => __('messages.paypal_error')]);
+            return null;
         }
 
         $order->update(['paypal_order_id' => $respuesta->json('id')]);
 
         $aprobacion = collect($respuesta->json('links', []))->firstWhere('rel', 'approve');
-        if (! $aprobacion) {
-            return redirect()->route('cart.index')->withErrors(['pago' => __('messages.paypal_error')]);
-        }
 
-        return redirect()->away($aprobacion['href']);
+        return $aprobacion['href'] ?? null;
     }
 
     /**

@@ -13,6 +13,7 @@ class Order extends Model
         'stripe_payment_intent', 'wp_order_id', 'paid_at',
         'payment_method', 'paypal_order_id', 'square_order_id',
         'customer_name', 'customer_email', 'payment_title',
+        'subtotal', 'tax_pct', 'tax_amount', 'customer_phone', 'customer_country',
     ];
 
     protected function casts(): array
