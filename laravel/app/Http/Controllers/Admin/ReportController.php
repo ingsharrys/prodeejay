@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
- * Reporte de ventas con rango de fechas: resumen por DJ, detalle por
- * día y detalle por canción vendida. Exportable a CSV.
+ * Panel de reportes: resumen general con gráficas y hoja de reporte
+ * individual por DJ, ambos con rango de fechas.
  */
 class ReportController extends Controller
 {
@@ -19,31 +19,53 @@ class ReportController extends Controller
     {
         [$desde, $hasta, $djId] = $this->filtros($request);
 
-        $porDj      = $this->consulta($desde, $hasta, $djId)
-            ->selectRaw("coalesce(djs.name, 'Sin DJ') as dj, sum(order_items.quantity) as unidades, sum(order_items.price * order_items.quantity) as ingresos")
-            ->groupBy('dj')->orderByDesc('ingresos')->get();
+        $totales = $this->totales($desde, $hasta, $djId);
+        $previos = $this->totalesPeriodoAnterior($desde, $hasta, $djId);
 
-        $porDia     = $this->consulta($desde, $hasta, $djId)
-            ->selectRaw('date(orders.paid_at) as dia, sum(order_items.quantity) as unidades, sum(order_items.price * order_items.quantity) as ingresos')
-            ->groupBy('dia')->orderBy('dia')->get();
+        $porDj = $this->consulta($desde, $hasta, $djId)
+            ->selectRaw("coalesce(djs.name, 'Sin DJ') as dj, tracks.dj_id as dj_id, sum(order_items.quantity) as unidades, sum(order_items.price * order_items.quantity) as ingresos")
+            ->groupBy('dj', 'tracks.dj_id')->orderByDesc('ingresos')->get();
 
-        $porCancion = $this->porCancion($desde, $hasta, $djId)->take(300)->get();
-
-        $totales = [
-            'ingresos' => (float) $porDj->sum('ingresos'),
-            'unidades' => (int) $porDj->sum('unidades'),
-            'pedidos'  => (int) $this->consulta($desde, $hasta, $djId)->distinct('orders.id')->count('orders.id'),
-        ];
+        $porMetodo = $this->consulta($desde, $hasta, $djId)
+            ->selectRaw("coalesce(orders.payment_title, orders.payment_method, 'Otro') as metodo, sum(order_items.price * order_items.quantity) as ingresos")
+            ->groupBy('metodo')->orderByDesc('ingresos')->get();
 
         return view('admin.reports', [
-            'porDj'      => $porDj,
-            'porDia'     => $porDia,
-            'porCancion' => $porCancion,
-            'totales'    => $totales,
             'desde'      => $desde,
             'hasta'      => $hasta,
             'djId'       => $djId,
             'djs'        => Dj::orderBy('name')->get(),
+            'totales'    => $totales,
+            'previos'    => $previos,
+            'serieDias'  => $this->serieDias($desde, $hasta, $djId),
+            'porDj'      => $porDj,
+            'porMetodo'  => $porMetodo,
+            'porCancion' => $this->porCancion($desde, $hasta, $djId)->take(100)->get(),
+        ]);
+    }
+
+    /**
+     * Hoja de reporte individual de un DJ.
+     */
+    public function dj(Request $request, Dj $dj)
+    {
+        [$desde, $hasta] = $this->filtros($request);
+
+        $totales      = $this->totales($desde, $hasta, $dj->id);
+        $previos      = $this->totalesPeriodoAnterior($desde, $hasta, $dj->id);
+        $totalesSitio = $this->totales($desde, $hasta, null);
+
+        return view('admin.reports-dj', [
+            'dj'          => $dj,
+            'desde'       => $desde,
+            'hasta'       => $hasta,
+            'totales'     => $totales,
+            'previos'     => $previos,
+            'participacion' => $totalesSitio['ingresos'] > 0
+                ? round($totales['ingresos'] / $totalesSitio['ingresos'] * 100, 1)
+                : 0,
+            'serieDias'   => $this->serieDias($desde, $hasta, $dj->id),
+            'porCancion'  => $this->porCancion($desde, $hasta, $dj->id)->get(),
         ]);
     }
 
@@ -66,15 +88,13 @@ class ReportController extends Controller
         }, $nombre, ['Content-Type' => 'text/csv; charset=utf-8']);
     }
 
-    /**
-     * Rango de fechas (por defecto el mes en curso) y DJ opcional.
-     */
+    /* ------------------------------------------------------------- */
+
     private function filtros(Request $request): array
     {
         $desde = $request->query('desde') ?: now()->startOfMonth()->toDateString();
         $hasta = $request->query('hasta') ?: now()->toDateString();
 
-        // Fechas válidas y en orden.
         $desde = date('Y-m-d', strtotime($desde) ?: time());
         $hasta = date('Y-m-d', strtotime($hasta) ?: time());
         if ($desde > $hasta) {
@@ -95,6 +115,66 @@ class ReportController extends Controller
             ->where('orders.status', 'paid')
             ->whereBetween('orders.paid_at', ["{$desde} 00:00:00", "{$hasta} 23:59:59"])
             ->when($djId, fn (Builder $q) => $q->where('tracks.dj_id', $djId));
+    }
+
+    private function totales(string $desde, string $hasta, ?int $djId): array
+    {
+        $fila = $this->consulta($desde, $hasta, $djId)
+            ->selectRaw('coalesce(sum(order_items.price * order_items.quantity), 0) as ingresos, coalesce(sum(order_items.quantity), 0) as unidades, count(distinct orders.id) as pedidos')
+            ->first();
+
+        $ingresos = (float) $fila->ingresos;
+        $pedidos  = (int) $fila->pedidos;
+
+        return [
+            'ingresos' => $ingresos,
+            'unidades' => (int) $fila->unidades,
+            'pedidos'  => $pedidos,
+            'ticket'   => $pedidos > 0 ? $ingresos / $pedidos : 0,
+        ];
+    }
+
+    /**
+     * Totales del período inmediatamente anterior de igual duración,
+     * para calcular las variaciones porcentuales.
+     */
+    private function totalesPeriodoAnterior(string $desde, string $hasta, ?int $djId): array
+    {
+        $dias      = (int) ((strtotime($hasta) - strtotime($desde)) / 86400) + 1;
+        $prevHasta = date('Y-m-d', strtotime("{$desde} -1 day"));
+        $prevDesde = date('Y-m-d', strtotime($prevHasta . ' -' . ($dias - 1) . ' day'));
+
+        return $this->totales($prevDesde, $prevHasta, $djId) + [
+            'desde' => $prevDesde,
+            'hasta' => $prevHasta,
+        ];
+    }
+
+    /**
+     * Serie diaria continua (rellena los días sin ventas con cero).
+     */
+    private function serieDias(string $desde, string $hasta, ?int $djId): array
+    {
+        $mapa = $this->consulta($desde, $hasta, $djId)
+            ->selectRaw('date(orders.paid_at) as dia, sum(order_items.quantity) as unidades, sum(order_items.price * order_items.quantity) as ingresos')
+            ->groupBy('dia')->get()->keyBy('dia');
+
+        $serie  = [];
+        $cursor = strtotime($desde);
+        $fin    = strtotime($hasta);
+        $limite = 400; // tope de puntos por seguridad
+
+        while ($cursor <= $fin && $limite-- > 0) {
+            $dia = date('Y-m-d', $cursor);
+            $serie[] = [
+                'dia'      => $dia,
+                'ingresos' => round((float) ($mapa[$dia]->ingresos ?? 0), 2),
+                'unidades' => (int) ($mapa[$dia]->unidades ?? 0),
+            ];
+            $cursor = strtotime('+1 day', $cursor);
+        }
+
+        return $serie;
     }
 
     private function porCancion(string $desde, string $hasta, ?int $djId): Builder
