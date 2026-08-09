@@ -63,6 +63,57 @@ class PageAdminController extends Controller
     }
 
     /**
+     * Crea las páginas por defecto (inicio, suscripciones, djs, packs,
+     * sets-mixes, video) y el menú, sin tocar lo ya editado.
+     */
+    public function instalar()
+    {
+        $resultado = \App\Support\CmsPorDefecto::instalar();
+
+        $mensaje = count($resultado['creadas'])
+            ? 'Páginas creadas: ' . implode(', ', $resultado['creadas']) . '.'
+            : 'Las páginas por defecto ya existían, no se creó ninguna nueva.';
+        if ($resultado['menu']) {
+            $mensaje .= ' Se creó el menú del sitio.';
+        }
+        if ($resultado['portada']) {
+            $mensaje .= ' La página "inicio" quedó como portada.';
+        }
+
+        return back()->with('status', $mensaje);
+    }
+
+    /**
+     * Guarda en sesión el borrador que envía el builder para poder
+     * mostrar la vista previa sin guardar la página.
+     */
+    public function previewStore(Request $request)
+    {
+        $request->session()->put('cms_vista_previa', [
+            'title_es' => (string) $request->input('title_es', 'Vista previa'),
+            'title_en' => (string) $request->input('title_en', ''),
+            'blocks'   => $this->bloquesLimpios($request->input('blocks')),
+        ]);
+
+        return response()->json(['ok' => true]);
+    }
+
+    /** Renderiza la vista previa del borrador guardado en sesión. */
+    public function previewShow(Request $request)
+    {
+        $datos = $request->session()->get('cms_vista_previa');
+        abort_unless(is_array($datos), 404);
+
+        $page = new Page([
+            'title_es' => $datos['title_es'] ?: 'Vista previa',
+            'title_en' => $datos['title_en'],
+        ]);
+        $page->blocks = $datos['blocks'];
+
+        return view('pages.show', compact('page'));
+    }
+
+    /**
      * Define qué se muestra en la portada: una página del CMS o la
      * landing por defecto (id 0).
      */
@@ -84,10 +135,25 @@ class PageAdminController extends Controller
             'title_en'   => ['nullable', 'string', 'max:180'],
             'content_es' => ['nullable', 'string'],
             'content_en' => ['nullable', 'string'],
+            'blocks'     => ['nullable', 'string'],
         ]);
         $data['active'] = $request->boolean('active');
+        $data['blocks'] = $this->bloquesLimpios($request->input('blocks'));
 
         return $data;
+    }
+
+    /** Decodifica y filtra los bloques del builder (solo tipos conocidos). */
+    private function bloquesLimpios($json): array
+    {
+        $bloques = is_string($json) ? json_decode($json, true) : $json;
+        if (! is_array($bloques)) {
+            return [];
+        }
+
+        return array_values(array_filter($bloques, function ($b) {
+            return is_array($b) && in_array($b['type'] ?? '', Page::BLOQUES, true);
+        }));
     }
 
     private function slugUnico(string $base, ?int $ignorarId = null): string
