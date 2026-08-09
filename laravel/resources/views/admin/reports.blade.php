@@ -73,9 +73,9 @@
 </div>
 
 <div class="rp-tabs">
-    <button type="button" class="rp-tab on" onclick="rpTab('resumen', this)"><i class="fas fa-chart-pie"></i> Resumen</button>
-    <button type="button" class="rp-tab" onclick="rpTab('canciones', this)"><i class="fas fa-music"></i> Canciones vendidas</button>
-    <button type="button" class="rp-tab" onclick="rpTab('djs', this)"><i class="fas fa-headphones"></i> DJs que vendieron</button>
+    <button type="button" class="rp-tab on" data-tab="resumen" onclick="rpTab('resumen', this)"><i class="fas fa-chart-pie"></i> Resumen</button>
+    <button type="button" class="rp-tab" data-tab="canciones" onclick="rpTab('canciones', this)"><i class="fas fa-music"></i> Canciones vendidas <span class="cnt">{{ number_format($porCancion->count()) }}</span></button>
+    <button type="button" class="rp-tab" data-tab="djs" onclick="rpTab('djs', this)"><i class="fas fa-headphones"></i> DJs que vendieron <span class="cnt">{{ number_format($porDj->count()) }}</span></button>
 </div>
 
 <div class="rp-pane on" data-pane="resumen">
@@ -113,6 +113,15 @@
                 @empty
                     <tr><td colspan="5">Sin ventas en este período.</td></tr>
                 @endforelse
+                @if ($porCancion->isNotEmpty())
+                    <tr>
+                        <td></td>
+                        <td><strong>TOTAL</strong></td>
+                        <td></td>
+                        <td class="num"><strong>{{ number_format($porCancion->sum('unidades')) }}</strong></td>
+                        <td class="num"><strong>${{ number_format((float) $porCancion->sum('ingresos'), 2) }}</strong></td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>
