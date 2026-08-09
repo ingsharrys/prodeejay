@@ -34,7 +34,8 @@
     <aside class="adm-side">
         <div class="logo">PRODEEJAY <span style="color:#666;font-size:11px;">ADMIN</span></div>
         <a class="{{ request()->routeIs('admin.dashboard') ? 'on' : '' }}" href="{{ route('admin.dashboard') }}"><i class="fas fa-gauge"></i> Dashboard</a>
-        <a class="{{ request()->routeIs('admin.reports*') ? 'on' : '' }}" href="{{ route('admin.reports') }}"><i class="fas fa-chart-line"></i> Ventas por DJ</a>
+        <a class="{{ request()->routeIs('admin.reports*') ? 'on' : '' }}" href="{{ route('admin.reports') }}"><i class="fas fa-chart-line"></i> Reportes</a>
+        <a class="{{ request()->routeIs('admin.orders*') ? 'on' : '' }}" href="{{ route('admin.orders') }}"><i class="fas fa-receipt"></i> Pedidos</a>
         <a class="{{ request()->routeIs('admin.tracks*') ? 'on' : '' }}" href="{{ route('admin.tracks') }}"><i class="fas fa-music"></i> Música</a>
         <a class="{{ request()->routeIs('admin.djs*') ? 'on' : '' }}" href="{{ route('admin.djs') }}"><i class="fas fa-headphones"></i> DJs</a>
         <a class="{{ request()->routeIs('admin.subs*') ? 'on' : '' }}" href="{{ route('admin.subs') }}"><i class="fas fa-id-card"></i> Suscripciones</a>

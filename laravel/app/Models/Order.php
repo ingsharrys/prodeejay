@@ -11,6 +11,8 @@ class Order extends Model
     protected $fillable = [
         'user_id', 'status', 'total', 'currency', 'stripe_session_id',
         'stripe_payment_intent', 'wp_order_id', 'paid_at',
+        'payment_method', 'paypal_order_id', 'square_order_id',
+        'customer_name', 'customer_email', 'payment_title',
     ];
 
     protected function casts(): array

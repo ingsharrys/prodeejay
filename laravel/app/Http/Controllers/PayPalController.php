@@ -68,6 +68,9 @@ class PayPalController extends Controller
             'total'          => $total,
             'currency'       => 'usd',
             'payment_method' => 'paypal',
+            'payment_title'  => 'PayPal',
+            'customer_name'  => $request->user()->name,
+            'customer_email' => $request->user()->email,
         ]);
         foreach ($tracks as $track) {
             $order->items()->create([
