@@ -14,6 +14,9 @@
         ['lbl' => 'Pedidos', 'num' => number_format($totales['pedidos']), 'd' => $delta($totales['pedidos'], $previos['pedidos'])],
         ['lbl' => 'Ticket promedio', 'num' => '$' . number_format($totales['ticket'], 2), 'd' => $delta($totales['ticket'], $previos['ticket'])],
     ];
+    if (isset($impuestos) && $impuestos !== null) {
+        $kpis[] = ['lbl' => 'Impuestos recaudados', 'num' => '$' . number_format($impuestos, 2), 'd' => null];
+    }
 @endphp
 
 @section('content')

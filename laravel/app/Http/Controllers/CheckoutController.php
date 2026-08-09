@@ -9,61 +9,60 @@ use Illuminate\Http\Request;
 class CheckoutController extends Controller
 {
     /**
-     * Crea la sesión de pago de Stripe Checkout con el carrito.
+     * Ruta antigua: ahora el flujo pasa por el checkout con facturación.
      */
     public function checkout(Request $request)
     {
-        // Stripe está apagado por ahora (interruptor PAYMENT_STRIPE).
-        if (! config('services.payments.stripe')) {
-            return redirect()->route('cart.index')->withErrors(['pago' => __('messages.stripe_disabled')]);
+        return redirect()->route('checkout.page');
+    }
+
+    /**
+     * Crea la sesión de Stripe Checkout para un pedido ya calculado,
+     * con el impuesto como línea aparte. Devuelve la URL de pago.
+     */
+    public function iniciar(Order $order): ?string
+    {
+        if (! config('services.payments.stripe') || ! config('cashier.secret')) {
+            return null;
         }
 
-        $trackIds = array_keys($request->session()->get('cart', []));
-        $tracks = Track::whereIn('id', $trackIds)->where('price', '>', 0)->get();
+        $moneda = config('cashier.currency', 'usd');
 
-        if ($tracks->isEmpty()) {
-            return redirect()->route('cart.index');
-        }
+        $lineas = $order->items->map(fn ($item) => [
+            'price_data' => [
+                'currency'     => $moneda,
+                'unit_amount'  => (int) round((float) $item->price * 100),
+                'product_data' => ['name' => $item->name],
+            ],
+            'quantity' => (int) $item->quantity,
+        ])->all();
 
-        $user = $request->user();
-
-        // Pedido local en estado pendiente.
-        $order = Order::create([
-            'user_id'        => $user->id,
-            'status'         => 'pending',
-            'total'          => $tracks->sum('price'),
-            'currency'       => config('cashier.currency', 'usd'),
-            'payment_title'  => 'Stripe',
-            'customer_name'  => $user->name,
-            'customer_email' => $user->email,
-        ]);
-        foreach ($tracks as $track) {
-            $order->items()->create([
-                'track_id' => $track->id,
-                'name'     => $track->title,
-                'price'    => $track->price,
-            ]);
-        }
-
-        $session = $user->checkout(
-            $tracks->map(fn (Track $t) => [
+        if ((float) $order->tax_amount > 0) {
+            $lineas[] = [
                 'price_data' => [
-                    'currency'     => config('cashier.currency', 'usd'),
-                    'unit_amount'  => (int) round($t->price * 100),
-                    'product_data' => ['name' => $t->title],
+                    'currency'     => $moneda,
+                    'unit_amount'  => (int) round((float) $order->tax_amount * 100),
+                    'product_data' => ['name' => 'Impuesto (' . rtrim(rtrim(number_format((float) $order->tax_pct, 3), '0'), '.') . '%)'],
                 ],
                 'quantity' => 1,
-            ])->all(),
-            [
+            ];
+        }
+
+        try {
+            $session = $order->user->checkout($lineas, [
                 'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url'  => route('cart.index'),
+                'cancel_url'  => route('checkout.page'),
                 'metadata'    => ['order_id' => $order->id],
-            ]
-        );
+            ]);
+        } catch (\Throwable $e) {
+            report($e);
+
+            return null;
+        }
 
         $order->update(['stripe_session_id' => $session->id]);
 
-        return redirect($session->url);
+        return $session->url;
     }
 
     /**

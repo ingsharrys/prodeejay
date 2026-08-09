@@ -19,7 +19,7 @@
 
 <table class="tabla" style="margin-top:18px;">
     <thead>
-        <tr><th>Fecha</th><th>Cliente</th><th>Artículos</th><th>Método de pago</th><th class="num">Total</th><th>Estado</th></tr>
+        <tr><th>Fecha</th><th>Cliente</th><th>Artículos</th><th>Método de pago</th><th class="num">Subtotal</th><th class="num">Impuesto</th><th class="num">Total</th><th>Estado</th></tr>
     </thead>
     <tbody>
         @forelse ($orders as $order)
@@ -28,6 +28,9 @@
                 <td>
                     <strong>{{ $order->customer_name ?? $order->user?->name ?? 'Invitado' }}</strong><br>
                     <span style="color:#b3b3b3;font-size:12px;">{{ $order->customer_email ?? $order->user?->email }}</span>
+                    @if ($order->customer_phone || $order->customer_country)
+                        <br><span style="color:#666;font-size:11px;">{{ trim(($order->customer_phone ?? '') . ' ' . ($order->customer_country ?? '')) }}</span>
+                    @endif
                 </td>
                 <td style="font-size:13px;">
                     @foreach ($order->items as $item)
@@ -40,6 +43,8 @@
                     @endforeach
                 </td>
                 <td>{{ $order->payment_title ?? ucfirst($order->payment_method ?? '—') }}</td>
+                <td class="num">${{ number_format((float) ($order->subtotal ?? $order->total), 2) }}</td>
+                <td class="num">@if ((float) $order->tax_amount > 0)${{ number_format((float) $order->tax_amount, 2) }} <span style="color:#666;font-size:11px;">({{ rtrim(rtrim(number_format((float) $order->tax_pct, 3), '0'), '.') }}%)</span>@else — @endif</td>
                 <td class="num"><strong>${{ number_format((float) $order->total, 2) }}</strong></td>
                 <td>
                     @if ($order->status === 'paid')
@@ -52,7 +57,7 @@
                 </td>
             </tr>
         @empty
-            <tr><td colspan="6">No hay pedidos con esos filtros.</td></tr>
+            <tr><td colspan="8">No hay pedidos con esos filtros.</td></tr>
         @endforelse
     </tbody>
 </table>

@@ -31,7 +31,13 @@ class ReportController extends Controller
             ->selectRaw("coalesce(orders.payment_title, orders.payment_method, 'Otro') as metodo, sum(order_items.price * order_items.quantity) as ingresos")
             ->groupBy('metodo')->orderByDesc('ingresos')->get();
 
+        // Impuestos recaudados en el rango (dato a nivel de pedido).
+        $impuestos = $djId ? null : (float) \App\Models\Order::where('status', 'paid')
+            ->whereBetween('paid_at', ["{$desde} 00:00:00", "{$hasta} 23:59:59"])
+            ->sum('tax_amount');
+
         return view('admin.reports', [
+            'impuestos'  => $impuestos,
             'desde'      => $desde,
             'hasta'      => $hasta,
             'djId'       => $djId,

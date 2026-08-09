@@ -43,16 +43,12 @@
                     </tr>
                 </tbody>
             </table>
-            <p style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;">
+            <p style="margin-top:24px;">
                 @auth
-                    @if (config('services.square.access_token'))
-                        <a class="btn" href="{{ route('square.checkout') }}"><i class="fas fa-credit-card"></i> {{ __('messages.pay_with_card') }}</a>
-                    @endif
-                    @if (config('services.paypal.client_id'))
-                        <a class="btn" style="background:#ffc439;color:#003087;" href="{{ route('paypal.checkout') }}"><i class="fab fa-paypal"></i> {{ __('messages.pay_with_paypal') }}</a>
-                    @endif
-                    @if (config('services.payments.stripe') && config('cashier.secret'))
-                        <a class="btn" href="{{ route('checkout') }}"><i class="fab fa-stripe"></i> {{ __('messages.pay_with_stripe') }}</a>
+                    @if (count(\App\Http\Controllers\CheckoutPageController::metodos()) > 0)
+                        <a class="btn" href="{{ route('checkout.page') }}"><i class="fas fa-lock"></i> {{ __('messages.proceed_checkout') }}</a>
+                    @else
+                        <span style="color:#b3b3b3;">{{ __('messages.square_not_configured') }}</span>
                     @endif
                 @else
                     <a class="btn" href="{{ route('login') }}">{{ __('messages.login') }}</a>

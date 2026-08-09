@@ -57,6 +57,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/perfil', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     Route::put('/perfil/contrasena', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.password');
 
+    Route::get('/finalizar-compra', [\App\Http\Controllers\CheckoutPageController::class, 'show'])->name('checkout.page');
+    Route::post('/finalizar-compra', [\App\Http\Controllers\CheckoutPageController::class, 'store'])->name('checkout.page.store');
+
     Route::get('/pagar', [CheckoutController::class, 'checkout'])->name('checkout');
     Route::get('/pago-exitoso', [CheckoutController::class, 'success'])->name('checkout.success');
 
@@ -95,6 +98,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::delete('/playlists/{playlist}/tracks/{track}', [\App\Http\Controllers\Admin\PlaylistAdminController::class, 'removeTrack'])->name('admin.playlists.remove');
 
     Route::get('/pedidos', [\App\Http\Controllers\Admin\OrderAdminController::class, 'index'])->name('admin.orders');
+
+    Route::get('/impuestos', [\App\Http\Controllers\Admin\TaxAdminController::class, 'index'])->name('admin.taxes');
+    Route::put('/impuestos', [\App\Http\Controllers\Admin\TaxAdminController::class, 'update'])->name('admin.taxes.update');
 
     Route::get('/suscripciones', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'index'])->name('admin.subs');
     Route::post('/suscripciones/planes', [\App\Http\Controllers\Admin\SubscriptionAdminController::class, 'storePlan'])->name('admin.subs.plan.store');
