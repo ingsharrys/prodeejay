@@ -79,7 +79,9 @@ class PayPalController extends Controller
                 'intent'         => 'CAPTURE',
                 'purchase_units' => [[
                     'reference_id' => (string) $order->id,
-                    'description'  => 'Prodeejay Remix — ' . $order->items()->count() . ' track(s)',
+                    'description'  => $order->esSuscripcion()
+                        ? 'Prodeejay Remix — Suscripción ' . ($order->plan?->name ?? '') . ' × ' . $order->plan_months . ' mes(es)'
+                        : 'Prodeejay Remix — ' . $order->items()->count() . ' track(s)',
                     'amount'       => $amount,
                 ]],
                 'application_context' => [
@@ -131,11 +133,20 @@ class PayPalController extends Controller
 
             $estado = $captura?->json('status');
             if ($estado === 'COMPLETED' || ($captura && $captura->json('details.0.issue') === 'ORDER_ALREADY_CAPTURED')) {
-                $order->update(['status' => 'paid', 'paid_at' => now()]);
-                $request->session()->forget('cart');
+                $order->marcarPagada();
+                if (! $order->esSuscripcion()) {
+                    $request->session()->forget('cart');
+                }
             } else {
-                return redirect()->route('cart.index')->withErrors(['pago' => __('messages.paypal_error')]);
+                $ruta = $order->esSuscripcion() ? 'plans' : 'cart.index';
+
+                return redirect()->route($ruta)->withErrors(['pago' => __('messages.paypal_error')]);
             }
+        }
+
+        if ($order->esSuscripcion()) {
+            return redirect()->route('account')
+                ->with('status', __('messages.sub_success', ['date' => $order->user?->plan_expires_at?->format('d-m-Y')]));
         }
 
         return view('cart.success');

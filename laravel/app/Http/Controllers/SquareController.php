@@ -50,7 +50,9 @@ class SquareController extends Controller
             return null;
         }
 
-        $nombre = 'Prodeejay Remix — ' . $order->items()->count() . ' track(s)';
+        $nombre = $order->esSuscripcion()
+            ? 'Prodeejay Remix — Suscripción ' . ($order->plan?->name ?? '') . ' × ' . $order->plan_months . ' mes(es)'
+            : 'Prodeejay Remix — ' . $order->items()->count() . ' track(s)';
         if ((float) $order->tax_amount > 0) {
             $nombre .= ' (incluye impuesto)';
         }
@@ -109,11 +111,20 @@ class SquareController extends Controller
                 && collect($consulta->json('order.tenders', []))->isNotEmpty();
 
             if (! $pagado) {
-                return redirect()->route('cart.index')->withErrors(['pago' => __('messages.square_error')]);
+                $ruta = $order->esSuscripcion() ? 'plans' : 'cart.index';
+
+                return redirect()->route($ruta)->withErrors(['pago' => __('messages.square_error')]);
             }
 
-            $order->update(['status' => 'paid', 'paid_at' => now()]);
-            $request->session()->forget('cart');
+            $order->marcarPagada();
+            if (! $order->esSuscripcion()) {
+                $request->session()->forget('cart');
+            }
+        }
+
+        if ($order->esSuscripcion()) {
+            return redirect()->route('account')
+                ->with('status', __('messages.sub_success', ['date' => $order->user?->plan_expires_at?->format('d-m-Y')]));
         }
 
         return view('cart.success');

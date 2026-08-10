@@ -14,7 +14,7 @@ class AccountController extends Controller
             'user'      => $user,
             'plan'      => $user->currentPlan(),
             'restantes' => $user->downloadsRemaining(),
-            'compras'   => $user->orders()->where('status', 'paid')->with('items.track')->latest()->take(20)->get(),
+            'compras'   => $user->orders()->where('status', 'paid')->with(['items.track', 'plan'])->latest()->take(20)->get(),
         ]);
     }
 

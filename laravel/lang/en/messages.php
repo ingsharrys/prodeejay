@@ -129,4 +129,20 @@ return [
     'of_total'         => '% of total',
     'monthly_revenue'  => 'Revenue for the last 12 months',
     'no_sales'         => 'No sales in this period.',
+
+    // Subscriptions
+    'sub_checkout'     => 'Subscription: :plan',
+    'sub_period'       => 'Subscription period',
+    'sub_summary'      => 'Subscription summary',
+    'sub_note'         => 'Your subscription activates as soon as the payment is confirmed and lasts for the months you choose. If you renew before it expires, the months are added up.',
+    'sub_success'      => 'Your subscription is now active. Valid until :date.',
+    'sub_payments_off' => 'Online payments are not configured yet. Contact us to activate your plan.',
+    'sub_renew'        => 'Renew subscription',
+    'sub_label'        => 'Subscription',
+    'sub_expiring'     => 'Your subscription is about to expire: renew it to keep your downloads.',
+    'month_one'        => 'month',
+    'months'           => 'months',
+    'days'             => 'days',
+    'used_this_month'  => 'used this month',
+    'free'             => 'Free',
 ];
