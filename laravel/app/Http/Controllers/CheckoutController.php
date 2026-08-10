@@ -78,13 +78,16 @@ class CheckoutController extends Controller
             if ($order && $order->status === 'pending') {
                 $session = \Laravel\Cashier\Cashier::stripe()->checkout->sessions->retrieve($sessionId);
                 if ($session->payment_status === 'paid') {
-                    $order->update([
-                        'status'                => 'paid',
-                        'paid_at'               => now(),
-                        'stripe_payment_intent' => (string) $session->payment_intent,
-                    ]);
-                    $request->session()->forget('cart');
+                    $order->marcarPagada(['stripe_payment_intent' => (string) $session->payment_intent]);
+                    if (! $order->esSuscripcion()) {
+                        $request->session()->forget('cart');
+                    }
                 }
+            }
+
+            if ($order && $order->esSuscripcion() && $order->status === 'paid') {
+                return redirect()->route('account')
+                    ->with('status', __('messages.sub_success', ['date' => $order->user?->plan_expires_at?->format('d-m-Y')]));
             }
         }
 

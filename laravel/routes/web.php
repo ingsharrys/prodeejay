@@ -76,6 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/square-retorno', [\App\Http\Controllers\SquareController::class, 'return'])->name('square.return');
 
     Route::get('/suscribirme/{plan}', [SubscriptionController::class, 'subscribe'])->name('subscribe');
+    Route::post('/suscribirme/{plan}', [SubscriptionController::class, 'subscribeStore'])->name('subscribe.store');
     Route::get('/facturacion', [SubscriptionController::class, 'portal'])->name('billing');
 
     Route::get('/descargar/{track}', [DownloadController::class, 'download'])->name('download');

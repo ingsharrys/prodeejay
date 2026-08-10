@@ -129,4 +129,20 @@ return [
     'of_total'         => '% del total',
     'monthly_revenue'  => 'Ingresos de los últimos 12 meses',
     'no_sales'         => 'No hay ventas en este período.',
+
+    // Suscripciones
+    'sub_checkout'     => 'Suscripción: :plan',
+    'sub_period'       => 'Periodo de la suscripción',
+    'sub_summary'      => 'Resumen de la suscripción',
+    'sub_note'         => 'La suscripción se activa al confirmarse el pago y dura los meses que elijas. Si renuevas antes del vencimiento, los meses se suman.',
+    'sub_success'      => 'Tu suscripción quedó activa. Vigente hasta el :date.',
+    'sub_payments_off' => 'Los pagos en línea aún no están configurados. Escríbenos para activar tu plan.',
+    'sub_renew'        => 'Renovar suscripción',
+    'sub_label'        => 'Suscripción',
+    'sub_expiring'     => 'Tu suscripción está por vencer: renuévala para no perder tus descargas.',
+    'month_one'        => 'mes',
+    'months'           => 'meses',
+    'days'             => 'días',
+    'used_this_month'  => 'usadas este mes',
+    'free'             => 'Gratis',
 ];

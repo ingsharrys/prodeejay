@@ -17,7 +17,7 @@ class OrderAdminController extends Controller
         $hasta = $request->query('hasta');
         $busca = trim((string) $request->query('q'));
 
-        $orders = Order::with(['items.track.dj', 'user'])
+        $orders = Order::with(['items.track.dj', 'user', 'plan'])
             ->where('status', '!=', 'pending')
             ->when($desde, fn ($q) => $q->where('paid_at', '>=', "{$desde} 00:00:00"))
             ->when($hasta, fn ($q) => $q->where('paid_at', '<=', "{$hasta} 23:59:59"))

@@ -33,6 +33,13 @@
                     @endif
                 </td>
                 <td style="font-size:13px;">
+                    @if ($order->esSuscripcion())
+                        <div>
+                            <i class="fas fa-id-card" style="color:#1db954;"></i>
+                            Suscripción: <strong>{{ $order->plan?->name ?? '—' }}</strong>
+                            <span style="color:#b3b3b3;">× {{ $order->plan_months }} mes(es)</span>
+                        </div>
+                    @endif
                     @foreach ($order->items as $item)
                         <div>{{ Str::limit($item->name, 55) }}
                             @if ($item->track?->dj)
