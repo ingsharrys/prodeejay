@@ -19,7 +19,7 @@ Route::get('/config', [CatalogApiController::class, 'config']);
 Route::get('/catalogo', [CatalogApiController::class, 'catalogo']);
 Route::get('/generos', [CatalogApiController::class, 'generos']);
 Route::get('/djs', [CatalogApiController::class, 'djs']);
-Route::get('/djs/{dj}', [CatalogApiController::class, 'dj']);
+Route::get('/djs/{dj:id}', [CatalogApiController::class, 'dj']);
 Route::get('/planes', [CatalogApiController::class, 'planes']);
 
 /* Clientes autenticados */
@@ -31,5 +31,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/comprar', [PurchaseApiController::class, 'comprar']);
     Route::post('/suscribirme', [PurchaseApiController::class, 'suscribirme']);
     Route::get('/pedidos/{order}', [PurchaseApiController::class, 'pedido']);
-    Route::get('/descargar/{track}', [PurchaseApiController::class, 'descargar']);
+    Route::get('/descargar/{track:id}', [PurchaseApiController::class, 'descargar']);
 });
