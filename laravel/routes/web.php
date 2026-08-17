@@ -33,6 +33,15 @@ Route::get('/p/{pagina:slug}', [\App\Http\Controllers\PageController::class, 'sh
 /* Sitemap para buscadores */
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 
+/*
+ * Retornos de pago: van FUERA del grupo auth. El pago puede volver en
+ * un navegador sin sesión (por ejemplo desde la app móvil) y aun así
+ * debe confirmarse: el pedido se identifica por el ID del proveedor.
+ */
+Route::get('/pago-exitoso', [CheckoutController::class, 'success'])->name('checkout.success');
+Route::get('/paypal-retorno', [\App\Http\Controllers\PayPalController::class, 'return'])->name('paypal.return');
+Route::get('/square-retorno', [\App\Http\Controllers\SquareController::class, 'return'])->name('square.return');
+
 /* Idioma */
 Route::get('/idioma/{locale}', [AccountController::class, 'setLocale'])->name('locale');
 
@@ -67,13 +76,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/finalizar-compra', [\App\Http\Controllers\CheckoutPageController::class, 'store'])->name('checkout.page.store');
 
     Route::get('/pagar', [CheckoutController::class, 'checkout'])->name('checkout');
-    Route::get('/pago-exitoso', [CheckoutController::class, 'success'])->name('checkout.success');
-
     Route::get('/pagar-paypal', [\App\Http\Controllers\PayPalController::class, 'checkout'])->name('paypal.checkout');
-    Route::get('/paypal-retorno', [\App\Http\Controllers\PayPalController::class, 'return'])->name('paypal.return');
-
     Route::get('/pagar-square', [\App\Http\Controllers\SquareController::class, 'checkout'])->name('square.checkout');
-    Route::get('/square-retorno', [\App\Http\Controllers\SquareController::class, 'return'])->name('square.return');
 
     Route::get('/suscribirme/{plan}', [SubscriptionController::class, 'subscribe'])->name('subscribe');
     Route::post('/suscribirme/{plan}', [SubscriptionController::class, 'subscribeStore'])->name('subscribe.store');
