@@ -50,6 +50,59 @@ class AuthApiController extends Controller
         ]);
     }
 
+    /**
+     * Inicio de sesión con Google: la app envía el id_token que le da
+     * Google, aquí se valida contra Google y se crea (o encuentra) la
+     * cuenta del cliente por su correo.
+     */
+    public function entrarGoogle(Request $request)
+    {
+        $data = $request->validate(['id_token' => ['required', 'string']]);
+
+        $idsValidos = array_values(array_filter([
+            config('services.google.web_client_id'),
+            config('services.google.ios_client_id'),
+            config('services.google.android_client_id'),
+        ]));
+        if (empty($idsValidos)) {
+            return response()->json(['message' => 'El inicio con Google no está configurado todavía.'], 422);
+        }
+
+        try {
+            $respuesta = \Illuminate\Support\Facades\Http::get('https://oauth2.googleapis.com/tokeninfo', [
+                'id_token' => $data['id_token'],
+            ]);
+        } catch (\Throwable $e) {
+            report($e);
+            $respuesta = null;
+        }
+
+        if (! $respuesta || ! $respuesta->successful()) {
+            return response()->json(['message' => 'No pudimos validar tu cuenta de Google. Intenta de nuevo.'], 422);
+        }
+
+        $info = $respuesta->json();
+        $verificado = ($info['email_verified'] ?? null) === 'true' || ($info['email_verified'] ?? null) === true;
+        if (! in_array($info['aud'] ?? '', $idsValidos, true) || ! $verificado || empty($info['email'])) {
+            return response()->json(['message' => 'La cuenta de Google no es válida para esta aplicación.'], 422);
+        }
+
+        $user = User::where('email', $info['email'])->first();
+        if (! $user) {
+            $user = User::create([
+                'name'     => $info['name'] ?? explode('@', $info['email'])[0],
+                'email'    => $info['email'],
+                'password' => \Illuminate\Support\Str::random(40),
+                'role'     => 'customer',
+            ]);
+        }
+
+        return response()->json([
+            'token'   => $user->createToken('app-movil')->plainTextToken,
+            'usuario' => $this->usuarioJson($user),
+        ]);
+    }
+
     public function salir(Request $request)
     {
         $request->user()->currentAccessToken()?->delete();

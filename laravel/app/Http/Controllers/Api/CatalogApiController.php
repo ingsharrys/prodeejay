@@ -23,6 +23,7 @@ class CatalogApiController extends Controller
         return response()->json([
             'nombre'  => config('app.name', 'Prodeejay Remix'),
             'logo'    => Setting::get('logo_url') ?: null,
+            'google'  => config('services.google.web_client_id') ?: null,
             'metodos' => collect($metodos)->map(fn ($m, $clave) => [
                 'clave'  => $clave,
                 'titulo' => $m['titulo'],
