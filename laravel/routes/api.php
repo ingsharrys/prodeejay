@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 /* Público */
 Route::post('/registro', [AuthApiController::class, 'registro']);
 Route::post('/entrar', [AuthApiController::class, 'entrar']);
+Route::post('/entrar-google', [AuthApiController::class, 'entrarGoogle']);
 
 Route::get('/config', [CatalogApiController::class, 'config']);
 Route::get('/catalogo', [CatalogApiController::class, 'catalogo']);
