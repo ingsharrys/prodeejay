@@ -1,7 +1,0 @@
-{
-  "name": "Prodeejay Remix",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react-vite"
-}
