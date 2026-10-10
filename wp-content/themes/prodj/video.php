@@ -565,6 +565,7 @@ jQuery(document).ready(function (e) {
     document.addEventListener("DOMContentLoaded", function () {
         var e = document.querySelector(".menu-toggle"),
             t = document.getElementById("site-navigation");
+        if (!e || !t) return;
         e.addEventListener("click", function () {
             "block" === t.style.display ? t.style.display = "none" : t.style.display = "block";
         });
@@ -573,6 +574,7 @@ jQuery(document).ready(function (e) {
     document.addEventListener("DOMContentLoaded", function () {
         var e = document.querySelector(".menu-toggle"),
             t = document.querySelector("#primary-menu");
+        if (!e || !t) return;
         e.addEventListener("click", function () {
             var e = "true" === this.getAttribute("aria-expanded");
             this.setAttribute("aria-expanded", !e), t.classList.toggle("active");
