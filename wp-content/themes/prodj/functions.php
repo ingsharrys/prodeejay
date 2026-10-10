@@ -23,10 +23,17 @@ function hello_elementor_child_enqueue_styles() {
 }
 add_action('wp_enqueue_scripts', 'hello_elementor_child_enqueue_styles', 20);
 
-/* Marca las páginas del catálogo para aplicarles el diseño oscuro */
+/*
+ * Marca las páginas que llevan el diseño oscuro de la marca.
+ * - prodj-catalogo: plantillas del catálogo (inicio, packs, sets, video).
+ * - prodj-oscuro: portada y páginas listadas por slug. Para quitar el
+ *   diseño oscuro de una página, basta con sacar su slug de la lista.
+ */
 function prodj_body_class_catalogo($classes) {
     if (is_page_template(array('home-prodj.php', 'packs.php', 'sets.php', 'video.php'))) {
         $classes[] = 'prodj-catalogo';
+    } elseif (is_front_page() || is_page(array('djs', 'recordpool', 'contact-us'))) {
+        $classes[] = 'prodj-oscuro';
     }
     return $classes;
 }

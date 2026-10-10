@@ -18,12 +18,6 @@
     --pj-radio: 10px;
 }
 
-/* ---------- Encabezado (todas las páginas) ---------- */
-.custom-header .navbar-nav a:hover,
-.custom-header .navbar-nav .current-menu-item > a {
-    color: var(--pj-acento);
-}
-
 /* ---------- Base de las páginas del catálogo ---------- */
 body.prodj-catalogo {
     background: var(--pj-bg);
@@ -509,26 +503,90 @@ body.prodj-catalogo {
 }
 
 /* =====================================================================
- * Portada (página de inicio hecha con bloques de WordPress).
- * Hello Elementor casi no trae estilos para bloques, así que sin esto
- * la portada se ve como texto plano. Solo aplica a body.home.
+ * Encabezado unificado (todas las páginas).
+ * Hello Elementor limita .header-inner a 1140px; en las páginas de
+ * Elementor sus estilos anulan ese límite y en las de bloques no, por eso
+ * el encabezado cambiaba de ancho y de letra según la página.
  * ===================================================================== */
-body.home {
+.site-header.custom-header {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    background: #000;
+}
+
+.site-header.custom-header .custom-header-inner {
+    width: 100%;
+    max-width: none !important;
+}
+
+/* Sin ancho forzado: el menú va junto al logo, como en las páginas de Elementor */
+.custom-header .custom-navbar {
+    padding: 14px clamp(16px, 3vw, 48px);
+}
+
+.custom-header .navbar-nav a {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.custom-header .navbar-nav a:hover,
+.custom-header .navbar-nav .current-menu-item > a {
+    color: var(--pj-acento);
+}
+
+.custom-header .navbar-toggler {
+    border-color: #444;
+    padding: 6px 10px;
+}
+
+/* =====================================================================
+ * Páginas oscuras (body.prodj-oscuro): portada, DJ'S, RECORDPOOL y
+ * CONTACT US. Ver prodj_body_class_catalogo() en functions.php.
+ * ===================================================================== */
+body.prodj-oscuro {
     background: var(--pj-bg);
     color: #cfcfcf;
     -webkit-font-smoothing: antialiased;
 }
 
-.home .page-content {
+.prodj-oscuro .site-footer {
+    background: #000;
+    color: var(--pj-gris);
+}
+
+/* Imágenes con esquinas suaves (en DJ'S, las tarjetas de cada DJ) */
+.prodj-oscuro .page-content img {
+    border-radius: 12px;
+}
+
+/* ---------------------------------------------------------------------
+ * Tipografía y bloques: solo en páginas hechas con bloques de WordPress.
+ * En las de Elementor no se toca, porque sus tarjetas blancas (p. ej.
+ * los planes de RECORDPOOL) traen su propio color de texto.
+ * --------------------------------------------------------------------- */
+.prodj-oscuro:not(.elementor-page) .page-header .entry-title {
+    color: var(--pj-texto);
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 40px;
+}
+
+.prodj-oscuro:not(.elementor-page) .page-content {
     font-size: 17px;
     line-height: 1.7;
     padding-bottom: 60px;
 }
 
-.home .page-content h1,
-.home .page-content h2,
-.home .page-content h3,
-.home .page-content h4 {
+.prodj-oscuro:not(.elementor-page) .page-content h1,
+.prodj-oscuro:not(.elementor-page) .page-content h2,
+.prodj-oscuro:not(.elementor-page) .page-content h3,
+.prodj-oscuro:not(.elementor-page) .page-content h4 {
     color: var(--pj-texto);
     font-family: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
     font-weight: 800;
@@ -537,34 +595,29 @@ body.home {
     margin: 1.6em 0 0.5em;
 }
 
-.home .page-content h1 { font-size: clamp(30px, 4.5vw, 52px); }
-.home .page-content h2 { font-size: clamp(24px, 3.4vw, 38px); }
-.home .page-content h3 { font-size: clamp(20px, 2.4vw, 28px); }
+.prodj-oscuro:not(.elementor-page) .page-content h1 { font-size: clamp(30px, 4.5vw, 52px); }
+.prodj-oscuro:not(.elementor-page) .page-content h2 { font-size: clamp(24px, 3.4vw, 38px); }
+.prodj-oscuro:not(.elementor-page) .page-content h3 { font-size: clamp(20px, 2.4vw, 28px); }
 
-.home .page-content p,
-.home .page-content li {
+.prodj-oscuro:not(.elementor-page) .page-content p,
+.prodj-oscuro:not(.elementor-page) .page-content li {
     color: var(--pj-gris);
 }
 
 /* Enlaces dentro del texto: sin el relleno de la regla global del menú */
-.home .page-content p a,
-.home .page-content li a {
+.prodj-oscuro:not(.elementor-page) .page-content p a,
+.prodj-oscuro:not(.elementor-page) .page-content li a {
     padding: 0;
     color: var(--pj-acento);
 }
 
-.home .page-content p a:hover,
-.home .page-content li a:hover {
-    text-decoration: underline;
-}
-
 /* Botones (JOIN NOW, NEW REMIXES, DJS, PACKS...) */
-.home .wp-block-buttons {
+.prodj-oscuro .wp-block-buttons {
     gap: 14px;
     margin: 28px 0;
 }
 
-.home .wp-block-button__link {
+.prodj-oscuro .wp-block-button__link {
     padding: 14px 30px !important;
     border-radius: 999px;
     font-size: 15px;
@@ -575,54 +628,126 @@ body.home {
     transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
 }
 
-.home .wp-block-button__link:hover {
+.prodj-oscuro .wp-block-button__link:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45);
 }
 
 /* Botones sin color propio: oscuros con borde, verdes al pasar el mouse */
-.home .wp-block-button__link:not(.has-background) {
+.prodj-oscuro .wp-block-button__link:not(.has-background) {
     background: #1f1f1f;
     color: var(--pj-texto);
     border: 1px solid #333;
 }
 
-.home .wp-block-button__link:not(.has-background):hover {
+.prodj-oscuro .wp-block-button__link:not(.has-background):hover {
     background: var(--pj-acento);
     border-color: var(--pj-acento);
     color: #000;
 }
 
 /* Botones con color propio (ej. JOIN NOW en rojo): se respeta su color */
-.home .wp-block-button__link.has-background:hover {
+.prodj-oscuro .wp-block-button__link.has-background:hover {
     filter: brightness(1.12);
 }
 
-.home .page-content img {
-    border-radius: 12px;
-}
-
-.home .wp-block-separator {
+.prodj-oscuro .wp-block-separator {
     border-color: var(--pj-borde);
     opacity: 1;
 }
 
-.home .site-footer {
-    background: #000;
-    color: var(--pj-gris);
+/* Íconos de redes sociales: sin el relleno de la regla global del menú */
+.prodj-oscuro .wp-block-social-links .wp-block-social-link-anchor {
+    padding: 0.25em;
+}
+
+/* ---------- Formulario de contacto (WPForms) ---------- */
+.prodj-oscuro .wpforms-container {
+    --wpforms-label-color: #fff;
+    --wpforms-label-sublabel-color: #8a8a8a;
+    --wpforms-field-background-color: #1f1f1f;
+    --wpforms-field-border-color: #333;
+    --wpforms-field-text-color: #fff;
+    --wpforms-field-border-radius: 10px;
+    --wpforms-button-background-color: var(--pj-acento);
+    --wpforms-button-text-color: #000;
+    --wpforms-button-border-radius: 999px;
+    max-width: 900px;
+}
+
+/* WPForms centra el formulario con "div.wpforms-container-full:not(:empty)";
+   se alinea a la izquierda con el título y los íconos de la página. */
+.prodj-oscuro div.wpforms-container-full:not(:empty) {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.prodj-oscuro .wpforms-container .wpforms-field-label {
+    color: #fff !important;
+    font-weight: 700;
+}
+
+.prodj-oscuro .wpforms-container .wpforms-field-sublabel,
+.prodj-oscuro .wpforms-container .wpforms-field-description {
+    color: #8a8a8a !important;
+}
+
+.prodj-oscuro .wpforms-container input[type="text"],
+.prodj-oscuro .wpforms-container input[type="email"],
+.prodj-oscuro .wpforms-container input[type="tel"],
+.prodj-oscuro .wpforms-container input[type="url"],
+.prodj-oscuro .wpforms-container select,
+.prodj-oscuro .wpforms-container textarea {
+    background: #1f1f1f !important;
+    border: 1px solid #333 !important;
+    border-radius: 10px !important;
+    color: #fff !important;
+    min-height: 48px;
+    padding: 10px 16px !important;
+}
+
+.prodj-oscuro .wpforms-container textarea {
+    min-height: 150px;
+}
+
+.prodj-oscuro .wpforms-container input:focus,
+.prodj-oscuro .wpforms-container select:focus,
+.prodj-oscuro .wpforms-container textarea:focus {
+    border-color: var(--pj-acento) !important;
+    box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.25) !important;
+    outline: none;
+}
+
+.prodj-oscuro .wpforms-container .wpforms-submit {
+    background: var(--pj-acento) !important;
+    border: none !important;
+    border-radius: 999px !important;
+    color: #000 !important;
+    font-weight: 800 !important;
+    letter-spacing: 1px;
+    padding: 12px 40px !important;
+    text-transform: uppercase;
+}
+
+.prodj-oscuro .wpforms-container .wpforms-submit:hover {
+    background: var(--pj-acento-claro) !important;
 }
 
 @media (max-width: 767px) {
-    .home .page-content {
+    .prodj-oscuro:not(.elementor-page) .page-content {
         font-size: 16px;
     }
 
-    .home .wp-block-buttons {
+    .prodj-oscuro .wp-block-buttons {
         gap: 10px;
     }
 
-    .home .wp-block-button__link {
+    .prodj-oscuro .wp-block-button__link {
         padding: 12px 22px !important;
         font-size: 13px;
+    }
+
+    .custom-header .navbar-nav a {
+        font-size: 15px;
     }
 }
