@@ -553,7 +553,7 @@ class PMProGateway_stripe extends PMProGateway {
 					<option value="1"
 							<?php if ( ! empty( $values['stripe_billingaddress'] ) ) { ?>selected="selected"<?php } ?>><?php esc_html_e( 'Yes', 'paid-memberships-pro' ); ?></option>
 				</select>
-				<p class="description"><?php echo wp_kses_post( __( "Stripe doesn't require billing address fields. Choose 'No' to hide them on the checkout page.<br /><strong>If No, make sure you disable address verification in the Stripe dashboard settings.</strong>", 'paid-memberships-pro' ) ); ?></p>
+				<p class="description"><?php echo sprintf( wp_kses( __( 'Stripe doesn\'t require billing address fields. Choose \'No\' to hide them on the checkout page.<br /><strong>If No, make sure you disable address verification in your <a target="_blank" href="%s">Stripe Radar rules</a>.</strong>', 'paid-memberships-pro' ), array( 'br' => array(), 'strong' => array(), 'a' => array( 'href' => array(), 'target' => array() ) ) ), 'https://dashboard.stripe.com/settings/radar/rules' ); ?></p>
 			</td>
 		</tr>
 		<tr class="gateway gateway_stripe" <?php if ( $gateway != "stripe" ) { ?>style="display: none;"<?php } ?>>
@@ -970,7 +970,7 @@ class PMProGateway_stripe extends PMProGateway {
 									<option value="1"
 											<?php if ( ! empty( $billing_address ) ) { ?>selected="selected"<?php } ?>><?php esc_html_e( 'Yes', 'paid-memberships-pro' ); ?></option>
 								</select>
-								<p class="description"><?php echo wp_kses_post( __( "Stripe doesn't require billing address fields. Choose 'No' to hide them on the checkout page.<br /><strong>If No, make sure you disable address verification in the Stripe dashboard settings.</strong>", 'paid-memberships-pro' ) ); ?></p>
+								<p class="description"><?php echo sprintf( wp_kses( __( 'Stripe doesn\'t require billing address fields. Choose \'No\' to hide them on the checkout page.<br /><strong>If No, make sure you disable address verification in your <a target="_blank" href="%s">Stripe Radar rules</a>.</strong>', 'paid-memberships-pro' ), array( 'br' => array(), 'strong' => array(), 'a' => array( 'href' => array(), 'target' => array() ) ) ), 'https://dashboard.stripe.com/settings/radar/rules' ); ?></p>
 							</td>
 						</tr>
 						<tr class="gateway_stripe_checkout_fields">
@@ -1384,12 +1384,10 @@ class PMProGateway_stripe extends PMProGateway {
 
 		//include ours
 		?>
-		<fieldset id="pmpro_payment_information_fields" class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_fieldset', 'pmpro_payment_information_fields' ) ); ?>" <?php if ( ! $pmpro_requirebilling || apply_filters( "pmpro_hide_payment_information_fields", false ) ) { ?>style="display: none;"<?php } ?>>
+		<fieldset id="pmpro_payment_information_fields" class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_fieldset', 'pmpro_payment_information_fields' ) ); ?>" aria-labelledby="pmpro_payment_information_fields-title" <?php if ( ! $pmpro_requirebilling || apply_filters( "pmpro_hide_payment_information_fields", false ) ) { ?>style="display: none;"<?php } ?>>
 			<div class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_card' ) ); ?>">
+				<h2 id="pmpro_payment_information_fields-title" class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_card_title pmpro_font-large' ) ); ?>"><?php esc_html_e('Payment Information', 'paid-memberships-pro' ); ?></h2>
 				<div class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_card_content' ) ); ?>">
-					<legend class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_legend' ) ); ?>">
-						<h2 class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_heading pmpro_font-large' ) ); ?>"><?php esc_html_e('Payment Information', 'paid-memberships-pro' ); ?></h2>
-					</legend>
 				<?php
 					if ( get_option( 'pmpro_stripe_payment_request_button' ) ) { ?>
 						<div class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_field pmpro_payment-request-button', 'pmpro_payment-request-button' ) ); ?>">
@@ -3521,6 +3519,7 @@ class PMProGateway_stripe extends PMProGateway {
 			'type'     => $is_recurring ? 'recurring' : 'one_time',
 			'currency' => strtolower( $pmpro_currency ),
 			'limit' => 100,
+			'active'   => true,
 		);
 		if ( $is_recurring ) {
 			$price_search_args['recurring'] = array( 'interval' => $cycle_period );
@@ -3536,6 +3535,10 @@ class PMProGateway_stripe extends PMProGateway {
 			return $e->getMessage();
 		}
 		foreach ( $prices as $price ) {
+			// Skip archived/inactive prices. Create a new one instead.
+			if ( empty( $price->active ) ) {
+				continue;
+			}
 			// Check whether price is the same. If not, continue.
 			if ( intval( $price->unit_amount ) !== intval( $unit_amount ) ) {
 				continue;

@@ -101,12 +101,14 @@ class WCV_Export_Helper {
      * @since   1.8.8 - Added HPOS Compatibility.
      * @since   2.5.2
      * @since   2.5.9 - Added shipped status.
+     * @since   2.6.9 - Added $export_format parameter.
      *
-     * @param array $all_orders All the orders to export.
+     * @param array  $all_orders    All the orders to export.
+     * @param string $export_format 'line_item' (one row per item, default) or 'order' (one row per order).
      *
      * @return array  $orders  Formatted orders.
      */
-    public function format_orders_export( $all_orders ) {
+    public function format_orders_export( $all_orders, $export_format = 'line_item' ) {
 
         $rows = array();
 
@@ -144,37 +146,39 @@ class WCV_Export_Helper {
             $billing_email = $this->can_view_emails ? $parent_order->get_billing_email() : '';
             $billing_phone = $this->can_view_phone ? $parent_order->get_billing_phone() : '';
 
-            // One row per item — built in the same key order as get_export_headers().
-            foreach ( $vendor_order->get_items() as $item ) {
-                $product       = wc_get_product( $item->get_product_id() );
-                $need_shipping = $product && $product->needs_shipping();
+            if ( 'order' === $export_format ) {
+                // One row per order — concatenate all line items into a single row.
+                $product_parts = array();
+                $total_qty     = 0;
+                $any_shipping  = false;
+
+                foreach ( $vendor_order->get_items() as $item ) {
+                    if ( ! $any_shipping ) {
+                        $product      = wc_get_product( $item->get_product_id() );
+                        $any_shipping = $product && $product->needs_shipping();
+                    }
+                    $qty             = $item->get_quantity();
+                    $total_qty      += $qty;
+                    $product_parts[] = $qty . ' x ' . $item->get_name();
+                }
 
                 $new_row                 = array();
                 $new_row['order_number'] = $order_number;
-                $new_row['product']      = $item->get_name();
-                $new_row['quantity']     = $item->get_quantity();
-                if ( $this->can_view_name ) {
-                    $new_row['customer'] = $customer_details;
-                }
-                if ( $this->can_view_address ) {
-                    $new_row['address']  = $address;
-                    $new_row['address2'] = $address2;
-                    $new_row['city']     = $city;
-                    $new_row['state']    = $state;
-                    $new_row['zip']      = $zip;
-                }
-                if ( $this->can_view_emails ) {
-                    $new_row['email'] = $billing_email;
-                }
-                if ( $this->can_view_phone ) {
-                    $new_row['phone'] = $billing_phone;
-                }
-                $new_row['total']      = $order_row->total;
-                $new_row['status']     = $order_status;
-                $new_row['shipped']    = $need_shipping ? $has_shipped : __( 'N/A', 'wc-vendors' );
-                $new_row['order_date'] = $order_date;
+                $new_row['product']      = implode( "\n", $product_parts );
+                $new_row['quantity']     = $total_qty;
+                $rows[]                  = $this->append_common_row_fields( $new_row, $customer_details, $address ?? '', $address2 ?? '', $city ?? '', $state ?? '', $zip ?? '', $billing_email, $billing_phone, $order_row, $order_status, $any_shipping, $has_shipped, $order_date );
+            } else {
+                // One row per item — built in the same key order as get_export_headers().
+                foreach ( $vendor_order->get_items() as $item ) {
+                    $product       = wc_get_product( $item->get_product_id() );
+                    $need_shipping = $product && $product->needs_shipping();
 
-                $rows[] = $new_row;
+                    $new_row                 = array();
+                    $new_row['order_number'] = $order_number;
+                    $new_row['product']      = $item->get_name();
+                    $new_row['quantity']     = $item->get_quantity();
+                    $rows[]                  = $this->append_common_row_fields( $new_row, $customer_details, $address ?? '', $address2 ?? '', $city ?? '', $state ?? '', $zip ?? '', $billing_email, $billing_phone, $order_row, $order_status, $need_shipping, $has_shipped, $order_date );
+                }
             }
         }
 
@@ -219,6 +223,50 @@ class WCV_Export_Helper {
 
         die();
     } // download_csv
+
+    /**
+     * Append common fields shared by both export formats to a row array.
+     *
+     * @param array  $row              Row being built.
+     * @param string $customer_details Formatted customer name.
+     * @param string $address          Street address line 1.
+     * @param string $address2         Street address line 2.
+     * @param string $city             City.
+     * @param string $state            State/county.
+     * @param string $zip              Postcode.
+     * @param string $billing_email    Customer billing email.
+     * @param string $billing_phone    Customer billing phone.
+     * @param object $order_row        Raw order row with totals.
+     * @param string $order_status     Human-readable order status.
+     * @param bool   $needs_shipping   Whether any product in this row needs shipping.
+     * @param string $has_shipped      Shipped status label.
+     * @param string $order_date       Formatted order date.
+     * @return array
+     * @since 2.6.9
+     */
+    private function append_common_row_fields( $row, $customer_details, $address, $address2, $city, $state, $zip, $billing_email, $billing_phone, $order_row, $order_status, $needs_shipping, $has_shipped, $order_date ) {
+        if ( $this->can_view_name ) {
+            $row['customer'] = $customer_details;
+        }
+        if ( $this->can_view_address ) {
+            $row['address']  = $address;
+            $row['address2'] = $address2;
+            $row['city']     = $city;
+            $row['state']    = $state;
+            $row['zip']      = $zip;
+        }
+        if ( $this->can_view_emails ) {
+            $row['email'] = $billing_email;
+        }
+        if ( $this->can_view_phone ) {
+            $row['phone'] = $billing_phone;
+        }
+        $row['total']      = $order_row->total;
+        $row['status']     = $order_status;
+        $row['shipped']    = $needs_shipping ? $has_shipped : __( 'N/A', 'wc-vendors' );
+        $row['order_date'] = $order_date;
+        return $row;
+    }
 
     /**
      * Headers for the orders export CSV

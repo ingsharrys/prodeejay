@@ -1475,6 +1475,7 @@ class WCV_Form_Helper {
         $args['after_text']  = isset( $args['after_text'] ) ? $args['after_text'] : '';
         $args['type']        = isset( $args['type'] ) ? $args['type'] : 'submit';
         $args['button_text'] = isset( $args['button_text'] ) ? $args['button_text'] : '';
+        $args['name']        = array_key_exists( 'name', $args ) ? $args['name'] : $args['id'];
 
         do_action( 'wcv_form_button_before_' . $args['id'], $args );
 
@@ -1483,7 +1484,8 @@ class WCV_Form_Helper {
             echo $args['wrapper_start']; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         }
 
-        echo '<button type="' . esc_attr( $args['type'] ) . '" class="' . esc_attr( $args['class'] ) . '" name="' . esc_attr( $args['id'] ) . '" id="' . esc_attr( $args['id'] ) . '">';
+        $name_attr = ! empty( $args['name'] ) ? ' name="' . esc_attr( $args['name'] ) . '"' : '';
+        echo '<button type="' . esc_attr( $args['type'] ) . '" class="' . esc_attr( $args['class'] ) . '"' . $name_attr . ' id="' . esc_attr( $args['id'] ) . '">';
 
         if ( ! empty( $args['before_text'] ) ) {
             echo $args['before_text']; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -1497,8 +1499,8 @@ class WCV_Form_Helper {
 
         echo '</button>';
 
-        if ( 'submit' === $args['type'] ) {
-            echo '<input type="hidden" value="' . esc_attr( $args['value'] ) . '" name="' . esc_attr( $args['id'] ) . '">';
+        if ( 'submit' === $args['type'] && ! empty( $args['name'] ) ) {
+            echo '<input type="hidden" value="' . esc_attr( $args['value'] ) . '" name="' . esc_attr( $args['name'] ) . '">';
         }
 
         // container wrapper end if defined.

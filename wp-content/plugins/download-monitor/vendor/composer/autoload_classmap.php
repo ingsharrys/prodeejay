@@ -31,7 +31,6 @@ return array(
     'DLM_Admin_Fields_Field_Title' => $baseDir . '/src/Admin/Settings/Fields/Title.php',
     'DLM_Admin_Helper' => $baseDir . '/src/Admin/class-dlm-admin-helper.php',
     'DLM_Admin_List_Table' => $baseDir . '/src/Admin/class-dlm-admin-list-table.php',
-    'DLM_Admin_Media_Browser' => $baseDir . '/src/Admin/MediaBrowser.php',
     'DLM_Admin_Media_Insert' => $baseDir . '/src/Admin/MediaInsert.php',
     'DLM_Admin_OptionsUpsells' => $baseDir . '/src/Admin/OptionsUpsells.php',
     'DLM_Admin_Scripts' => $baseDir . '/src/Admin/AdminScripts.php',

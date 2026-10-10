@@ -105,17 +105,17 @@
         },
         {
             "name": "apimatic/jsonmapper",
-            "version": "3.1.6",
-            "version_normalized": "3.1.6.0",
+            "version": "3.1.7",
+            "version_normalized": "3.1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/apimatic/jsonmapper.git",
-                "reference": "c6cc21bd56bfe5d5822bbd08f514be465c0b24e7"
+                "reference": "61e45f6021e4a4e07497be596b4787c3c6b39bea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apimatic/jsonmapper/zipball/c6cc21bd56bfe5d5822bbd08f514be465c0b24e7",
-                "reference": "c6cc21bd56bfe5d5822bbd08f514be465c0b24e7",
+                "url": "https://api.github.com/repos/apimatic/jsonmapper/zipball/61e45f6021e4a4e07497be596b4787c3c6b39bea",
+                "reference": "61e45f6021e4a4e07497be596b4787c3c6b39bea",
                 "shasum": ""
             },
             "require": {
@@ -126,7 +126,7 @@
                 "phpunit/phpunit": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0",
                 "squizlabs/php_codesniffer": "^3.0.0"
             },
-            "time": "2024-11-28T09:15:32+00:00",
+            "time": "2025-11-06T14:43:04+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -156,7 +156,7 @@
             "support": {
                 "email": "mehdi.jaffery@apimatic.io",
                 "issues": "https://github.com/apimatic/jsonmapper/issues",
-                "source": "https://github.com/apimatic/jsonmapper/tree/3.1.6"
+                "source": "https://github.com/apimatic/jsonmapper/tree/3.1.7"
             },
             "install-path": "../apimatic/jsonmapper"
         },

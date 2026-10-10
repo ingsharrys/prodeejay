@@ -79,12 +79,14 @@ class WCV_Vendor_Signup {
     /**
      * Add error to the registration form if the terms are not agreed to.
      *
-     * @param object $errors The list of current errors.
-     * @return object|null
+     * @since 2.6.9 Return the errors object on early return to honor the registration_errors filter contract (fixes wp-login.php fatal).
+     *
+     * @param WP_Error $errors The list of current errors.
+     * @return WP_Error
      */
     public function vendor_registration_errors( $errors ) {
         if ( ! isset( $_POST['apply_for_vendor'] ) || ! isset( $_POST['apply_for_vendor_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['apply_for_vendor_nonce'] ) ), 'apply_for_vendor' ) ) {
-            return;
+            return $errors;
         }
 
         if ( ! isset( $_POST['agree_to_terms'] ) || empty( $_POST['agree_to_terms'] ) || ( ! empty( $_POST['agree_to_terms'] ) && '' === trim( wp_unslash( $_POST['agree_to_terms'] ) ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized

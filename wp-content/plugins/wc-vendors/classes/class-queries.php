@@ -180,6 +180,8 @@ class WCV_Queries {
     /**
      * Sum of orders for a specific product
      *
+     * @since 2.7.0 Sanitize the product ID list, guard the empty IN() clause, and run the query through $wpdb->prepare().
+     *
      * @param array $product_ids The product IDs.
      * @param array $args        The arguments.
      *
@@ -216,6 +218,14 @@ class WCV_Queries {
 
         $args = wp_parse_args( $args, $defaults );
 
+        $product_ids = array_values( array_unique( array_filter( array_map( 'absint', $product_ids ) ) ) );
+
+        if ( empty( $product_ids ) ) {
+            return array();
+        }
+
+        $placeholders = implode( ',', array_fill( 0, count( $product_ids ), '%d' ) );
+
         $sql = "
         SELECT COUNT(order_id) as total_orders,
                 SUM(total_due + total_shipping + tax) as line_total,
@@ -224,16 +234,17 @@ class WCV_Queries {
 
         FROM {$wpdb->prefix}pv_commission
 
-        WHERE   product_id IN ('" . implode( "','", $product_ids ) . "')
-        AND     time >= '" . $args['dates']['after'] . "'
-        AND     time <= '" . $args['dates']['before'] . "'
+        WHERE   product_id IN ( $placeholders )
+        AND     time >= %s
+        AND     time <= %s
         AND     status != 'reversed'
         ";
 
+        $query_args = array_merge( $product_ids, array( $args['dates']['after'], $args['dates']['before'] ) );
+
         if ( ! empty( $args['vendor_id'] ) ) {
-            $sql .= "
-            AND vendor_id = {$args['vendor_id']}
-        ";
+            $sql         .= ' AND vendor_id = %d ';
+            $query_args[] = $args['vendor_id'];
         }
 
         $sql .= '
@@ -241,7 +252,7 @@ class WCV_Queries {
         ORDER BY time DESC;
         ';
 
-        $orders = $wpdb->get_results( $sql ); // phpcs:ignore
+        $orders = $wpdb->get_results( $wpdb->prepare( $sql, $query_args ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
         return $orders;
     }
@@ -249,11 +260,13 @@ class WCV_Queries {
     /**
      * Sum of orders for a specific order
      *
+     * @since 2.7.0 Sanitize the order ID list, guard the empty IN() clause, and run the query through $wpdb->prepare().
+     *
      * @param array $order_ids  The order IDs.
      * @param array $args       The query args.
      * @param bool  $date_range Whether to query by date range.
      *
-     * @return object
+     * @return array
      */
     public static function sum_for_orders( array $order_ids, array $args = array(), $date_range = true ) {
         global $wpdb;
@@ -266,23 +279,31 @@ class WCV_Queries {
 
         $args = wp_parse_args( $args, $defaults );
 
+        $order_ids = array_values( array_unique( array_filter( array_map( 'absint', $order_ids ) ) ) );
+
+        if ( empty( $order_ids ) ) {
+            return array();
+        }
+
+        $placeholders = implode( ',', array_fill( 0, count( $order_ids ), '%d' ) );
+
         $sql = "SELECT COUNT(order_id) as total_orders,
                 SUM(total_due + total_shipping + tax) as line_total,
                 SUM(qty) as qty,
                 product_id FROM {$wpdb->prefix}pv_commission
-                WHERE   order_id IN ('" . implode( "','", $order_ids ) . "')";
+                WHERE   order_id IN ( $placeholders )";
+
+        $query_args = $order_ids;
 
         if ( ! empty( $dates ) ) {
-            $sql .= "
-            AND     time >= '" . $dates['after'] . "'
-            AND     time <= '" . $dates['before'] . "'
-        ";
+            $sql         .= ' AND time >= %s AND time <= %s ';
+            $query_args[] = $dates['after'];
+            $query_args[] = $dates['before'];
         }
 
         if ( ! empty( $args['vendor_id'] ) ) {
-            $sql .= "
-            AND vendor_id = {$args['vendor_id']}
-        ";
+            $sql         .= ' AND vendor_id = %d ';
+            $query_args[] = $args['vendor_id'];
         }
 
         $sql .= '
@@ -290,7 +311,7 @@ class WCV_Queries {
         ORDER BY time DESC;
         ';
 
-        $orders = $wpdb->get_results( $sql ); // phpcs:ignore
+        $orders = $wpdb->get_results( $wpdb->prepare( $sql, $query_args ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
         return $orders;
     }
@@ -301,9 +322,10 @@ class WCV_Queries {
      * @param array $product_ids The list of product IDs.
      * @param array $order_types The order types.
      * @param array $order_status The order status.
-     * @return array|int
-     * @version 2.4.8
+     * @return array Order IDs, or empty array when any of $product_ids, $order_types or $order_status resolve to empty.
+     * @version 2.6.9
      * @since   2.4.8 - Added
+     * @since   2.6.9 - Switched IN() clauses to prepared placeholders; returns empty array on empty inputs.
      */
     public static function get_order_ids_for_product_ids( $product_ids, $order_types = array(), $order_status = array() ) {
         global $wpdb;
@@ -318,10 +340,19 @@ class WCV_Queries {
             array( 'wc-completed', 'wc-processing' ),
         );
 
-        $order_types          = implode( "','", $order_types );
-        $order_status         = implode( "','", $order_status );
+        $order_types  = array_values( array_filter( (array) $order_types, 'is_string' ) );
+        $order_status = array_values( array_filter( (array) $order_status, 'is_string' ) );
+        $product_ids  = array_values( array_filter( array_map( 'absint', (array) $product_ids ) ) );
+
+        if ( empty( $order_types ) || empty( $order_status ) || empty( $product_ids ) ) {
+            return array();
+        }
+
+        $types_placeholder    = implode( ',', array_fill( 0, count( $order_types ), '%s' ) );
+        $status_placeholder   = implode( ',', array_fill( 0, count( $order_status ), '%s' ) );
         $products_placeholder = implode( ',', array_fill( 0, count( $product_ids ), '%d' ) );
-        // phpcs:disable
+
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
         if ( wcv_cot_enabled() ) {
             return $wpdb->get_col(
                 $wpdb->prepare(
@@ -330,34 +361,34 @@ class WCV_Queries {
                     LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta
                         ON order_items.order_item_id = order_item_meta.order_item_id
                     LEFT JOIN {$wpdb->prefix}wc_orders AS orders ON order_items.order_id = orders.id
-                    WHERE orders.type IN ('" . $order_types . "')
-                    AND orders.status IN ('" . $order_status . "')
+                    WHERE orders.type IN ($types_placeholder)
+                    AND orders.status IN ($status_placeholder)
                     AND order_items.order_item_type = 'line_item'
                     AND order_item_meta.meta_key IN ( '_product_id', '_variation_id' )
                     AND order_item_meta.meta_value IN ($products_placeholder)",
-                    $product_ids
+                    array_merge( $order_types, $order_status, $product_ids )
                 )
             );
         }
 
         // Get order id from post meta.
-        $order_ids =  $wpdb->get_col(
+        $order_ids = $wpdb->get_col(
             $wpdb->prepare(
                 "SELECT order_items.order_id
                 FROM {$wpdb->prefix}woocommerce_order_items as order_items
                 LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta
                     ON order_items.order_item_id = order_item_meta.order_item_id
                 LEFT JOIN {$wpdb->posts} AS posts ON order_items.order_id = posts.ID
-                WHERE posts.post_type IN ('" . $order_types . "')
-                AND posts.post_status IN ('" . $order_status . "')
+                WHERE posts.post_type IN ($types_placeholder)
+                AND posts.post_status IN ($status_placeholder)
                 AND order_items.order_item_type = 'line_item'
                 AND order_item_meta.meta_value IN ($products_placeholder)
                 AND order_item_meta.meta_key IN ( '_product_id', '_variation_id' )",
-                $product_ids
+                array_merge( $order_types, $order_status, $product_ids )
             )
         );
-        return $order_ids;
         // phpcs:enable
+        return $order_ids;
     }
 
     /**

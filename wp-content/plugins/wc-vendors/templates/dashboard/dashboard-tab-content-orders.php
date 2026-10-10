@@ -60,7 +60,7 @@
                                 &#35;&nbsp;<?php echo esc_html( $od['order_id'] ); ?>
                                 </td>
                                 <?php if ( $show_customer_name ) : ?>
-                                    <td>
+                                    <td class="customer">
                                         <?php printf( '%s (%d %s)', esc_html( $od['customer'] ), esc_html( $od['total_prod'] ), esc_html__( 'x products', 'wc-vendors' ) ); ?>
                                     </td>
                                 <?php endif; ?>

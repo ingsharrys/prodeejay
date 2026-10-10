@@ -1326,6 +1326,13 @@ table.wp-list-table .column-thumb img {
 #insert-download #drag-drop-area {
   margin: 1em 0;
 }
+#insert-download .dlm-media-insert-button {
+  background: #2271b1;
+  border-color: #2271b1;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: none;
+}
 #insert-download .updated,
 #insert-download .error {
   margin-left: 0;
@@ -1338,6 +1345,10 @@ table.wp-list-table .column-thumb img {
   margin: 0 0 0.25em 0;
   display: block;
   font-size: 1.1em;
+}
+#insert-download label input[type="radio"]:checked::before {
+  background: #2271b1 !important;
+  border-color: #2271b1 !important;
 }
 #insert-download span.description {
   display: block;

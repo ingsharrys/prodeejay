@@ -8,11 +8,11 @@
  * Author URI:           https://www.wcvendors.com
  * GitHub Plugin URI:    https://github.com/wcvendors/wcvendors
  *
- * Version:              2.6.8
+ * Version:              2.7.1
  * Requires at least:    5.9
  * Tested up to:         7.0
  * WC requires at least: 5.0
- * WC tested up to:      10.6
+ * WC tested up to:      10.9
  *
  * Text Domain:          wc-vendors
  * Domain Path:          /languages/
@@ -145,7 +145,7 @@ class WC_Vendors {
         }
 
         if ( ! defined( 'WCV_VERSION' ) ) {
-            define( 'WCV_VERSION', '2.6.8' );
+            define( 'WCV_VERSION', '2.7.1' );
         }
 
         if ( ! defined( 'WCV_TEMPLATE_BASE' ) ) {
@@ -251,17 +251,10 @@ add_action( 'init', 'wcvendors_check_version' );
  */
 function wcvendors_check_version() {
 
-    if ( ! function_exists( 'get_plugin_data' ) ) {
-        require_once ABSPATH . 'wp-admin/includes/plugin.php';
-    }
+    $db_version = get_option( 'wcvendors_version', 0 );
 
-    $plugin_data    = get_plugin_data( __FILE__ );
-    $plugin_version = $plugin_data['Version'];
-    $db_version     = get_option( 'wcvendors_version', 0 );
-
-    if ( version_compare( $plugin_version, $db_version, '>' ) ) {
+    if ( version_compare( WCV_VERSION, $db_version, '>' ) ) {
         WCV_Activate::maybe_create_marketplace_report_cache_table();
         WCV_Activate::maybe_create_marketplace_report_cache();
-        flush_rewrite_rules();
     }
 }

@@ -39,7 +39,7 @@ $text_align = is_rtl() ? 'right' : 'left';
                     <?php endif; ?>
                     <?php if ( $show_customer_email ) : ?>
                         <?php if ( $order->get_billing_email() ) : ?>
-                            <p><?php echo esc_html( $order->get_billing_email() ); ?></p>
+                            <br/><?php echo esc_html( $order->get_billing_email() ); ?>
                         <?php endif; ?>
                     <?php endif; ?>
                 </address>

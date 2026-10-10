@@ -365,7 +365,7 @@ class WCV_Table_Helper {
         $this->get_action_column();
 
         // display the table.
-        wcv_deprecated_filter( 'wcvendors_pro_table_before_' . $this->id, '2.5.2', 'wcvendors_table_before_' . $this->id, $this->id, 'before' );
+        wcv_deprecated_action( 'wcvendors_pro_table_before_' . $this->id, '2.5.2', 'wcvendors_table_before_' . $this->id, $this->id, 'before' );
 
         $no_data_notice = wcv_deprecated_filter(
             'wcvendors_pro_table_no_data_notice_' . $this->id,
@@ -436,5 +436,72 @@ class WCV_Table_Helper {
      */
     public function set_quick_links( $quick_links ) {
         $this->quick_links = $quick_links;
+    }
+
+    /**
+     * Render a row of status filter "quick-link" buttons with active highlighting.
+     *
+     * Used by the vendor dashboard product/order tables to render the
+     * `<span class="quick-link-btn black [active]"><a>Label <span>(count)</span></a></span>`
+     * markup consistently.
+     *
+     * @param array  $items      Map of `key => array( 'label' => string, 'count' => int )`.
+     * @param string $query_arg  Query var that drives the active filter (e.g. `product_status`, `order_status`).
+     * @param array  $args {
+     *     Optional. Overrides.
+     *
+     *     @type string $current      Current value. Defaults to `$_GET[ $query_arg ]` or `'all'`.
+     *     @type string $base_url     Base URL to build links on. Defaults to the current request URL.
+     *     @type string $wrapper_class Extra class for the wrapper div. Default empty.
+     *     @type bool   $echo         Whether to echo. Default true.
+     * }
+     * @return string Rendered HTML when `$echo` is false.
+     */
+    public static function render_status_filter_links( $items, $query_arg, $args = array() ) {
+        $defaults = array(
+            'current'       => null,
+            'base_url'      => '',
+            'wrapper_class' => '',
+            'echo'          => true,
+        );
+        $args = wp_parse_args( $args, $defaults );
+
+        if ( null === $args['current'] ) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $args['current'] = isset( $_GET[ $query_arg ] ) ? sanitize_text_field( wp_unslash( $_GET[ $query_arg ] ) ) : 'all';
+        }
+
+        ob_start();
+        ?>
+        <div class="quick-link-wrapper <?php echo esc_attr( $args['wrapper_class'] ); ?>">
+            <?php foreach ( $items as $key => $item ) : ?>
+                <?php
+                $url       = $args['base_url']
+                    ? add_query_arg( $query_arg, $key, $args['base_url'] )
+                    : add_query_arg( $query_arg, $key );
+                $is_active = ( (string) $key === (string) $args['current'] );
+                $label     = isset( $item['label'] ) ? $item['label'] : '';
+                $count     = isset( $item['count'] ) ? $item['count'] : '';
+                ?>
+                <span class="quick-link-btn black<?php echo $is_active ? ' active' : ''; ?>">
+                    <a href="<?php echo esc_url( $url ); ?>">
+                        <span class="wcv-ql-label"><?php echo esc_html( $label ); ?></span>
+                        <?php if ( '' !== $count ) : ?>
+                            <span class="wcv-ql-count">(<?php echo esc_html( $count ); ?>)</span>
+                        <?php endif; ?>
+                    </a>
+                </span>
+            <?php endforeach; ?>
+        </div>
+        <?php
+        $html = ob_get_clean();
+
+        if ( $args['echo'] ) {
+            // $html is built entirely above from values escaped piecewise (esc_url, esc_attr, esc_html), so it is safe to echo as-is.
+            echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            return '';
+        }
+
+        return $html;
     }
 }

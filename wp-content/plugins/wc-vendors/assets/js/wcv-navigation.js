@@ -1059,3 +1059,25 @@ const buildCustomToggleMenu = toogleElement => {
     menu.classList.toggle('show')
   })
 }
+
+// Export Orders format dropdown toggle.
+document.addEventListener('DOMContentLoaded', function() {
+  const wrapper = document.querySelector('.wcv-export-dropdown-wrapper')
+  if (!wrapper) return
+
+  const toggle = wrapper.querySelector('.wcv-export-toggle')
+  const dropdown = wrapper.querySelector('.wcv-export-dropdown')
+  if (!toggle || !dropdown) return
+
+  toggle.addEventListener('click', function(e) {
+    e.stopPropagation()
+    const isOpen = !dropdown.classList.contains('wcv-more-dropdown--open')
+    dropdown.classList.toggle('wcv-more-dropdown--open', isOpen)
+    toggle.setAttribute('aria-expanded', String(isOpen))
+  })
+
+  document.addEventListener('click', function() {
+    dropdown.classList.remove('wcv-more-dropdown--open')
+    toggle.setAttribute('aria-expanded', 'false')
+  })
+})

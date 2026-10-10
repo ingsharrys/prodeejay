@@ -46,7 +46,6 @@ class ComposerStaticInit8333af2c3447f1bf579f784754a6299d
         'DLM_Admin_Fields_Field_Title' => __DIR__ . '/../..' . '/src/Admin/Settings/Fields/Title.php',
         'DLM_Admin_Helper' => __DIR__ . '/../..' . '/src/Admin/class-dlm-admin-helper.php',
         'DLM_Admin_List_Table' => __DIR__ . '/../..' . '/src/Admin/class-dlm-admin-list-table.php',
-        'DLM_Admin_Media_Browser' => __DIR__ . '/../..' . '/src/Admin/MediaBrowser.php',
         'DLM_Admin_Media_Insert' => __DIR__ . '/../..' . '/src/Admin/MediaInsert.php',
         'DLM_Admin_OptionsUpsells' => __DIR__ . '/../..' . '/src/Admin/OptionsUpsells.php',
         'DLM_Admin_Scripts' => __DIR__ . '/../..' . '/src/Admin/AdminScripts.php',

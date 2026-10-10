@@ -102,7 +102,7 @@ class User_Feedback {
 				<span>
 					<?php echo wp_kses_post( sprintf(
 						__(
-							'If you enjoyed using Image Optimizer, consider leaving a <a href="%1$s" aria-label="%2$s" target="_blank"
+							'If you enjoyed using Image Optimization, consider leaving a <a href="%1$s" aria-label="%2$s" target="_blank"
 				rel="noopener noreferrer">★★★★★</a> review to spread the word.',
 							'image-optimization'
 						),
@@ -166,7 +166,7 @@ class User_Feedback {
 			<p>
 				<b>
 					<?php esc_html_e(
-						'Thanks for using Image Optimizer!',
+						'Thanks for using Image Optimization!',
 						'image-optimization'
 					); ?>
 				</b>
@@ -233,7 +233,7 @@ class User_Feedback {
 	 */
 	public function add_leave_feedback_footer_text(): void {
 		echo wp_kses_post( sprintf(
-			__( '<b>Found Image Optimizer helpful?</b> Leave us a <a href="%1$s" aria-label="%2$s" target="_blank"
+			__( '<b>Found Image Optimization helpful?</b> Leave us a <a href="%1$s" aria-label="%2$s" target="_blank"
 				rel="noopener noreferrer">★★★★★</a> rating!',
 				'image-optimization'
 			),

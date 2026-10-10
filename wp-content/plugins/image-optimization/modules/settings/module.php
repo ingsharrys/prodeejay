@@ -5,9 +5,8 @@ namespace ImageOptimization\Modules\Settings;
 use ImageOptimization\Classes\Image\Image_Conversion_Option;
 use ImageOptimization\Classes\Module_Base;
 use ImageOptimization\Modules\Settings\{
-	Banners\One_Million_Installs_Banner,
 	Banners\Sale_Banner,
-	Banners\Birthday_Banner,
+	Banners\Elementor_Birthday_Banner,
 	Classes\Settings,
 };
 use ImageOptimization\Modules\Stats\Classes\Optimization_Stats;
@@ -75,6 +74,10 @@ class Module extends Module_Base {
 					],
 				],
 			],
+			'migration_popup_dismissed' => [
+				'type' => 'boolean',
+				'default' => false,
+			],
 		];
 	}
 
@@ -100,8 +103,7 @@ class Module extends Module_Base {
 	public function render_app() {
 		?>
 		<?php Sale_Banner::get_banner( 'https://go.elementor.com/IO-BF-sale' ); ?>
-		<?php One_Million_Installs_Banner::get_banner( 'https://go.elementor.com/io-1m-banner-upgrade/' ); ?>
-		<?php Birthday_Banner::get_banner( 'https://go.elementor.com/io-b-day-banner' ); ?>
+		<?php Elementor_Birthday_Banner::get_banner( 'https://go.elementor.com/IO-10th-bd-sale' ); ?>
 
 		<!-- The hack required to wrap WP notifications -->
 		<div class="wrap">

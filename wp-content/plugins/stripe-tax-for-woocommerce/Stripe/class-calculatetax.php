@@ -871,7 +871,6 @@ class CalculateTax {
 							'amount'    => $tax_breakdown->amount,
 						);
 					} else {
-						$new_item_tax_rates[ $rate_key ]['rate']   += (float) $rate_percentage;
 						$new_item_tax_rates[ $rate_key ]['amount'] += $tax_breakdown->amount;
 					}
 				}
@@ -977,11 +976,7 @@ class CalculateTax {
 	 * @see https://stripe.com/docs/api/tax/transactions/create_from_calculation#tax_transaction_create-calculation
 	 */
 	public function delete() {
-		$items = wp_cache_get( self::CACHE_KEY, self::CACHE_GROUP );
-		if ( is_array( $items ) || array_key_exists( $this->md5_concat, $items ) ) {
-			unset( $items[ $this->md5_concat ] );
-			wp_cache_set( self::CACHE_KEY, $items, self::CACHE_GROUP, 2 * HOUR_IN_SECONDS );
-		}
+		wp_cache_delete( self::CACHE_KEY . '_' . $this->md5_concat, self::CACHE_GROUP );
 		global $wpdb;
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$wpdb->query(
@@ -1008,20 +1003,19 @@ class CalculateTax {
 	 * @return mixed|null
 	 */
 	protected function get_from_object_cache() {
-		$items = wp_cache_get( self::CACHE_KEY, self::CACHE_GROUP );
+		$item = wp_cache_get( self::CACHE_KEY . '_' . $this->md5_concat, self::CACHE_GROUP );
 
-		if ( ! is_array( $items ) || ! array_key_exists( $this->md5_concat, $items ) ) {
+		if ( false === $item ) {
 			return null;
 		}
 
-		if ( $this->is_expired( $items[ $this->md5_concat ] ) ) {
-			unset( $items[ $this->md5_concat ] );
-			wp_cache_set( self::CACHE_KEY, $items, self::CACHE_GROUP, 2 * HOUR_IN_SECONDS );
+		if ( $this->is_expired( $item ) ) {
+			wp_cache_delete( self::CACHE_KEY . '_' . $this->md5_concat, self::CACHE_GROUP );
 
 			return null;
 		}
 
-		return $items[ $this->md5_concat ];
+		return $item;
 	}
 
 	/**
@@ -1032,15 +1026,7 @@ class CalculateTax {
 	 * @return void
 	 */
 	protected function set_to_object_cache( $response ) {
-		$cache = wp_cache_get( self::CACHE_KEY, self::CACHE_GROUP );
-
-		if ( ! is_array( $cache ) ) {
-			$cache = array();
-		}
-
-		$cache[ $this->md5_concat ] = $response;
-
-		wp_cache_set( self::CACHE_KEY, $cache, self::CACHE_GROUP, 2 * HOUR_IN_SECONDS );
+		wp_cache_set( self::CACHE_KEY . '_' . $this->md5_concat, $response, self::CACHE_GROUP, 2 * HOUR_IN_SECONDS );
 	}
 
 	/**

@@ -25,7 +25,7 @@ class List_View_Pointer {
 		wp_enqueue_style( 'wp-pointer' );
 
 		$pointer_content = '<h3>' . esc_html__( 'Switch to list view', 'image-optimization' ) . '</h3>';
-		$pointer_content .= '<p>' . esc_html__( 'Get the most out of your optimizing options. Use the List view to quickly optimize your uploaded images with Image Optimizer.', 'image-optimization' ) . '</p>';
+		$pointer_content .= '<p>' . esc_html__( 'Get the most out of your optimizing options. Use the List view to quickly optimize your uploaded images with Image Optimization.', 'image-optimization' ) . '</p>';
 
 		$allowed_tags = [
 			'h3' => [],

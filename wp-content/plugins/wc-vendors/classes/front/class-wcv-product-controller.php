@@ -114,6 +114,11 @@ class WCV_Product_Controller {
         $this->is_pro_active                      = is_wcv_pro_active();
         $this->date_format                        = $this->is_pro_active ? get_option( 'wcvendors_dashboard_date_format', 'Y-m-d' ) : 'Y-m-d';
         $this->product_statuses                   = apply_filters( 'wcvendors_vendor_dashboard_product_statuses', array( 'publish', 'pending', 'private', 'draft' ) );
+
+        // Include trashed products in the dashboard queries when the trash bin is enabled.
+        if ( wc_string_to_bool( get_option( 'wcvendors_vendor_trash_bin_enabled', 'no' ) ) && ! in_array( 'trash', $this->product_statuses, true ) ) {
+            $this->product_statuses[] = 'trash';
+        }
         $this->allow_vendor_purchase_own_products = apply_filters( 'wcvendors_allow_vendor_purchase_own_products', wc_string_to_bool( get_option( 'wcvendors_capability_products_purchase_own', 'no' ) ) );
         $this->allow_vendor_review_own_products   = apply_filters( 'wcvendors_allow_vendor_review_own_products', wc_string_to_bool( get_option( 'wcvendors_capability_products_review_own', 'no' ) ) );
 
@@ -289,18 +294,10 @@ class WCV_Product_Controller {
      * @version 2.5.5
      */
     public function process_search_and_filter( $args ) {
-        $request = isset( $_SERVER['REQUEST_METHOD'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) : '';
-        if ( 'POST' === $request ) {
-            $nonce = isset( $_POST['wcv_product_table_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wcv_product_table_nonce'] ) ) : '';
-            if ( ! wp_verify_nonce( $nonce, 'wcv_product_table_nonce' ) ) {
-                wp_die( 'Invalid nonce' );
-            }
-        }
-
-        $search       = isset( $_POST['wcv-search'] ) ? sanitize_text_field( wp_unslash( $_POST['wcv-search'] ) ) : '';
-        $product_tag   = isset( $_POST['_wcv_product_tag'] ) ? $_POST['_wcv_product_tag'] : ''; // phpcs:ignore
-        $product_cat   = isset( $_POST['_wcv_product_category'] ) ? $_POST['_wcv_product_category'] : ''; // phpcs:ignore
-        $product_type = isset( $_POST['_wcv_product_type'] ) ? $_POST['_wcv_product_type'] : ''; // phpcs:ignore
+        $search       = isset( $_GET['wcv-search'] ) ? sanitize_text_field( wp_unslash( $_GET['wcv-search'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $product_tag  = isset( $_GET['_wcv_product_tag'] ) ? array_map( 'absint', (array) $_GET['_wcv_product_tag'] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $product_cat  = isset( $_GET['_wcv_product_category'] ) ? array_map( 'absint', (array) $_GET['_wcv_product_category'] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $product_type = isset( $_GET['_wcv_product_type'] ) ? array_map( 'sanitize_key', (array) $_GET['_wcv_product_type'] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
         $hide_product_types = get_option( 'wcvendors_capability_product_types', array() );
 
@@ -342,49 +339,33 @@ class WCV_Product_Controller {
             }
         }
 
-        if ( ! empty( $product_tag ) ) {
-
-            $product_tag_array = is_array( $product_tag ) ? array_filter( $product_tag ) : array( $product_tag );
-
-            if ( ! empty( $product_tag_array ) ) {
-                $args['tax_query'][] = array(
-                    'taxonomy' => 'product_tag',
-                    'field'    => 'term_id',
-                    'terms'    => $product_tag_array,
-                    'operator' => 'IN',
-                );
-            }
-        }
-
-        if ( ! empty( $product_cat ) ) {
-
-            $product_cat_array = is_array( $product_cat ) ? array_filter( $product_cat ) : array( $product_cat );
-
-            if ( ! empty( $product_cat_array ) ) {
-                $args['tax_query'][] = array(
-                    'taxonomy' => 'product_cat',
-                    'field'    => 'term_id',
-                    'terms'    => $product_cat_array,
-                    'operator' => 'IN',
-                );
-            }
-        }
-
-        if ( ! empty( $product_type ) ) {
-
-            $product_type_array = is_array( $product_type ) ? array_filter( $product_type ) : array( $product_type );
-
-            if ( ! empty( $product_type_array ) ) {
-                $args['tax_query'][] = array(
-                    'taxonomy' => 'product_type',
-                    'field'    => 'slug',
-                    'terms'    => $product_type_array,
-                    'operator' => 'IN',
-                );
-            }
-        }
+        $this->maybe_add_tax_query( $args, 'product_tag', 'term_id', $product_tag );
+        $this->maybe_add_tax_query( $args, 'product_cat', 'term_id', $product_cat );
+        $this->maybe_add_tax_query( $args, 'product_type', 'slug', $product_type );
 
         return $args;
+    }
+
+    /**
+     * Append a taxonomy IN clause to a WP_Query args array if $terms is non-empty.
+     *
+     * @since 2.6.9
+     *
+     * @param array  $args     WP_Query args passed by reference.
+     * @param string $taxonomy Taxonomy slug.
+     * @param string $field    Term field to match against ('term_id' or 'slug').
+     * @param mixed  $terms    Term value(s) — scalar or array.
+     */
+    private function maybe_add_tax_query( &$args, $taxonomy, $field, $terms ) {
+        $terms_array = array_filter( (array) $terms );
+        if ( ! empty( $terms_array ) ) {
+            $args['tax_query'][] = array(
+                'taxonomy' => $taxonomy,
+                'field'    => $field,
+                'terms'    => $terms_array,
+                'operator' => 'IN',
+            );
+        }
     }
 
     /**
@@ -417,12 +398,10 @@ class WCV_Product_Controller {
                 }
 
                 if ( 'yes' !== get_option( 'wcvendors_vendor_product_trash', 'no' ) ) {
-                    $update = wp_update_post(
-                        array(
-                            'ID'          => $id,
-                            'post_status' => 'trash',
-                        )
-                    );
+                    // Use core wp_trash_post() so _wp_trash_meta_status / _wp_trash_meta_time
+                    // are persisted (and the trash hooks fire). This is what lets process_restore()
+                    // recover the product's original status instead of defaulting to draft.
+                    $update = wp_trash_post( $id );
                 } else {
                     $update = wp_delete_post( $id );
                     if ( is_object( $update ) || is_numeric( $update ) ) {
@@ -445,6 +424,255 @@ class WCV_Product_Controller {
                 exit;
             }
         }
+    }
+
+    /**
+     * Process the restore action - restore a trashed product to its original status.
+     *
+     * The status the product had before being trashed is read from the
+     * _wp_trash_meta_status meta written by wp_trash_post(), falling back to
+     * 'draft' only when that meta is unavailable.
+     *
+     * @since 2.7.0
+     */
+    public function process_restore() {
+
+        global $wp;
+
+        if ( ! isset( $wp->query_vars['object'] ) ) {
+            return;
+        }
+
+        $object = get_query_var( 'object' );
+        $action = get_query_var( 'action' );
+        $id     = get_query_var( 'object_id' );
+
+        if ( 'product' !== $object || 'restore' !== $action || ! is_numeric( $id ) ) {
+            return;
+        }
+
+        if ( ! wc_string_to_bool( get_option( 'wcvendors_vendor_trash_bin_enabled', 'no' ) ) ) {
+            wp_die( esc_html__( 'The trash bin is not enabled.', 'wc-vendors' ) );
+        }
+
+        $nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : ''; //phpcs:ignore
+
+        if ( ! wp_verify_nonce( $nonce, 'wcv-restore-product-' . $id ) ) {
+            wp_die( esc_html__( 'You are not authorized to restore this product.', 'wc-vendors' ) );
+        }
+
+        if ( ! $this->check_trash_permission( absint( $id ) ) ) {
+            return;
+        }
+
+        $previous_status = get_post_meta( absint( $id ), '_wp_trash_meta_status', true );
+        $new_status      = $previous_status ? $previous_status : 'draft';
+
+        $update = wp_update_post(
+            array(
+                'ID'          => absint( $id ),
+                'post_status' => $new_status,
+            )
+        );
+
+        if ( ! is_wp_error( $update ) && $update ) {
+            delete_post_meta( absint( $id ), '_wp_trash_meta_status' );
+            delete_post_meta( absint( $id ), '_wp_trash_meta_time' );
+            do_action( 'wcvendors_product_restore', absint( $id ) );
+            /* translators: %s: post status the product was restored to */
+            $text = sprintf( __( 'Product restored to %s.', 'wc-vendors' ), $new_status );
+        } else {
+            $text = __( 'There was a problem restoring the product.', 'wc-vendors' );
+        }
+
+        wc_add_notice( $text );
+
+        wp_safe_redirect( \WCV_Vendor_Dashboard::get_dashboard_page_url( 'product' ) . '?product_status=trash' );
+        exit;
+    }
+
+    /**
+     * Process the permanent delete action - delete a trashed product for good.
+     *
+     * @since 2.7.0
+     */
+    public function process_delete_permanent() {
+
+        global $wp;
+
+        if ( ! isset( $wp->query_vars['object'] ) ) {
+            return;
+        }
+
+        $object = get_query_var( 'object' );
+        $action = get_query_var( 'action' );
+        $id     = get_query_var( 'object_id' );
+
+        if ( 'product' !== $object || 'delete_permanent' !== $action || ! is_numeric( $id ) ) {
+            return;
+        }
+
+        if ( ! wc_string_to_bool( get_option( 'wcvendors_vendor_trash_bin_enabled', 'no' ) ) ) {
+            wp_die( esc_html__( 'The trash bin is not enabled.', 'wc-vendors' ) );
+        }
+
+        // Honour the "Disable delete" capability - no permanent delete when the vendor may not delete products.
+        if ( wc_string_to_bool( get_option( 'wcvendors_capability_product_delete', 'no' ) ) ) {
+            wp_die( esc_html__( 'You are not authorized to delete this product.', 'wc-vendors' ) );
+        }
+
+        $nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : ''; //phpcs:ignore
+
+        if ( ! wp_verify_nonce( $nonce, 'wcv-delete-permanent-product-' . $id ) ) {
+            wp_die( esc_html__( 'You are not authorized to delete this product.', 'wc-vendors' ) );
+        }
+
+        if ( ! $this->check_trash_permission( absint( $id ) ) ) {
+            return;
+        }
+
+        if ( ! apply_filters( 'wcvendors_can_permanently_delete_product', true, absint( $id ) ) ) {
+            wc_add_notice( __( 'This product cannot be permanently deleted.', 'wc-vendors' ), 'error' );
+            wp_safe_redirect( \WCV_Vendor_Dashboard::get_dashboard_page_url( 'product' ) . '?product_status=trash' );
+            exit;
+        }
+
+        $deleted = wp_delete_post( absint( $id ), true );
+
+        if ( $deleted ) {
+            do_action( 'wcvendors_product_permanently_deleted', absint( $id ) );
+            $text = __( 'Product permanently deleted.', 'wc-vendors' );
+        } else {
+            $text = __( 'There was a problem deleting the product.', 'wc-vendors' );
+        }
+
+        wc_add_notice( $text );
+
+        wp_safe_redirect( \WCV_Vendor_Dashboard::get_dashboard_page_url( 'product' ) . '?product_status=trash' );
+        exit;
+    }
+
+    /**
+     * Process the empty trash action - permanently delete all of the vendor's trashed products.
+     *
+     * @since 2.7.0
+     */
+    public function process_empty_trash() {
+
+        global $wp;
+
+        if ( ! isset( $wp->query_vars['object'] ) ) {
+            return;
+        }
+
+        $object = get_query_var( 'object' );
+        $action = get_query_var( 'action' );
+
+        if ( 'product' !== $object || 'empty_trash' !== $action ) {
+            return;
+        }
+
+        if ( ! wc_string_to_bool( get_option( 'wcvendors_vendor_trash_bin_enabled', 'no' ) ) ) {
+            wp_die( esc_html__( 'The trash bin is not enabled.', 'wc-vendors' ) );
+        }
+
+        // Honour the "Disable delete" capability - no emptying the trash when the vendor may not delete products.
+        if ( wc_string_to_bool( get_option( 'wcvendors_capability_product_delete', 'no' ) ) ) {
+            wp_die( esc_html__( 'You are not authorized to empty the trash.', 'wc-vendors' ) );
+        }
+
+        $nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : ''; //phpcs:ignore
+
+        if ( ! wp_verify_nonce( $nonce, 'wcv-empty-trash' ) ) {
+            wp_die( esc_html__( 'You are not authorized to empty the trash.', 'wc-vendors' ) );
+        }
+
+        $deleted_count = $this->delete_all_vendor_trash();
+
+        if ( $deleted_count > 0 ) {
+            $text = sprintf(
+                /* translators: %d: number of products permanently deleted */
+                _n( '%d product permanently deleted.', '%d products permanently deleted.', $deleted_count, 'wc-vendors' ),
+                $deleted_count
+            );
+        } else {
+            $text = __( 'There were no trashed products to delete.', 'wc-vendors' );
+        }
+
+        wc_add_notice( $text );
+
+        wp_safe_redirect( \WCV_Vendor_Dashboard::get_dashboard_page_url( 'product' ) );
+        exit;
+    }
+
+    /**
+     * Check whether the current vendor may manage a given trashed product.
+     *
+     * Requires the vendor to own the product and the product to be in the trash.
+     *
+     * @since 2.7.0
+     *
+     * @param int $product_id Product ID.
+     *
+     * @return bool
+     */
+    private function check_trash_permission( $product_id ) {
+
+        if ( (int) \WCV_Vendors::get_vendor_from_product( $product_id ) !== get_current_user_id() ) {
+            return false;
+        }
+
+        return 'trash' === get_post_status( $product_id );
+    }
+
+    /**
+     * Permanently delete all of the current vendor's trashed products.
+     *
+     * @since 2.7.0
+     *
+     * @return int Number of products deleted.
+     */
+    private function delete_all_vendor_trash() {
+
+        /**
+         * Maximum number of trashed products to permanently delete in a single empty-trash request.
+         *
+         * Prevents PHP timeout / memory exhaustion when a vendor has accumulated thousands of trashed
+         * products. Any remaining items stay in the trash for the next request.
+         *
+         * @since 2.7.0
+         *
+         * @param int $batch_size Default 200.
+         */
+        $batch_size = (int) apply_filters( 'wcvendors_empty_trash_batch_size', 200 );
+
+        $trashed_products = get_posts(
+            array(
+                'post_type'      => 'product',
+                'post_status'    => 'trash',
+                'author'         => get_current_user_id(),
+                'posts_per_page' => $batch_size,
+                'fields'         => 'ids',
+                'no_found_rows'  => true,
+            )
+        );
+
+        $deleted_count = 0;
+
+        // Empty Trash is a bulk vendor-initiated action and deliberately skips the
+        // per-product `wcvendors_can_permanently_delete_product` veto that single
+        // permanent-delete consults; ownership is already enforced via the author query above.
+        foreach ( $trashed_products as $product_id ) {
+            if ( wp_delete_post( $product_id, true ) ) {
+                ++$deleted_count;
+            }
+        }
+
+        if ( $deleted_count > 0 ) {
+            do_action( 'wcvendors_empty_trash', $deleted_count );
+        }
+
+        return $deleted_count;
     }
 
     /**
@@ -769,8 +997,8 @@ class WCV_Product_Controller {
             $product = new $classname( $post_id );
 
             // Featured Product.
-            if ( isset( $_POST['featured'] ) ) {
-                $product->set_featured( sanitize_text_field( wp_unslash( $_POST['featured'] ) ) );
+            if ( wc_string_to_bool( get_option( 'wcvendors_capability_product_featured', 'no' ) ) ) {
+                $product->set_featured( isset( $_POST['_featured'] ) ? 'yes' : 'no' );
             }
 
             // Catalog visibility.
@@ -2031,9 +2259,14 @@ class WCV_Product_Controller {
                 $product
             );
 
-            // Check if you can edit published products or the product is variable.
-            if ( ( ! $can_edit && 'publish' === $row->post_status ) || $lock_edit_products ) {
+            // Statuses a vendor may edit via the Submit Products capability (own draft/pending submissions).
+            $submittable_statuses = apply_filters( 'wcv_edit_object_status', array( 'draft', 'pending' ) );
+            $can_edit_via_submit  = $can_submit && in_array( $row->post_status, $submittable_statuses, true );
+
+            // Hide Edit (and Duplicate) when neither capability permits editing this product.
+            if ( ( ! $can_edit && ! $can_edit_via_submit ) || $lock_edit_products ) {
                 unset( $row_actions['edit'] );
+                unset( $row_actions['duplicate'] );
             }
 
             // Check if you can delete the product.
@@ -2046,13 +2279,39 @@ class WCV_Product_Controller {
                 unset( $row_actions['duplicate'] );
             }
 
-            // Check if you can submit the product.
-            if ( ! $can_submit ) {
-                $unset_actions = array( 'edit', 'duplicate' );
-                foreach ( $unset_actions as $action ) {
-                    if ( isset( $row_actions[ $action ] ) ) {
-                        unset( $row_actions[ $action ] );
-                    }
+            // Trashed products: replace the standard actions with restore / permanent delete.
+            if ( 'trash' === $row->post_status && wc_string_to_bool( get_option( 'wcvendors_vendor_trash_bin_enabled', 'no' ) ) ) {
+                unset( $row_actions['edit'], $row_actions['view'], $row_actions['duplicate'], $row_actions['delete'] );
+
+                $row_actions['restore'] = apply_filters(
+                    'wcv_product_table_row_actions_restore',
+                    array(
+                        'label' => __( 'Restore', 'wc-vendors' ),
+                        'class' => '',
+                        'url'   => wp_nonce_url(
+                            \WCV_Vendor_Dashboard::get_dashboard_page_url( 'product/restore/' . $product->get_id() ),
+                            'wcv-restore-product-' . $product->get_id()
+                        ),
+                        'icon'  => 'wcv-icon-round-update',
+                    )
+                );
+
+                // Respect the "Disable delete" capability: no permanent delete when the vendor may not delete products. Restore is still allowed.
+                if ( ! $disable_delete ) {
+                    $row_actions['delete_permanent'] = apply_filters(
+                        'wcv_product_table_row_actions_delete_permanent',
+                        array(
+                            'label'      => __( 'Delete Permanently', 'wc-vendors' ),
+                            'class'      => 'confirm_delete',
+                            'wrap_class' => 'danger',
+                            'custom'     => array( 'data-confirm_text' => __( 'Permanently delete this product? This cannot be undone.', 'wc-vendors' ) ),
+                            'url'        => wp_nonce_url(
+                                \WCV_Vendor_Dashboard::get_dashboard_page_url( 'product/delete_permanent/' . $product->get_id() ),
+                                'wcv-delete-permanent-product-' . $product->get_id()
+                            ),
+                            'icon'       => 'wcv-icon-trash',
+                        )
+                    );
                 }
             }
 
@@ -2127,7 +2386,7 @@ class WCV_Product_Controller {
 
         $current_user_id   = get_current_user_id();
         $lock_new_products = apply_filters( 'wcv_product_table_lock_new_products', ( 'yes' === wcv_get_pro_user_meta( $current_user_id, '_wcv_lock_new_products_vendor', 'no' ) ) ? true : false );
-        $search            = isset( $_POST['wcv-search'] ) ? sanitize_text_field( wp_unslash( $_POST['wcv-search'] ) ) : '';
+        $search            = isset( $_GET['wcv-search'] ) ? sanitize_text_field( wp_unslash( $_GET['wcv-search'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $can_submit        = wc_string_to_bool( get_option( 'wcvendors_capability_products_enabled', 'no' ) );
 
         $pagination_wrapper = apply_filters(
@@ -3329,12 +3588,13 @@ class WCV_Product_Controller {
      * @return string SQL query.
      *
      * @since 2.5.6
+     * @version 2.7.0 - Return empty string when no taxonomy IDs to match the documented @return string.
      */
     public function get_vendor_products_excluding_taxonomies_query( $taxonomy_ids ) {
         global $wpdb;
 
         if ( empty( $taxonomy_ids ) ) {
-            return array();
+            return '';
         }
 
         $placeholders               = implode( ',', array_fill( 0, count( $taxonomy_ids ), '%d' ) );
@@ -3360,7 +3620,7 @@ class WCV_Product_Controller {
      * Count products status and stock status.
      *
      * @since 2.5.4
-     * @version 2.5.6
+     * @version 2.7.0 - Guard against a null/empty query result to prevent a fatal error.
      */
     public function count_products_status() {
         global $wpdb;
@@ -3383,12 +3643,17 @@ class WCV_Product_Controller {
             );
         }
 
-        $results = $wpdb->get_results( $query ); //phpcs:ignore
+        $results = empty( $query ) ? array() : $wpdb->get_results( $query ); //phpcs:ignore
+        // Guard against a null/invalid result so foreach() and count() never fatal.
+        $results = is_array( $results ) ? $results : array();
+
         $post_status_counts  = array();
         $stock_status_counts = array();
+        $trash_count         = 0;
 
         foreach ( $results as $result ) {
             if ( 'trash' === $result->post_status ) {
+                ++$trash_count;
                 continue;
             }
 
@@ -3406,10 +3671,16 @@ class WCV_Product_Controller {
         }
 
         $counts = array(
-            'all' => count( $results ),
+            'all' => count( $results ) - $trash_count,
         );
 
         $counts = array_merge( $counts, $post_status_counts, $stock_status_counts );
+
+        // Surface the trash count only when the trash bin is enabled.
+        if ( wc_string_to_bool( get_option( 'wcvendors_vendor_trash_bin_enabled', 'no' ) ) ) {
+            $counts['trash'] = $trash_count;
+        }
+
         $labels = apply_filters(
             'wcvendors_product_status_labels',
             array(
@@ -3419,6 +3690,7 @@ class WCV_Product_Controller {
                 'auto-draft'  => __( 'Auto Draft', 'wc-vendors' ),
                 'pending'     => __( 'Pending', 'wc-vendors' ),
                 'private'     => __( 'Private', 'wc-vendors' ),
+                'trash'       => __( 'Trash', 'wc-vendors' ),
                 'instock'     => __( 'In stock', 'wc-vendors' ),
                 'outofstock'  => __( 'Out of stock', 'wc-vendors' ),
                 'onbackorder' => __( 'On backorder', 'wc-vendors' ),

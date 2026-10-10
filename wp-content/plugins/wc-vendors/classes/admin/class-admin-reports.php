@@ -85,12 +85,16 @@ class WCV_Admin_Reports {
 
         $commission_status_labels = WCV_Commission::commission_status();
 
-        if ( ! isset( $_POST['wcvendors_sales_report_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wcvendors_sales_report_nonce'] ) ), 'wcvendors_sales_report' ) ) {
-            wp_die( esc_html__( 'Security check failed. Please refresh the page and try again.', 'wc-vendors' ) );
-        }
-
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
             wp_die( esc_html__( 'You do not have permission to view this report.', 'wc-vendors' ) );
+        }
+
+        // Verify the nonce whenever the date-range filter form is submitted. The report is
+        // rendered via a GET request on the initial page load, so the nonce is not present yet.
+        if ( isset( $_POST['start_date'] ) || isset( $_POST['end_date'] ) || isset( $_POST['wcvendors_sales_report_nonce'] ) ) {
+            if ( ! isset( $_POST['wcvendors_sales_report_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wcvendors_sales_report_nonce'] ) ), 'wcvendors_sales_report' ) ) {
+                wp_die( esc_html__( 'Security check failed. Please refresh the page and try again.', 'wc-vendors' ) );
+            }
         }
 
         // @codingStandardsIgnoreStart

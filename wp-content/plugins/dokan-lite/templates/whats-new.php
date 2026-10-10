@@ -4,6 +4,330 @@
  */
 $changelog = [
     [
+        'version'  => 'Version 5.0.12',
+        'released' => '2026-08-03',
+        'changes'  => [
+            'New' => [
+                [
+                    'title'       => 'Made the WooCommerce Abilities (MCP) layer vendor-aware, so AI assistants and MCP tools only access a vendor\'s own products and orders, and added Dokan-native abilities for vendor data WooCommerce doesn\'t cover.',
+                    'description' => '',
+                ],
+            ],
+            'Fix' => [
+                [
+                    'title'       => 'Stopped the vendor dashboard landing page from loading twice and removed duplicated shared UI libraries, so the dashboard loads faster.',
+                    'description' => '',
+                ],
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 5.0.11',
+        'released' => '2026-07-27',
+        'changes'  => [
+            'Improvement' => [
+                [
+                    'title'       => 'Vendors can now search for products by SKU as well as by name.',
+                    'description' => '',
+                ],
+            ],
+            'Fix' => [
+                [
+                    'title'       => 'Store-page buttons now respect the Astra theme\'s global button styling.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Downloadable files from the new product editor are now saved to WooCommerce\'s approved uploads directory.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Prevented vendors from changing the status of another vendor\'s orders through dashboard bulk actions.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Prevented vendors from granting download access to another vendor\'s files.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Prevented vendors from revoking download permissions on another vendor\'s orders.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Prevented vendors from toggling Catalog Mode on another vendor\'s products.',
+                    'description' => '',
+                ],
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 5.0.10',
+        'released' => '2026-07-21',
+        'changes'  => [
+            'Improvement' => [
+                [
+                    'title'       => 'Auction and other add-on product types can now appear in the vendor product list and its status counts.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Refund earnings and commissions are now calculated through a single dedicated calculator, keeping the vendor and admin refund give-back consistent and easier to extend.',
+                    'description' => '',
+                ],
+            ],
+            'Fix' => [
+                [
+                    'title'       => 'The admin commission and the vendor earning now always add up to the exact order total, fixing a rounding gap that could drop a cent on some amounts.',
+                    'description' => '',
+                ],
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 5.0.9',
+        'released' => '2026-07-14',
+        'changes'  => [
+            'New Feature' => [
+                [
+                    'title'       => 'Vendors can now add a product without leaving the product list — a quick-create window collects just the essentials (name, image, price, category, and short description) and saves it as a draft.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Added a Tools page to the admin dashboard where admins can clear Dokan\'s caches and restore any missing Dokan pages in one click.',
+                    'description' => '',
+                ],
+            ],
+            'Fix' => [
+                [
+                    'title'       => 'Product names and categories now display safely on the admin vendor details page, so a vendor can no longer run malicious code in the admin area through a crafted product title.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Vendors can no longer give their customers download access to another vendor\'s downloadable files.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Vendors can no longer change another vendor\'s product attributes.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Vendors can no longer change the status of another vendor\'s orders through bulk actions.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Dokan\'s cache markers now expire on their own, so they no longer pile up in the database and slow down stores that run without an object cache.',
+                    'description' => '',
+                ],
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 5.0.8',
+        'released' => '2026-07-06',
+        'changes'  => [
+            'Fix' => [
+                [
+                    'title'       => 'Cleared the vendor dashboard sale price when the field is blanked so the product reverts to its regular price instead of saving a 0 price.',
+                    'description' => '',
+                ],
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 5.0.7',
+        'released' => '2026-06-29',
+        'changes'  => [
+            'Fix' => [
+                [
+                    'title'       => 'Prevented a DOM-based XSS in the legacy Vue admin by validating the vendor details and reverse-withdrawal route parameters.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Enforced per-product ownership on the v3 products batch endpoint so vendors can no longer update or delete other vendors\' products.',
+                    'description' => '',
+                ],
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 5.0.6',
+        'released' => '2026-06-26',
+        'changes'  => [
+            'Improvement' => [
+                [
+                    'title'       => 'Added wePos and weDocs to the setup wizard\'s recommended add-ons and refreshed the add-on descriptions.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Added weDocs to the admin Extensions page as an installable add-on.',
+                    'description' => '',
+                ],
+            ],
+            'Fix' => [
+                [
+                    'title'       => 'Added reCAPTCHA v3 support to the vendor registration forms to curb spam registrations.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Loaded the admin dashboard on non-Latin locales (e.g. Persian) by matching the page slug instead of the translated menu title.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Restored editing of downloadable file name and URL fields in the new product editor.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Clarified the save error shown when a downloadable file falls outside WooCommerce\'s approved directories.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Enabled the "View in site" button for all published products.',
+                    'description' => '',
+                ],
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 5.0.5',
+        'released' => '2026-06-19',
+        'changes'  => [
+            'Improvement' => [
+                [
+                    'title'       => 'Migrated all admin dashboard tables to the unified Plugin UI DataViews component.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Updated price formatting in the product editor to use locale-specific display.',
+                    'description' => '',
+                ],
+            ],
+            'Fix' => [
+                [
+                    'title'       => 'Lazy-loaded product editor taxonomies (attributes, categories, and tags) to prevent memory exhaustion on large catalogues.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Escaped vendor-controlled values in store product search results to prevent stored XSS via a product SKU.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Restricted the Products REST endpoint so vendors can no longer access other vendors\' products via the id parameter.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Decoded HTML entities in product category labels for correct rendering.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Corrected the product edit URL and improved dashboard navigation for the new product UI.',
+                    'description' => '',
+                ],
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 5.0.4',
+        'released' => '2026-06-08',
+        'changes'  => [
+            'Improvement' => [
+                [
+                    'title'       => 'Improved RTL support for the switch button transition in the new vendor dashboard layout.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Made the vendor analytics panel compatible with the vendor-specific Coupons report.',
+                    'description' => '',
+                ],
+            ],
+            'Fix' => [
+                [
+                    'title'       => 'Allowed vendors to create new product tags inline from the new product editor.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Resolved withdraw approval failing on an exact fractional balance.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Added ownership checks to order AJAX handlers to prevent vendors from modifying orders they don\'t own.',
+                    'description' => '',
+                ],
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 5.0.3',
+        'released' => '2026-05-21',
+        'changes'  => [
+            'Improvement' => [
+                [
+                    'title'       => 'Exposed manual withdrawal availability and withdraw-visibility flags in the vendor dashboard REST API.',
+                    'description' => '',
+                ],
+            ],
+            'Fix' => [
+                [
+                    'title'       => 'Restricted the Customers REST endpoint to self-service to prevent vendors from modifying other user accounts.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Translated the "Actions" column header on vendor dashboard DataViews tables.',
+                    'description' => '',
+                ],
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 5.0.2',
+        'released' => '2026-05-18',
+        'changes'  => [
+            'New Feature' => [
+                [
+                    'title'       => 'Added a date range filter on the vendor dashboard Withdraw Requests table to filter results by start and end dates.',
+                    'description' => '',
+                ],
+            ],
+            'Improvement' => [
+                [
+                    'title'       => 'Centralized vendor selling activation and deactivation and introduced a new filter to control vendor selling eligibility.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Added customization filters to control the visibility of customer billing and shipping details in vendor order emails and vendor order detail pages.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Added options to independently show or hide the login and registration sections of the vendor onboarding shortcode form, with adaptive layout.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Renamed the Quick View modal label from "Page View" to "Views" and added a Views column to the product list.',
+                    'description' => '',
+                ],
+            ],
+            'Fix' => [
+                [
+                    'title'       => 'Resolved product attribute data inconsistency between taxonomy-enabled and standard attributes on the new product UI.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Auto-select the vendor\'s default payment method in the withdraw request modal.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Corrected the "View Details" link in the What\'s New admin notice to route to the appropriate changelog page.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Prevented a PHP deprecation notice caused by a menu position type-cast.',
+                    'description' => '',
+                ],
+                [
+                    'title'       => 'Ensured jQuery blockUI loads on the seller setup wizard and other custom enqueue pages.',
+                    'description' => '',
+                ],
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 5.0.1',
         'released' => '2026-05-05',
         'changes'  => [

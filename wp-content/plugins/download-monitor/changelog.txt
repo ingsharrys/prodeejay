@@ -1,3 +1,51 @@
+= 5.2.7 - 29.07.2026 =
+Fixed: Hardened the XHR download logging endpoint against unauthorized log entries.
+
+= 5.2.6 - 27.07.2026 =
+Fixed: Security update. Thanks to Anirudh Gupta.
+
+= 5.2.5 - 16.07.2026 =
+Fixed: Download loading indicator styling.
+Added: The download_data shortcode now supports custom meta fields.
+
+= 5.2.4 - 14.07.2026 =
+Fixed: Frontend CSS is now always loaded on frontend pages.
+
+= 5.2.3 - 14.07.2026 =
+Fixed: Default download template link rendering inside lists.
+
+= 5.2.2 - 10.07.2026 =
+Changed: Title and Filename download templates restored to default link styling.
+Fixed: Terms & Conditions download behavior and admin list quick edit checkbox.
+
+= 5.2.1 - 07.07.2026 =
+Improved: File browser modal updated.
+Fixed: Downloads widget chart on the dashboard showing incorrect data.
+Fixed: Download title sometimes displayed incorrectly on the Reports page.
+Fixed: PHP notice shown on some admin pages about an incorrectly enqueued script.
+Fixed: File download not working correctly on Safari.
+Improved: Download button templates now integrate better with active theme styling.
+Fixed: Various Terms & Conditions issues, including messaging and translation support.
+
+= 5.2.0 - 15.06.2026 =
+Dev: Improved frontend CSS class naming to avoid conflicts with other plugins.
+Added: Filter to show extra version fields in the download editor.
+
+= 5.1.16 - 10.06.2026 =
+Removed: Short Description meta box from download edit page.
+Removed: ID field from Download Information meta box.
+Removed: Manual download count and File Date fields from version editor.
+Added: Title validation — publishing a download without a title now shows an error notice and keeps the download as draft.
+Fixed: Debug Download meta box is now hidden by default, togglable via Screen Options.
+Fixed: Version date is preserved on save instead of being overwritten.
+Fixed: Button styles and radio button selection color in Insert Download popup.
+Fixed: WPML translated endpoint resolution for current language in download handler.
+
+= 5.1.15 - 19.05.2026 =
+Fixed: Compatibility with Divi builder. No longer loading XHR javascript in builder.
+Added: Windows Server (IIS) support for dlm_uploads directory protection via web.config using requestFiltering.
+Fixed: session_start() failure when server session directory is missing, with graceful fallback to sys_get_temp_dir().
+
 = 5.1.14 - 07.05.2026 =
 Fixed: Polylang includes language prefix and any subdirectory.
 Fixed: Error handler returns HTTP 500 instead of 404/403.

@@ -30,7 +30,7 @@ class Menu {
     public function add_admin_menu() {
         global $submenu;
 
-        $capability = dokana_admin_menu_capability();
+        $capability = dokan_admin_menu_capability();
         if ( ! current_user_can( $capability ) ) {
             return;
         }
@@ -71,6 +71,11 @@ class Menu {
         do_action( 'dokan_admin_menu', $capability, $menu_position );
 
         if ( current_user_can( $capability ) ) {
+            // Legacy (Vue) Tools entry. The new (React) Tools entry comes from the
+            // Dashboard Pages system; LegacySwitcher keeps whichever the admin prefers,
+            // and Pro's submenu reorder positions it between Modules and Status.
+            $submenu[ $slug ][] = [ esc_html__( 'Tools', 'dokan-lite' ), $capability, 'admin.php?page=' . $slug . '#/tools' ];
+
             $submenu[ $slug ][] = [ esc_html__( 'Help', 'dokan-lite' ), $capability, 'admin.php?page=' . $slug . '#/help' ];
 
             /**
@@ -80,7 +85,7 @@ class Menu {
              * @since 5.0.0
              *
              * @param string $capability    Capability required to view the menu.
-             * @param int    $menu_position Dokan top-level menu position.
+             * @param string $menu_position Dokan top-level menu position.
              */
             do_action( 'dokan_admin_menu_after_help', $capability, $menu_position );
 
@@ -98,7 +103,7 @@ class Menu {
              * @since 5.0.0
              *
              * @param string $capability    Capability required to view the menu.
-             * @param int    $menu_position Dokan top-level menu position.
+             * @param string $menu_position Dokan top-level menu position.
              */
             do_action( 'dokan_admin_menu_after_settings', $capability, $menu_position );
 
@@ -137,15 +142,15 @@ class Menu {
      * @param string $page_class    Fully-qualified Pageable service class name.
      * @param string $parent_slug   Parent menu slug (the Dokan top-level menu).
      * @param string $capability    Capability required to view the menu.
-     * @param int    $menu_position Dokan top-level menu position.
+     * @param string $menu_position Dokan top-level menu position.
      *
      * @return void
      */
-    protected function append_dashboard_page_submenu( string $page_class, string $parent_slug, string $capability, int $menu_position ): void {
+    protected function append_dashboard_page_submenu( string $page_class, string $parent_slug, string $capability, string $menu_position ): void {
         global $submenu;
 
         $page = dokan_get_container()->get( $page_class );
-        $args = $page->menu( $capability, (string) $menu_position );
+        $args = $page->menu( $capability, $menu_position );
 
         if ( empty( $args ) ) {
             return;

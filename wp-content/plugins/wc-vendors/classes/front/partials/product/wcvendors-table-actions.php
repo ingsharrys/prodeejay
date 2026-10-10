@@ -21,21 +21,44 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use WC_Vendors\Classes\Front\WCV_Form_Helper;
+use WC_Vendors\Classes\Front\WCV_Table_Helper;
 use function WC_Vendors\Classes\Includes\wcv_get_product_types;
 
 ?>
 <?php if ( 'before' === $position ) : ?>
-<form class="wcv-search-form wcv-form" method="post">
+<form class="wcv-search-form wcv-form" method="get">
     <div class="wcv_dashboard_table_header wcv-cols-group wcv-search wcv-product-table-search-<?php echo esc_attr( $position ); ?>">
-        <div class="wcv-flex wcv-flex-wrap">
-            <div class="quick-link-wrapper small-100 all-60">
-                <?php foreach ( $product_counts as $key => $count ) : ?>
-                    <?php $filter_link = WCV_Vendor_Dashboard::get_dashboard_page_url( 'product?product_status=' . $key ); ?>
-                    <span class="quick-link-btn black">
-                        <a href="<?php echo esc_url( $filter_link ); ?>"><span><?php echo esc_html( $count['label'] ); ?></span> (<?php echo esc_html( $count['count'] ); ?>)</a>
-                    </span>
-                <?php endforeach; ?>
-            </div>
+        <?php
+        $current_status = isset( $_GET['product_status'] ) ? sanitize_text_field( wp_unslash( $_GET['product_status'] ) ) : 'all'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        ?>
+        <div class="wcv-flex wcv-flex-wrap wcv-product-status-bar">
+            <?php
+            WCV_Table_Helper::render_status_filter_links(
+                $product_counts,
+                'product_status',
+                array(
+                    'current'       => $current_status,
+                    'base_url'      => WCV_Vendor_Dashboard::get_dashboard_page_url( 'product' ),
+                    'wrapper_class' => 'small-100 all-60',
+                )
+            );
+            ?>
+            <?php
+            $trash_bin_on = wc_string_to_bool( get_option( 'wcvendors_vendor_trash_bin_enabled', 'no' ) );
+            $delete_off   = wc_string_to_bool( get_option( 'wcvendors_capability_product_delete', 'no' ) );
+            if ( 'trash' === $current_status && $trash_bin_on && ! $delete_off ) :
+                $empty_trash_url = wp_nonce_url(
+                    WCV_Vendor_Dashboard::get_dashboard_page_url( 'product/empty_trash' ),
+                    'wcv-empty-trash'
+                );
+                ?>
+                <span class="quick-link-btn wcv-empty-trash-action">
+                    <a href="<?php echo esc_url( $empty_trash_url ); ?>" class="confirm_delete wcv-button wcv-button-danger" data-confirm_text="<?php esc_attr_e( 'Empty trash? This permanently deletes all trashed products and cannot be undone.', 'wc-vendors' ); ?>">
+                        <?php echo wp_kses( wcv_get_icon( 'wcv-icon wcv-icon-empty-trash', 'wcv-icon-trash' ), wcv_svg_icon_allowed_tags() ); ?>
+                        <span><?php esc_html_e( 'Empty Trash', 'wc-vendors' ); ?></span>
+                    </a>
+                </span>
+            <?php endif; ?>
         </div>
         <div class="wcv-cols-group wcv-horizontal-gutters wcv-gap-top wcv-cols-group-narrow wcv-filter-wrapper">
             <?php
@@ -61,9 +84,9 @@ use function WC_Vendors\Classes\Includes\wcv_get_product_types;
 
                 $product_types = apply_filters( 'wcvendors_capability_filter_product_types', $product_types );
 
-                $product_cat_raw  = isset( $_POST['_wcv_product_category'] ) ? wp_unslash( $_POST['_wcv_product_category'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-                $product_tag_raw  = isset( $_POST['_wcv_product_tag'] ) ? wp_unslash( $_POST['_wcv_product_tag'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-                $product_type_raw = isset( $_POST['_wcv_product_type'] ) ? wp_unslash( $_POST['_wcv_product_type'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $product_cat_raw  = isset( $_GET['_wcv_product_category'] ) ? wp_unslash( $_GET['_wcv_product_category'] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $product_tag_raw  = isset( $_GET['_wcv_product_tag'] ) ? wp_unslash( $_GET['_wcv_product_tag'] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $product_type_raw = isset( $_GET['_wcv_product_type'] ) ? wp_unslash( $_GET['_wcv_product_type'] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
                 $product_cat_get  = array_map( 'sanitize_text_field', $product_cat_raw );
                 $product_tag_get  = array_map( 'sanitize_text_field', $product_tag_raw );
@@ -127,14 +150,7 @@ use function WC_Vendors\Classes\Includes\wcv_get_product_types;
                             <?php
                             echo wp_kses(
                                 wcv_get_icon( 'wcv-icon wcv-icon-dashboard-icon', 'wcv-icon-search' ),
-                                array(
-                                    'svg' => array(
-                                        'class' => array(),
-                                    ),
-                                    'use' => array(
-                                        'xlink:href' => array(),
-                                    ),
-                                )
+                                wcv_svg_icon_allowed_tags()
                             );
                             ?>
                             <span><?php esc_html_e( 'Search', 'wc-vendors' ); ?></span>
@@ -149,6 +165,7 @@ use function WC_Vendors\Classes\Includes\wcv_get_product_types;
                         'wcv_product_update_button',
                         array(
                             'id'            => 'update_button_product',
+                            'name'          => '',
                             'value'         => __( 'Update', 'wc-vendors' ),
                             'type'          => 'submit',
                             'button_text'   => __( 'Update', 'wc-vendors' ),
@@ -183,7 +200,6 @@ use function WC_Vendors\Classes\Includes\wcv_get_product_types;
             <?php endif; ?>
         </div>
     </div>
-    <?php wp_nonce_field( 'wcv_product_table_nonce', 'wcv_product_table_nonce' ); ?>
 </form>
 <?php else : ?>
     <div class="all-100 small-100 wcv-product-table-pagination-<?php echo esc_attr( $position ); ?>">

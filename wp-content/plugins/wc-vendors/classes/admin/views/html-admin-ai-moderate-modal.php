@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="wcv-modal-header">
             <button class="wcv-modal-close" type="button" aria-label="<?php echo esc_attr__( 'Close', 'wc-vendors' ); ?>">&times;</button>
             <div class="wcv-modal-header-logo">
-                <img src="<?php echo esc_url( $store_agent_logo_url ); ?>" alt="Store Agent Logo" />
+                <img src="<?php echo esc_url( $store_agent_logo_url ); ?>" alt="StoreAgent Logo" />
             </div>
             <h2><?php echo esc_html( $i18n_store_agent_required ); ?></h2>
         </div>

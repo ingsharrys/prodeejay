@@ -370,11 +370,7 @@ class WP_REST_Server {
 		}
 
 		if ( empty( $path ) ) {
-			if ( isset( $_SERVER['PATH_INFO'] ) ) {
-				$path = $_SERVER['PATH_INFO'];
-			} else {
-				$path = '/';
-			}
+			$path = $_SERVER['PATH_INFO'] ?? '/';
 		}
 
 		$request = new WP_REST_Request( $_SERVER['REQUEST_METHOD'], $path );
@@ -512,8 +508,7 @@ class WP_REST_Server {
 		 *
 		 * @since 4.4.0
 		 *
-		 * @param bool             $served  Whether the request has already been served.
-		 *                                           Default false.
+		 * @param bool             $served  Whether the request has already been served. Default false.
 		 * @param WP_HTTP_Response $result  Result to send to the client. Usually a `WP_REST_Response`.
 		 * @param WP_REST_Request  $request Request used to generate the response.
 		 * @param WP_REST_Server   $server  Server instance.
@@ -1381,7 +1376,7 @@ class WP_REST_Server {
 
 		$response = new WP_REST_Response( $available );
 
-		$fields = isset( $request['_fields'] ) ? $request['_fields'] : '';
+		$fields = $request['_fields'] ?? '';
 		$fields = wp_parse_list( $fields );
 		if ( empty( $fields ) ) {
 			$fields[] = '_links';
@@ -1625,7 +1620,7 @@ class WP_REST_Server {
 				$data['namespace'] = $options['namespace'];
 			}
 
-			$allow_batch = isset( $options['allow_batch'] ) ? $options['allow_batch'] : false;
+			$allow_batch = $options['allow_batch'] ?? false;
 
 			if ( isset( $options['schema'] ) && 'help' === $context ) {
 				$data['schema'] = call_user_func( $options['schema'] );
@@ -1647,7 +1642,7 @@ class WP_REST_Server {
 				'methods' => array_keys( $callback['methods'] ),
 			);
 
-			$callback_batch = isset( $callback['allow_batch'] ) ? $callback['allow_batch'] : $allow_batch;
+			$callback_batch = $callback['allow_batch'] ?? $allow_batch;
 
 			if ( $callback_batch ) {
 				$endpoint_data['allow_batch'] = $callback_batch;
@@ -1729,7 +1724,7 @@ class WP_REST_Server {
 				continue;
 			}
 
-			$single_request = new WP_REST_Request( isset( $args['method'] ) ? $args['method'] : 'POST', $parsed_url['path'] );
+			$single_request = new WP_REST_Request( $args['method'] ?? 'POST', $parsed_url['path'] );
 
 			if ( ! empty( $parsed_url['query'] ) ) {
 				$query_args = array();
@@ -1775,7 +1770,7 @@ class WP_REST_Server {
 					$allow_batch = $handler['allow_batch'];
 				} else {
 					$route_options = $this->get_route_options( $route );
-					$allow_batch   = isset( $route_options['allow_batch'] ) ? $route_options['allow_batch'] : false;
+					$allow_batch   = $route_options['allow_batch'] ?? false;
 				}
 
 				if ( ! is_array( $allow_batch ) || empty( $allow_batch['v1'] ) ) {

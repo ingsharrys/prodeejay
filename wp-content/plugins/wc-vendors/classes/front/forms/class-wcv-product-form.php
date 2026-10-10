@@ -664,25 +664,34 @@ class WCV_Product_Form {
         $type_box .= '</div>'; // control.
         $type_box .= '</div>'; // grid.
 
-        $product_type_options = apply_filters(
-            'product_type_options',
-            array(
-                'virtual'      => array(
-                    'id'            => '_virtual',
-                    'wrapper_class' => 'show_if_simple',
-                    'label'         => __( 'Virtual', 'wc-vendors' ),
-                    'description'   => __( 'Virtual products are intangible and aren\'t shipped.', 'wc-vendors' ),
-                    'default'       => 'no',
-                ),
-                'downloadable' => array(
-                    'id'            => '_downloadable',
-                    'wrapper_class' => 'show_if_simple show_if_auction',
-                    'label'         => __( 'Downloadable', 'wc-vendors' ),
-                    'description'   => __( 'Downloadable products give access to a file upon purchase.', 'wc-vendors' ),
-                    'default'       => 'no',
-                ),
-            )
+        $base_type_options = array(
+            'virtual'      => array(
+                'id'            => '_virtual',
+                'wrapper_class' => 'show_if_simple',
+                'label'         => __( 'Virtual', 'wc-vendors' ),
+                'description'   => __( 'Virtual products are intangible and aren\'t shipped.', 'wc-vendors' ),
+                'default'       => 'no',
+            ),
+            'downloadable' => array(
+                'id'            => '_downloadable',
+                'wrapper_class' => 'show_if_simple show_if_auction',
+                'label'         => __( 'Downloadable', 'wc-vendors' ),
+                'description'   => __( 'Downloadable products give access to a file upon purchase.', 'wc-vendors' ),
+                'default'       => 'no',
+            ),
         );
+
+        if ( wc_string_to_bool( get_option( 'wcvendors_capability_product_featured', 'no' ) ) ) {
+            $base_type_options['featured'] = array(
+                'id'            => '_featured',
+                'wrapper_class' => '',
+                'label'         => __( 'Featured', 'wc-vendors' ),
+                'description'   => __( 'This product will be featured in your store.', 'wc-vendors' ),
+                'default'       => 'no',
+            );
+        }
+
+        $product_type_options = apply_filters( 'product_type_options', $base_type_options );
 
         // Disable capabitilies based on settings.
         $product_type_options_settings = get_option( 'wcvendors_capability_product_type_options', array() );
@@ -709,6 +718,8 @@ class WCV_Product_Form {
                             "is_$key",
                         )
                     ) ? $product->{"is_$key"}() : 'yes' === get_post_meta( $post_id, '_' . $key, true );
+                } elseif ( $product && is_callable( array( $product, "is_$key" ) ) ) {
+                    $selected_value = $product->{"is_$key"}();
                 } else {
                     $selected_value = 'yes' === ( isset( $option['default'] ) ? $option['default'] : 'no' );
                 }

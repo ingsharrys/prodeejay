@@ -695,7 +695,7 @@ $('.contextual-help-tabs').on( 'click', 'a', function(e) {
 	$('.contextual-help-tabs .active').removeClass('active');
 	link.parent('li').addClass('active');
 
-	panel = $( link.attr('href') );
+	panel = $( document ).find( link.attr('href') );
 
 	// Panels.
 	$('.help-tab-content').not( panel ).removeClass('active').hide();
@@ -1350,9 +1350,11 @@ $( function() {
 		event.stopPropagation();
 		$( 'html, body' ).animate( { scrollTop: 0 } );
 
-		var errorMessage = __( 'Please select at least one item to perform this action on.' );
+		var errorMessage = value !== '-1' ?
+			__( 'Please select at least one item to perform this action on.' ) :
+			__( 'Please select a bulk action to perform.' );
 		addAdminNotice( {
-			id: 'no-items-selected',
+			id: value !== '-1' ? 'no-items-selected' : 'no-bulk-action-selected',
 			type: 'error',
 			message: errorMessage,
 			dismissible: true,

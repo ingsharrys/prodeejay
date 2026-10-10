@@ -87,7 +87,7 @@ class Module extends Module_Base {
 		<div id="image-optimization-deactivation-modal" class="image-optimization-deactivation-modal">
 			<div class="image-optimization-deactivation-content">
 				<h4>
-					<?php esc_html_e( 'If you have a moment, please share why you are deactivating Image Optimizer:', 'image-optimization' ); ?>
+					<?php esc_html_e( 'If you have a moment, please share why you are deactivating Image Optimization:', 'image-optimization' ); ?>
 				</h4>
 
 				<div class="image-optimization-feedback-options">

@@ -30,7 +30,7 @@ class Renewal_Notice {
 	public function get_renewal_text(): array {
 		if ( $this->days_diff <= 30 && $this->days_diff > 0 ) {
 			return [
-				'title' => esc_html__( 'Image Optimizer Expires Soon!', 'image-optimization' ),
+				'title' => esc_html__( 'Image Optimization Expires Soon!', 'image-optimization' ),
 				'description' => esc_html__( 'Renew your subscription to maintain optimized images, faster website load times, and high performance.', 'image-optimization' ),
 				'btn' => esc_html__( 'Turn Auto Renew On', 'image-optimization' ),
 				'link' => esc_url( 'https://go.elementor.com/io-renew-30/' ),
@@ -38,14 +38,14 @@ class Renewal_Notice {
 		}
 		if ( $this->days_diff <= 0 && $this->days_diff > -7 ) {
 			return [
-				'title' => esc_html__( 'Image Optimizer Has Expired!', 'image-optimization' ),
+				'title' => esc_html__( 'Image Optimization Has Expired!', 'image-optimization' ),
 				'description' => esc_html__( 'Renew your license today to continue enjoying premium image optimization and fast load times.', 'image-optimization' ),
 				'btn' => esc_html__( 'Renew Now', 'image-optimization' ),
 				'link' => esc_url( 'https://go.elementor.com/io-renew-expire/' ),
 			];
 		}
 		return [
-			'title' => esc_html__( 'It’s Not Too Late! Renew Image Optimizer', 'image-optimization' ),
+			'title' => esc_html__( 'It’s Not Too Late! Renew Image Optimization', 'image-optimization' ),
 			'description' => esc_html__( 'Reactivate your license to get back to top image performance.', 'image-optimization' ),
 			'btn' => esc_html__( 'Renew and Optimize', 'image-optimization' ),
 			'link' => esc_url( 'https://go.elementor.com/io-renew-post-expire/' ),

@@ -32,6 +32,69 @@ if ( ! class_exists( 'WCVendors_Settings_Display', false ) ) :
             $this->label = __( 'Display', 'wc-vendors' );
 
             parent::__construct();
+
+            add_action( 'wcvendors_admin_field_wcv_dashboard_headings', array( $this, 'render_dashboard_headings_field' ) );
+        }
+
+        /**
+         * Render the dashboard page headings custom field.
+         *
+         * @param array $field Field data.
+         */
+        public function render_dashboard_headings_field( $field ) {
+            $headings = get_option( 'wcvendors_dashboard_headings', array() );
+
+            $builtin   = array(
+                'product'  => array(
+                    'slug'  => 'product',
+                    'label' => __( 'Products', 'wc-vendors' ),
+                ),
+                'order'    => array(
+                    'slug'  => 'order',
+                    'label' => __( 'Orders', 'wc-vendors' ),
+                ),
+                'reports'  => array(
+                    'slug'  => 'reports',
+                    'label' => __( 'Reports', 'wc-vendors' ),
+                ),
+                'settings' => array(
+                    'slug'  => 'settings',
+                    'label' => __( 'Settings', 'wc-vendors' ),
+                ),
+            );
+            $all_pages = apply_filters( 'wcv_dashboard_urls', $builtin );
+
+            $pages = array( 'home' => __( 'Dashboard', 'wc-vendors' ) );
+            foreach ( $all_pages as $key => $page ) {
+                if ( isset( $page['label'] ) ) {
+                    $slug           = isset( $page['slug'] ) ? $page['slug'] : $key;
+                    $pages[ $slug ] = $page['label'];
+                }
+            }
+            ?>
+            <tr valign="top">
+                <th scope="row" class="titledesc">
+                    <?php echo esc_html( $field['title'] ); ?>
+                </th>
+                <td class="forminp">
+                    <div class="wcv-dashboard-headings-grid">
+                        <?php foreach ( $pages as $key => $label ) : ?>
+                            <?php $val = isset( $headings[ $key ] ) ? $headings[ $key ] : ''; ?>
+                            <label>
+                                <?php echo esc_html( $label ); ?>
+                                <input
+                                    type="text"
+                                    name="wcvendors_dashboard_headings[<?php echo esc_attr( $key ); ?>]"
+                                    value="<?php echo esc_attr( $val ); ?>"
+                                    placeholder="<?php echo esc_attr( $label ); ?>"
+                                />
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <p class="description"><?php esc_html_e( 'Leave blank to use the default label.', 'wc-vendors' ); ?></p>
+                </td>
+            </tr>
+            <?php
         }
 
         /**
@@ -247,6 +310,12 @@ if ( ! class_exists( 'WCVendors_Settings_Display', false ) ) :
                             'id'      => 'wcvendors_display_label_store_info',
                             'type'    => 'text',
                             'default' => __( 'Store Info', 'wc-vendors' ),
+                        ),
+
+                        array(
+                            'title' => __( 'Dashboard Page Headings', 'wc-vendors' ),
+                            'type'  => 'wcv_dashboard_headings',
+                            'id'    => 'wcvendors_dashboard_headings',
                         ),
 
                         array(
@@ -498,6 +567,28 @@ if ( ! class_exists( 'WCVendors_Settings_Display', false ) ) :
                                 ),
                             ),
                         ),
+
+                        array(
+                            'title'    => sprintf(
+                                /* translators: %s vendor label */
+                                __( '%s Store Sidebar', 'wc-vendors' ),
+                                wcv_get_vendor_name()
+                            ),
+                            'desc'     => sprintf(
+                                /* translators: %s vendor label */
+                                __( 'Show a sidebar on %s store pages', 'wc-vendors' ),
+                                wcv_get_vendor_name( true, false )
+                            ),
+                            'desc_tip' => sprintf(
+                                /* translators: %s vendor label */
+                                __( 'Shows a sidebar widget area on %s store pages. The WooCommerce default sidebar will be hidden.', 'wc-vendors' ),
+                                wcv_get_vendor_name( true, false )
+                            ),
+                            'id'       => 'wcvendors_vendor_shop_sidebar_enabled',
+                            'default'  => 'no',
+                            'type'     => 'checkbox',
+                        ),
+
                         array(
                             'type' => 'sectionend',
                             'id'   => 'shop_options',

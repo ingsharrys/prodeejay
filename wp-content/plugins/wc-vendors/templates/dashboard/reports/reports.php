@@ -7,46 +7,57 @@
  * @package    WC_Vendors
  * @version    1.8.0
  * @version    2.6.5 - Fix security issues.
+ * @version    2.7.1 - Add Total Refunded Sales row and calculate Total Commission and Net Revenue on net sales.
  *
  * @phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
  */
 
 ?>
 <?php
-    // Single Vendor Total Gross Sales.
+    // Single Vendor Total Gross Sales, Refunded Sales and Commission.
     $give_tax      = wc_string_to_bool( get_option( 'wcvendors_vendor_give_taxes', 'no' ) );
     $give_shipping = is_wcv_pro_active() && wc_string_to_bool( get_option( 'wcvendors_vendor_give_shipping', 'no' ) );
 
-    $gross_sales_totals = $store_report->orders;
-    $vendor_order_total = 0;
-    foreach ( $gross_sales_totals as $gross_sales_total ) {
-        $vendor_total_sales = $gross_sales_total->total;
-        $vendor_order_total = $vendor_order_total + $vendor_total_sales;
+    $vendor_order_total    = 0; // Total Gross Sales (pre-refund, all orders).
+    $vendor_refunded_total = 0; // Total Refunded Sales (reversed commission rows).
+    $commission_total      = 0; // Total Commission on net sales (reversed rows excluded).
+    $net_revenue           = 0;
+    $total_tax             = 0;
+    $total_shipping        = 0;
+
+    foreach ( $store_report->orders as $store_order ) {
+        // Gross Sales stays pre-refund: include every order.
+        $vendor_order_total += $store_order->total;
+
+        foreach ( $store_order->vendor_products as $vendor_product ) {
+            // Refunded product: record its sales value, exclude its commission from the totals.
+            if ( 'reversed' === $vendor_product->status ) {
+                // No matching order item (product removed from order): commission is still excluded,
+                // but its sales value cannot be recovered, so Refunded Sales will understate.
+                $refunded_item = $store_order->order_items[ $vendor_product->product_id ] ?? null;
+                if ( $refunded_item ) {
+                    // Prefer the actual refunded amount; fall back to the full line total for
+                    // reversals with no refund record (DB-level / status-transition reversals).
+                    $parent_order = $refunded_item->get_order();
+                    $refunded_amt = $parent_order ? (float) $parent_order->get_total_refunded_for_item( $refunded_item->get_id() ) : 0;
+                    $vendor_refunded_total += $refunded_amt > 0 ? $refunded_amt : (float) $refunded_item->get_total();
+                }
+                continue;
+            }
+
+            $commission_total += $vendor_product->total_due + $vendor_product->total_shipping + $vendor_product->tax;
+
+            if ( $give_tax ) {
+                $total_tax += $vendor_product->tax;
+            }
+
+            if ( $give_shipping ) {
+                $total_shipping += $vendor_product->total_shipping;
+            }
+        }
     }
 
-    // Single Vendor Total Commission.
-    $product_commissions_totals = $store_report->orders;
-    $commissionTotal            = 0;
-    $net_revenue                = 0;
-    $total_tax                  = 0;
-    $total_shipping             = 0;
-
-    foreach ( $product_commissions_totals as $product_commissions_total ) {
-        $vendor_commission_data = $product_commissions_total->commission_total;
-        $commissionTotal        = $vendor_commission_data + $commissionTotal;
-
-        if ( $give_tax ) {
-            $vendor_tax_data = $product_commissions_total->total_tax;
-            $total_tax      += $vendor_tax_data;
-        }
-
-        if ( $give_shipping ) {
-            $vendor_shipping_data = $product_commissions_total->total_shipping;
-            $total_shipping      += $vendor_shipping_data;
-        }
-    }
-
-    $net_revenue = $commissionTotal - $total_tax - $total_shipping;
+    $net_revenue = $commission_total - $total_tax - $total_shipping;
 
 ?>
 
@@ -72,9 +83,16 @@
                     <td><strong><?php echo wp_kses( wc_price( $vendor_order_total ), wcv_allowed_html_tags() ); ?></strong></td>
                 </tr>
 
+                <?php if ( $vendor_refunded_total > 0 ) : ?>
+                <tr>
+                    <th><?php esc_html_e( 'Total Refunded Sales', 'wc-vendors' ); ?></th>
+                    <td><strong><?php echo wp_kses( wc_price( $vendor_refunded_total ), wcv_allowed_html_tags() ); ?></strong></td>
+                </tr>
+                <?php endif; ?>
+
                 <tr>
                     <th><?php esc_html_e( 'Total Commission', 'wc-vendors' ); ?></th>
-                    <td><strong><?php echo wp_kses( wc_price( $commissionTotal ), wcv_allowed_html_tags() ); ?></strong></td>
+                    <td><strong><?php echo wp_kses( wc_price( $commission_total ), wcv_allowed_html_tags() ); ?></strong></td>
                 </tr>
 
                 <tr>

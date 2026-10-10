@@ -508,21 +508,33 @@ class WCV_Dashboard_Controller {
             }
         );
 
+        $show_customer_name  = wc_string_to_bool( get_option( 'wcvendors_capability_order_customer_name', 'no' ) );
         $show_customer_email = wc_string_to_bool( get_option( 'wcvendors_capability_order_customer_email', 'no' ) );
         $show_customer_phone = wc_string_to_bool( get_option( 'wcvendors_capability_order_customer_phone', 'no' ) );
 
+        $billing_address_fields  = $order->get_address( 'billing' );
+        $shipping_address_fields = $order->get_address( 'shipping' );
+
+        if ( ! $show_customer_name ) {
+            foreach ( array( &$billing_address_fields, &$shipping_address_fields ) as &$address ) {
+                $address['first_name'] = '';
+                $address['last_name']  = '';
+            }
+            unset( $address );
+        }
+
         $billing_details = array(
-            'name'    => $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
+            'name'    => $show_customer_name ? $order->get_billing_first_name() . ' ' . $order->get_billing_last_name() : '',
             'email'   => $show_customer_email ? $order->get_billing_email() : '',
             'phone'   => $show_customer_phone ? $order->get_billing_phone() : '',
-            'address' => $order->get_formatted_billing_address(),
+            'address' => WC()->countries->get_formatted_address( $billing_address_fields ),
         );
 
         $shipping_details = array(
-            'name'    => $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name(),
+            'name'    => $show_customer_name ? $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name() : '',
             'email'   => $show_customer_email ? $order->get_billing_email() : '',
             'phone'   => $show_customer_phone ? $order->get_shipping_phone() : '',
-            'address' => $order->get_formatted_shipping_address(),
+            'address' => WC()->countries->get_formatted_address( $shipping_address_fields ),
         );
 
         $order_details = array(

@@ -52,9 +52,9 @@ const UserFeedbackForm = ( ) => {
 	const { currentPage } = useSettings();
 
 	const headerMessage = {
-		ratings: __( 'How would you rate Image Optimizer so far?', 'image-optimization' ),
+		ratings: __( 'How would you rate Image Optimization so far?', 'image-optimization' ),
 		feedback: __( 'We’re thrilled to hear that! What would make it even better?', 'image-optimization' ),
-		review: __( "We're thrilled you're enjoying Image Optimizer", 'image-optimization' ),
+		review: __( "We're thrilled you're enjoying Image Optimization", 'image-optimization' ),
 	};
 
 	const handleSubmit = async ( close, avoidClosing = false ) => {

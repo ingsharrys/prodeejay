@@ -13,7 +13,7 @@ const FeedbackForm = ( { close, handleSubmitForm } ) => {
 			<StyledTextField
 				value={ feedback }
 				onChange={ ( e ) => setFeedback( e.target.value ) }
-				placeholder={ __( 'Share your thoughts on how we can improve Image Optimizer…', 'image-optimization' ) }
+				placeholder={ __( 'Share your thoughts on how we can improve Image Optimization…', 'image-optimization' ) }
 				minRows={ 5 }
 				multiline />
 			<Button

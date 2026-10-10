@@ -90,10 +90,9 @@ class WC_Vendors_Bootstrap {
         add_action( 'plugins_loaded', array( $this, 'load_il8n' ) );
         // Install & upgrade.
         add_action( 'admin_init', array( $this, 'check_install' ) );
-        add_action( 'init', array( $this, 'maybe_flush_permalinks' ), 99 );
         add_action( 'admin_init', array( $this, 'wcv_required_ignore_notices' ) );
 
-        add_action( 'wcvendors_flush_rewrite_rules', array( $this, 'flush_rewrite_rules' ) );
+        add_action( 'wcvendors_flush_rewrite_rules', 'flush_rewrite_rules' );
 
         $this->include_gateways();
         $this->include_core();
@@ -112,7 +111,7 @@ class WC_Vendors_Bootstrap {
 
         // Add become a vendor rewrite endpoint.
         add_action( 'init', array( $this, 'add_rewrite_endpoint' ) );
-        add_action( 'after_switch_theme', array( $this, 'flush_rewrite_rules' ) );
+        add_action( 'after_switch_theme', 'flush_rewrite_rules' );
 
         // Add shop vendor order type.
         add_filter( 'wc_order_types', array( $this, 'add_custom_order_types' ), 99, 2 );
@@ -469,6 +468,27 @@ class WC_Vendors_Bootstrap {
         new WCV_Vendor_Reports();
         new WCV_Product_Meta();
         new WCV_Admin_Users();
+
+        add_action( 'widgets_init', array( $this, 'register_vendor_shop_sidebar' ) );
+    }
+
+    /**
+     * Register the vendor shop sidebar widget area.
+     *
+     * @since 2.6.9
+     */
+    public function register_vendor_shop_sidebar() {
+        register_sidebar(
+            array(
+                'name'          => __( 'Vendor Shop', 'wc-vendors' ),
+                'id'            => 'wcv-vendor-shop-sidebar',
+                'description'   => __( 'Widgets displayed on the vendor shop page.', 'wc-vendors' ),
+                'before_widget' => '<div id="%1$s" class="widget %2$s">',
+                'after_widget'  => '</div>',
+                'before_title'  => '<h2 class="widget-title">',
+                'after_title'   => '</h2>',
+            )
+        );
     }
 
     /**
@@ -541,34 +561,12 @@ class WC_Vendors_Bootstrap {
     }
 
     /**
-     *  If the settings are updated and the vendor page link has changed update permalinks
-     *
-     * @access public
-     */
-    public function maybe_flush_permalinks() {
-        if ( wc_string_to_bool( get_option( 'wcvendors_queue_flush_rewrite_rules', 'no' ) ) ) {
-            $this->flush_rewrite_rules();
-            update_option( 'wcvendors_queue_flush_rewrite_rules', 'no' );
-        }
-    }
-
-    /**
-     * Flush rewrite rules.
-     *
-     * @return void
-     */
-    public function flush_rewrite_rules() {
-        flush_rewrite_rules();
-    }
-
-    /**
      * Add rewrite endpoint
      *
      * @return void
      */
     public function add_rewrite_endpoint() {
         add_rewrite_endpoint( 'become-a-vendor', EP_PAGES );
-        $this->maybe_flush_permalinks();
     }
 
     /**
@@ -694,6 +692,9 @@ class WC_Vendors_Bootstrap {
         add_action( 'template_redirect', array( $this->product_controller, 'process_submit' ) );
         add_action( 'template_redirect', array( $this->product_controller, 'process_delete' ) );
         add_action( 'template_redirect', array( $this->product_controller, 'process_duplicate' ) );
+        add_action( 'template_redirect', array( $this->product_controller, 'process_restore' ) );
+        add_action( 'template_redirect', array( $this->product_controller, 'process_delete_permanent' ) );
+        add_action( 'template_redirect', array( $this->product_controller, 'process_empty_trash' ) );
         add_action( 'template_redirect', array( $this->report_controller, 'process_submit' ) );
 
         // Product controller ajax actions.

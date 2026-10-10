@@ -133,23 +133,26 @@ class WCV_Vendor_Controller {
     public static function get_orders2( $vendor_id, $date_range = null, $reports = true, $pagination = false, $return_all = false ) {
         global $wpdb;
 
-        $remove_zero_commission_due = apply_filters( 'wcv_remove_zero_commission_due', false );
-        $paged                      = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
-        $filter_by_status           = WC()->session->get( 'wcv_order_filter_status', '' );
-        $wcv_order_statuses         = array_keys( wcv_get_order_statuses() );
-        $order_statuses             = $filter_by_status ? $filter_by_status : $wcv_order_statuses;
+        // Emitted for back-compat with third-party code in WC Vendors Pro that still hooks this filter. The return value is intentionally unused. Will be removed once Pro drops the filter as well.
+        apply_filters( 'wcv_remove_zero_commission_due', false );
+
+        $paged              = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+        $filter_by_status   = WC()->session->get( 'wcv_order_filter_status', '' );
+        $wcv_order_statuses = array_keys( wcv_get_order_statuses() );
+        $order_statuses     = $filter_by_status ? $filter_by_status : $wcv_order_statuses;
 
         if ( $return_all ) {
             $order_statuses = $wcv_order_statuses;
         }
 
-        if ( ! $remove_zero_commission_due ) {
-            $args['status'][] = 'refunded';
-        }
-
         if ( ! $reports ) {
-            if ( isset( $order_statuses['wc-refunded'] ) ) {
-                unset( $order_statuses['wc-refunded'] );
+            $had_explicit_refunded_filter = ! empty( $filter_by_status ) && in_array( 'wc-refunded', (array) $filter_by_status, true );
+            $order_statuses               = array_values( array_diff( (array) $order_statuses, array( 'wc-refunded' ) ) );
+            $wcv_order_statuses           = array_values( array_diff( $wcv_order_statuses, array( 'wc-refunded' ) ) );
+
+            // User explicitly filtered for Refunded but the setting hides it — return nothing rather than silently expanding to all other statuses.
+            if ( $had_explicit_refunded_filter && empty( $order_statuses ) ) {
+                return array();
             }
         }
 
@@ -186,9 +189,18 @@ class WCV_Vendor_Controller {
         $id_column      = $is_cot_enabled ? 'id' : 'ID';
         $type_column    = $is_cot_enabled ? 'type' : 'post_type';
         $status_column  = $is_cot_enabled ? 'status' : 'post_status';
-        $statuses_str   = implode( "','", $order_statuses );
-        // phpcs:disable
-        $query          = $wpdb->prepare(
+
+        $order_statuses = array_values( array_filter( (array) $order_statuses, 'is_string' ) );
+        if ( empty( $order_statuses ) ) {
+            $order_statuses = array_values( array_filter( (array) $wcv_order_statuses, 'is_string' ) );
+        }
+        if ( empty( $order_statuses ) ) {
+            return array();
+        }
+        $status_placeholders = implode( ',', array_fill( 0, count( $order_statuses ), '%s' ) );
+
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
+        $query = $wpdb->prepare(
             "SELECT orders.$id_column FROM {$wpdb->prefix}{$table_prefix} orders
             INNER JOIN (
                 SELECT DISTINCT order_id
@@ -197,14 +209,13 @@ class WCV_Vendor_Controller {
                 AND DATE(time) BETWEEN %s AND %s
             ) commissions ON orders.$id_column = commissions.order_id
             WHERE orders.$type_column = %s
-            AND orders.$status_column IN ('$statuses_str')
+            AND orders.$status_column IN ($status_placeholders)
             AND (DATE(orders.$date_column) BETWEEN %s AND %s)",
-            $vendor_id,
-            $date_after,
-            $date_before,
-            'shop_order',
-            $date_after,
-            $date_before
+            array_merge(
+                array( $vendor_id, $date_after, $date_before, 'shop_order' ),
+                $order_statuses,
+                array( $date_after, $date_before )
+            )
         );
         // phpcs:enable
 

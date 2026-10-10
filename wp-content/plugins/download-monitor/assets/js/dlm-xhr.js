@@ -128,7 +128,7 @@ class DLM_XHR_Download {
 		button.removeAttribute( 'download' );
 		button.setAttribute( 'disabled', 'disabled' );
 		if ( dlmXHRProgress ) {
-			const loading_gif = '<img src="' + dlmXHRgif + '" class="dlm-xhr-loading-gif" style="display:inline-block; vertical-align: middle; margin-left:15px;">';
+			const loading_gif = '<img src="' + dlmXHRgif + '" class="dlm-xhr-loading-gif">';
 			button.innerHTML += loading_gif;
 		}
 
@@ -409,7 +409,7 @@ class DLM_XHR_Download {
 				let $class = 'dlm-download-started';
 				buttonObj.find( 'span.dlm-xhr-progress' ).remove();
 				// Comment below lines for the new XHR loader so that we know where to rever
-				$class = $class + ' download-' + Math.ceil( percent_complete / 10 ) * 10;
+				$class = $class + ' dlm-download-' + Math.ceil( percent_complete / 10 ) * 10;
 
 				if ( Infinity != percent_complete ) {
 					buttonObj.append( '<span class="dlm-xhr-progress">&nbsp;' + percent_complete + '%</span>' );
@@ -467,6 +467,7 @@ class DLM_XHR_Download {
 			cookie,
 			currentURL,
 			nonce: headers[ 'x-dlm-nonce' ],
+			log_token: headers[ 'x-dlm-log-token' ],
 		} );
 
 		for ( const [ key, value ] of Object.entries( headers ) ) {
@@ -489,7 +490,7 @@ class DLM_XHR_Download {
 		}
 
 		if ( isAppleSafari ) {
-			window.location.href( redirect_path );
+			window.location.href = redirect_path;
 			return;
 		}
 
@@ -682,7 +683,7 @@ class DLM_XHR_Download {
 				let $class = 'dlm-download-started';
 				buttonObj.find( 'span.dlm-xhr-progress' ).remove();
 				// Comment below lines for the new XHR loader so that we know where to rever
-				$class = $class + ' download-' + Math.ceil( percent_complete / 10 ) * 10;
+				$class = $class + ' dlm-download-' + Math.ceil( percent_complete / 10 ) * 10;
 
 				if ( Infinity != percent_complete ) {
 					buttonObj.append( '<span class="dlm-xhr-progress">&nbsp;' + percent_complete + '%</span>' );

@@ -441,3 +441,25 @@ if ( ! function_exists( 'wcv_get_icon' ) ) {
         return $icon;
     }
 }
+
+if ( ! function_exists( 'wcv_svg_icon_allowed_tags' ) ) {
+    /**
+     * Allowed HTML tags for escaping an inline SVG icon produced by wcv_get_icon().
+     *
+     * Centralises the wp_kses() allow-list so the icon-escaping ruleset lives in one place.
+     *
+     * @since 2.7.0
+     *
+     * @return array Allowed tags map for wp_kses().
+     */
+    function wcv_svg_icon_allowed_tags() {
+        return array(
+            'svg' => array(
+                'class' => array(),
+            ),
+            'use' => array(
+                'xlink:href' => array(),
+            ),
+        );
+    }
+}

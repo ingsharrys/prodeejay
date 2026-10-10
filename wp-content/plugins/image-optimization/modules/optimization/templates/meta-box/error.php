@@ -51,10 +51,7 @@ $error_type = isset( $args['optimization_error_type'] ) ? $args['optimization_er
 				<?php esc_html_e( 'Try again', 'image-optimization' ); ?>
 			</button>
 			<?php
-		} elseif ( isset( $args['images_left'] ) && 0 === $args['images_left'] ) {
-			if ( Core_Module::is_elementor_one() ) {
-				return;
-			}
+		} elseif ( isset( $args['images_left'] ) && 0 === $args['images_left'] && ! Core_Module::is_elementor_one() ) {
 			?>
 			<a class="button button-secondary button-large image-optimization-control__button"
 				 href="<?php echo esc_url( Utils::get_upgrade_link( 'https://go.elementor.com/io-panel-upgrade/' ) ); ?>"

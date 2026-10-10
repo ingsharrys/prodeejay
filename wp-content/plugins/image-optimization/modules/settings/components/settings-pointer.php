@@ -29,7 +29,7 @@ class Settings_Pointer {
 		wp_enqueue_script( 'wp-pointer' );
 		wp_enqueue_style( 'wp-pointer' );
 
-		$pointer_content = '<h3>' . esc_html__( 'Image Optimizer', 'image-optimization' ) . '</h3>';
+		$pointer_content = '<h3>' . esc_html__( 'Image Optimization', 'image-optimization' ) . '</h3>';
 		$pointer_content .= '<p>' . esc_html__( 'Head over to the Image Optimization Settings to fine-tune how your media uploads are managed.', 'image-optimization' ) . '</p>';
 
 		$pointer_content .= sprintf(

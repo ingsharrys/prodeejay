@@ -26,14 +26,14 @@ if ( ! defined( 'ABSPATH' ) ) {
         
     </p>
     <p class="show-if" data-control="wcv_paypal_masspay_wallet" data-control-value="paypal">
-        <b><?php esc_html_e( 'PayPal Address', 'wc-vendors' ); ?></b><br/>
+        <label for="pv_paypal"><?php esc_html_e( 'PayPal address', 'wc-vendors' ); ?></label><br/>
         <?php esc_html_e( 'Your PayPal address can be used to manually send you your commission.', 'wc-vendors' ); ?><br/>
 
         <input type="email" name="pv_paypal" id="pv_paypal" placeholder="some@email.com"
                 value="<?php echo esc_attr( get_user_meta( $user_id, 'pv_paypal', true ) ); ?>"/>
     </p>
     <p class="show-if" data-control="wcv_paypal_masspay_wallet" data-control-value="venmo">
-        <b><?php esc_html_e( 'Venmo ID', 'wc-vendors' ); ?></b><br/>
+        <label for="wcv_paypal_masspay_venmo_id"><?php esc_html_e( 'Venmo ID', 'wc-vendors' ); ?></label><br/>
         <?php esc_html_e( 'Provide your Venmo ID or Phone number for your commission payout.', 'wc-vendors' ); ?><br/>
 
         <input type="text" name="wcv_paypal_masspay_venmo_id" id="wcv_paypal_masspay_venmo_id" placeholder="some@email.com"

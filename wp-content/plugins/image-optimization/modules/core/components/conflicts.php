@@ -29,7 +29,7 @@ class Conflicts {
 			<p>
 				<b>
 					<?php esc_html_e(
-						'Image optimizer has detected multiple active image optimization plugins.',
+						'Image Optimization has detected multiple active image optimization plugins.',
 						'image-optimization'
 					); ?>
 				</b>

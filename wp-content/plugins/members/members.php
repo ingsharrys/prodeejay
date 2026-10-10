@@ -3,7 +3,7 @@
  * Plugin Name: Members
  * Plugin URI:  https://members-plugin.com/
  * Description: A user and role management plugin that puts you in full control of your site's permissions. This plugin allows you to edit your roles and their capabilities, clone existing roles, assign multiple roles per user, block post content, or even make your site completely private.
- * Version:     3.2.21
+ * Version:     3.2.26
  * Requires PHP: 7.4
  * Author:      MemberPress
  * Author URI:  https://memberpress.com
@@ -54,7 +54,7 @@ final class Members_Plugin {
 	 * @access public
 	 * @var    string
 	 */
-	private $php_version = '5.3.0';
+	private $php_version = '7.4.0';
 
 	/**
 	 * Plugin directory path.
@@ -228,6 +228,9 @@ final class Members_Plugin {
 		// Notifications (cannot be included inside is_admin() check or cron won't work)
 		require_once( $this->dir . 'admin/class-notifications.php' );
 
+		// Block editor REST saves run outside is_admin(); post meta + REST routes must load on every request.
+		require_once( $this->dir . 'admin/class-content-permissions-editor.php' );
+
 		// Load admin files.
 		if ( is_admin() ) {
 
@@ -244,16 +247,16 @@ final class Members_Plugin {
 			require_once( $this->dir . 'admin/class-user-edit.php'    );
 			require_once( $this->dir . 'admin/class-user-new.php'     );
 
-			// Edit posts.
-			require_once( $this->dir . 'admin/class-meta-box-content-permissions.php' );
-
 			// Role management.
 			require_once( $this->dir . 'admin/class-manage-roles.php'          );
 			require_once( $this->dir . 'admin/class-roles.php'                 );
 			require_once( $this->dir . 'admin/class-role-edit.php'             );
 			require_once( $this->dir . 'admin/class-role-new.php'              );
+			require_once( $this->dir . 'admin/class-role-export.php'           );
+			require_once( $this->dir . 'admin/class-role-import.php'           );
 			require_once( $this->dir . 'admin/class-meta-box-publish-role.php' );
 			require_once( $this->dir . 'admin/class-meta-box-custom-cap.php'   );
+			require_once( $this->dir . 'admin/class-meta-box-content-permissions.php' );
 
 			// Edit capabilities tabs and groups.
 			require_once( $this->dir . 'admin/class-cap-tabs.php'       );
@@ -266,7 +269,7 @@ final class Members_Plugin {
 		if ( ! empty( $addons ) ) {
 			foreach ( $addons as $addon ) {
 				if ( file_exists( __DIR__ . "/addons/{$addon}/addon.php" ) ) {
-					include "addons/{$addon}/addon.php";
+					include __DIR__ . "/addons/{$addon}/addon.php";
 				}
 			}
 		}
@@ -475,7 +478,7 @@ final class Members_Plugin {
 		if ( file_exists( trailingslashit( __DIR__ ) . "addons/{$addon}/src/Activator.php" ) ) {
 
 			// Require the add-on file
-			include "addons/{$addon}/src/Activator.php";
+			include trailingslashit( __DIR__ ) . "addons/{$addon}/src/Activator.php";
 
 			// Read the file contents into memory, and determine the namespace
 			$contents = file_get_contents( trailingslashit( __DIR__ ) . "addons/{$addon}/src/Activator.php" );
@@ -490,6 +493,11 @@ final class Members_Plugin {
 	}
 
 	public function block_editor_assets() {
+		// Block-level upsell controls conflict with Content Permissions in the block editor.
+		if ( members_content_permissions_enabled() ) {
+			return;
+		}
+
 		$active_addons = get_option( 'members_active_addons', array() );
 		if ( ! in_array( 'members-block-permissions', $active_addons ) && ! members_is_memberpress_active() ) {
 			wp_enqueue_script( 'block-editor-mp-upsell', plugin_dir_url( __FILE__ ) . '/addons/members-block-permissions/public/js/upsell.js' , array(

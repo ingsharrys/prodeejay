@@ -102,9 +102,6 @@ class WP_DLM {
 			// Admin Write Panels
 			new DLM_Admin_Writepanels();
 
-			// Admin Media Browser
-			new DLM_Admin_Media_Browser();
-
 			// Admin Media Insert
 			new DLM_Admin_Media_Insert();
 
@@ -394,7 +391,7 @@ class WP_DLM {
 	public function frontend_scripts() {
 
 		if ( apply_filters( 'dlm_frontend_scripts', true ) ) {
-			wp_register_style( 'dlm-frontend', $this->get_plugin_url()
+			wp_enqueue_style( 'dlm-frontend', $this->get_plugin_url()
 			                                   . '/assets/css/frontend-tailwind.min.css',
 				array(), DLM_VERSION );
 		}
@@ -412,7 +409,8 @@ class WP_DLM {
 		}
 
 		// Leave this filter here in case XHR is problematic and needs to be disabled.
-		if ( self::do_xhr() ) {
+		$is_divi_fb = isset( $_GET['et_fb'] ) || ( function_exists( 'et_fb_is_builder_used_on_current_request' ) && et_fb_is_builder_used_on_current_request() );
+		if ( self::do_xhr() && ! $is_divi_fb ) {
 			wp_register_script(
 				'dlm-xhr',
 				plugins_url( '/assets/js/dlm-xhr' . ( ( ! SCRIPT_DEBUG )
@@ -427,7 +425,6 @@ class WP_DLM {
 			// Add dashicons on the front if popup modal for no access is used.
 			if ( '1' === get_option( 'dlm_no_access_modal', 0 ) ) {
 				wp_enqueue_style( 'dashicons' );
-				wp_enqueue_style( 'dlm-frontend' );
 			}
 			// @todo: delete the xhr_links attribute in the future as it will not be needed. It's only here for backwards
 			// compatibility as extensions might using it. Used prior to 4.7.72.

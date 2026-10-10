@@ -181,7 +181,7 @@ class DLM_Admin_Media_Insert {
                 <legend><?php echo esc_html__( 'Search download', 'download-monitor' ); ?>:</legend>
                 <label>
                     <input type="text" name="dlm_search" value='<?php echo esc_html( str_replace( "'", "", stripslashes( ( $search_query ) ) ) ); ?>'/>
-                    <input type="submit" name="dlm_search_submit" value="Search" class="button button-primary" />
+                    <input type="submit" name="dlm_search_submit" value="Search" class="button button-primary dlm-media-insert-button" />
                 </label>
             </fieldset>
 
@@ -228,7 +228,7 @@ class DLM_Admin_Media_Insert {
 			</p>
 
 			<p>
-				<input type="button" class="button insert_download button-primary button-large" value="<?php echo esc_html__( 'Insert Shortcode', 'download-monitor' ); ?>"/>
+				<input type="button" class="button insert_download button-primary button-large dlm-media-insert-button" value="<?php echo esc_html__( 'Insert Shortcode', 'download-monitor' ); ?>"/>
 			</p>
 
 		</form>
@@ -271,7 +271,7 @@ class DLM_Admin_Media_Insert {
 
 				<p>
 					<?php wp_nonce_field( 'quick-add', 'quick-add-nonce' ) ?>
-					<input type="submit" class="button button-primary button-large" value="<?php echo esc_attr__( 'Save Download', 'download-monitor' ); ?>"/>
+					<input type="submit" class="button button-primary button-large dlm-media-insert-button" value="<?php echo esc_attr__( 'Save Download', 'download-monitor' ); ?>"/>
 				</p>
 			</div>
 

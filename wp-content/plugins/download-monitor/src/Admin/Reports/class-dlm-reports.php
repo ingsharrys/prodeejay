@@ -187,7 +187,7 @@ if ( ! class_exists( 'DLM_Reports' ) ) {
 
 			// Add the title.
 			foreach ( $data as $key => $row ) {
-				$data[ $key ]['title'] = get_the_title( $row['download_id'] );
+				$data[ $key ]['title'] = html_entity_decode( get_the_title( $row['download_id'] ), ENT_QUOTES );
 			}
 
 			$data = apply_filters( 'dlm_reports_table_downloads_data', $data, $request );
@@ -263,7 +263,7 @@ if ( ! class_exists( 'DLM_Reports' ) ) {
 				foreach ( $downloads as $id => $data ) {
 					$id    = (int) $id;
 					$count = isset( $data['downloads'] ) ? (int) $data['downloads'] : 0;
-					$title = isset( $data['title'] ) ? sanitize_text_field( $data['title'] ) : '';
+					$title = isset( $data['title'] ) ? sanitize_text_field( html_entity_decode( $data['title'], ENT_QUOTES ) ) : '';
 
 					$day_total += $count;
 
@@ -459,7 +459,7 @@ if ( ! class_exists( 'DLM_Reports' ) ) {
 
 			// Add the title.
 			foreach ( $data as $key => $row ) {
-				$data[ $key ]['title'] = get_the_title( $row['download_id'] );
+				$data[ $key ]['title'] = html_entity_decode( get_the_title( $row['download_id'] ), ENT_QUOTES );
 			}
 
 			$data = apply_filters( 'dlm_reports_users_table_downloads_data', $data, $request );

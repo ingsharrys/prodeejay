@@ -128,7 +128,6 @@ class WCVendors_Uninstall {
         delete_option( 'wcvendors_install_date' );
         delete_option( 'wcvendors_admin_notices' );
         delete_option( 'wcvendors_wizard_complete' );
-        delete_option( 'wcvendors_queue_flush_rewrite_rules' );
         delete_option( 'wcvendors_admin_notice_email_updates' );
     }
 

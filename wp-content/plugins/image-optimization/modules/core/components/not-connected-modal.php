@@ -28,7 +28,7 @@ class Not_Connected_Modal {
 				</button>
 				<img src="<?php echo esc_url( plugins_url( 'assets/static/connect.jpg', dirname( __DIR__, 2 ) ) ); ?>" alt="<?php esc_html_e( 'Connect now', 'image-optimization' ); ?>">
 				<h2><?php esc_html_e( 'Let\'s start optimizing your images!', 'image-optimization' ); ?></h2>
-				<p><?php esc_html_e( 'Connect the Image Optimizer plugin to speed up your site. We\'ll handle the rest.', 'image-optimization' ); ?></p>
+				<p><?php esc_html_e( 'Connect the Image Optimization plugin to speed up your site. We\'ll handle the rest.', 'image-optimization' ); ?></p>
 				<ul>
 					<li><?php esc_html_e( 'Boost site speed and compress images', 'image-optimization' ); ?></li>
 					<li><?php esc_html_e( 'Bulk optimization for faster processing', 'image-optimization' ); ?></li>

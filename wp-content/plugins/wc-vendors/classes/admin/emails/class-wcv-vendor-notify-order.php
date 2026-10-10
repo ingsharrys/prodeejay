@@ -189,6 +189,64 @@ if ( ! class_exists( 'WCVendors_Vendor_Notify_Order' ) ) :
         }
 
         /**
+         * Populate preview data from the most recent vendor order.
+         *
+         * Called by WooCommerce before rendering the email preview.
+         *
+         * @since   2.6.9
+         * @return void
+         */
+        public function set_preview_data() {
+            $orders = wc_get_orders(
+                array(
+                    'limit'   => 1,
+                    'orderby' => 'date',
+                    'order'   => 'DESC',
+                    'status'  => array( 'processing', 'completed' ),
+                )
+            );
+
+            if ( empty( $orders ) ) {
+                return;
+            }
+
+            $order   = reset( $orders );
+            $vendors = WCV_Vendors::get_vendors_from_order( $order );
+
+            if ( empty( $vendors ) ) {
+                return;
+            }
+
+            $vendor_id     = key( $vendors );
+            $vendor_detail = reset( $vendors );
+
+            if ( ! is_a( $vendor_detail['vendor'], 'WP_User' ) ) {
+                return;
+            }
+
+            $this->object                          = $order;
+            $this->vendor_id                       = $vendor_id;
+            $this->order_items                     = $vendor_detail['line_items'];
+            $this->totals_display                  = $this->get_option( 'totals_display', 'both' );
+            $this->recipient                       = $vendor_detail['vendor']->user_email;
+            $this->placeholders['{order_date}']    = wc_format_datetime( $order->get_date_created() );
+            $this->placeholders['{order_number}']  = $order->get_order_number();
+            $this->placeholders['{customer_name}'] = $order->get_billing_first_name() . ' ' . $order->get_billing_last_name();
+        }
+
+        /**
+         * Set preview data if the email is being previewed in WooCommerce admin.
+         *
+         * @since   2.6.9
+         * @return void
+         */
+        private function maybe_set_preview_data() {
+            if ( apply_filters( 'woocommerce_is_email_preview', false ) ) {
+                $this->set_preview_data();
+            }
+        }
+
+        /**
          * Get content html.
          *
          * @access  public
@@ -197,6 +255,8 @@ if ( ! class_exists( 'WCVendors_Vendor_Notify_Order' ) ) :
          */
         public function get_content_html() {
 
+            $this->maybe_set_preview_data();
+
             return apply_filters(
                 'wcv_vendor_notify_order_get_content_html',
                 wc_get_template_html(
@@ -204,7 +264,7 @@ if ( ! class_exists( 'WCVendors_Vendor_Notify_Order' ) ) :
                     array(
                         'order'          => $this->object,
                         'vendor_id'      => $this->vendor_id,
-                        'vendor_items'   => $this->order_items,
+                        'vendor_items'   => $this->order_items ?? array(),
                         'email_heading'  => $this->get_heading(),
                         'totals_display' => $this->totals_display,
                         'sent_to_admin'  => false,
@@ -228,6 +288,8 @@ if ( ! class_exists( 'WCVendors_Vendor_Notify_Order' ) ) :
          */
         public function get_content_plain() {
 
+            $this->maybe_set_preview_data();
+
             return apply_filters(
                 'wcv_vendor_notify_order_get_content_plain',
                 wc_get_template_html(
@@ -235,7 +297,7 @@ if ( ! class_exists( 'WCVendors_Vendor_Notify_Order' ) ) :
                     array(
                         'order'          => $this->object,
                         'vendor_id'      => $this->vendor_id,
-                        'vendor_items'   => $this->order_items,
+                        'vendor_items'   => $this->order_items ?? array(),
                         'email_heading'  => $this->get_heading(),
                         'sent_to_admin'  => false,
                         'sent_to_vendor' => true,

@@ -136,6 +136,11 @@ class WCV_Product_Meta {
             }
         }
 
+        if ( ! empty( $product_misc['featured'] ) ) {
+            $css .= '#catalog-visibility-select input#_featured{display:none !important;}';
+            $css .= '#catalog-visibility-select label[for="_featured"]{display:none !important;}';
+        }
+
         return apply_filters( 'wcvendors_display_advanced_styles', $css );
     }
 
@@ -807,7 +812,7 @@ class WCV_Product_Meta {
                 'sku'       => wc_string_to_bool( get_option( 'wcvendors_capability_product_sku', 'no' ) ),
                 'duplicate' => wc_string_to_bool( get_option( 'wcvendors_capability_product_duplicate', 'no' ) ),
                 'delete'    => wc_string_to_bool( get_option( 'wcvendors_capability_product_delete', 'no' ) ),
-                'featured'  => wc_string_to_bool( get_option( 'wcvendors_capability_product_featured', 'no' ) ),
+                'featured'  => ! wc_string_to_bool( get_option( 'wcvendors_capability_product_featured', 'no' ) ),
             )
         );
     }

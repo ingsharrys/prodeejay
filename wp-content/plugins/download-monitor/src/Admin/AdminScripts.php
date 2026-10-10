@@ -95,7 +95,7 @@ class DLM_Admin_Scripts {
 				wp_enqueue_script(
 					'dlm_edit_download',
 					plugins_url( '/assets/js/edit-download' . ( ( ! SCRIPT_DEBUG ) ? '.min' : '' ) . '.js', $dlm->get_plugin_file() ),
-					array( 'jquery', 'media-upload' ),
+					array( 'jquery' ),
 					DLM_VERSION,
 					true
 				);
@@ -103,6 +103,36 @@ class DLM_Admin_Scripts {
 				// Make JavaScript strings translatable.
 				wp_localize_script( 'dlm_edit_download', 'dlm_ed_strings', $this->get_strings( 'edit-download' ) );
 				wp_add_inline_script( 'dlm_edit_download', 'var dlmUploaderInstance = {}; var dlmEditInstance = {}; let downloadable_files_field; const max_file_size = ' . absint( wp_max_upload_size() ) . ';', 'before' );
+
+				// Enqueue React File Browser app.
+				$file_browser_asset = plugins_url( '/assets/js/file-browser/index.asset.php', $dlm->get_plugin_file() );
+				$asset_file         = file_exists( plugin_dir_path( $dlm->get_plugin_file() ) . 'assets/js/file-browser/index.asset.php' )
+					? include plugin_dir_path( $dlm->get_plugin_file() ) . 'assets/js/file-browser/index.asset.php'
+					: array( 'dependencies' => array( 'wp-element', 'wp-components', 'wp-i18n', 'jquery' ), 'version' => DLM_VERSION );
+
+				wp_enqueue_script(
+					'dlm_file_browser',
+					plugins_url( '/assets/js/file-browser/index.js', $dlm->get_plugin_file() ),
+					$asset_file['dependencies'],
+					$asset_file['version'],
+					true
+				);
+
+				wp_enqueue_style(
+					'dlm_file_browser',
+					plugins_url( '/assets/js/file-browser/index.css', $dlm->get_plugin_file() ),
+					array( 'wp-components' ),
+					$asset_file['version']
+				);
+
+				wp_localize_script(
+					'dlm_file_browser',
+					'dlmFileBrowser',
+					array(
+						'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+						'nonce'   => wp_create_nonce( 'list-files' ),
+					)
+				);
 			}
 
 			// Enqueue Downloadable Files Metabox JS

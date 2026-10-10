@@ -139,6 +139,16 @@ $labels = array(
     'confirm'                            => __( 'Confirm', 'wc-vendors' ),
     'customMessage'                      => __( 'Custom Message', 'wc-vendors' ),
     'website'                            => __( 'Website', 'wc-vendors' ),
+    'vendorApplications'                 => __( 'Vendor Applications', 'wc-vendors' ),
+    'selected'                           => __( 'selected', 'wc-vendors' ),
+    'bulkActions'                        => __( 'Bulk Actions', 'wc-vendors' ),
+    'apply'                              => __( 'Apply', 'wc-vendors' ),
+    'activate'                           => __( 'Activate', 'wc-vendors' ),
+    'deactivate'                         => __( 'Deactivate', 'wc-vendors' ),
+    'confirmBulkActivate'                => __( 'Are you sure you want to activate the selected vendors?', 'wc-vendors' ),
+    'confirmBulkDeactivate'              => __( 'Are you sure you want to deactivate the selected vendors?', 'wc-vendors' ),
+    'somethingWentWrong'                 => __( 'Something went wrong. Please try again.', 'wc-vendors' ),
+    'clearSelection'                     => __( 'Clear selection', 'wc-vendors' ),
 );
 
 return apply_filters(

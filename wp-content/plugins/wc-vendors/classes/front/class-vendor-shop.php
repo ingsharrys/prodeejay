@@ -26,6 +26,10 @@ class WCV_Vendor_Shop {
      */
     public function __construct() {
 
+        add_filter( 'template_include', array( $this, 'maybe_load_vendor_shop_template' ), 100 );
+        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_vendor_shop_styles' ) );
+        add_action( 'woocommerce_before_main_content', array( $this, 'suppress_wc_sidebar_on_vendor_page' ), 1 );
+
         add_action( 'woocommerce_product_query', array( $this, 'vendor_shop_query' ), 10, 1 );
         add_action( 'woocommerce_before_main_content', array( 'WCV_Vendor_Shop', 'shop_description' ), 30 );
         add_filter( 'woocommerce_product_tabs', array( 'WCV_Vendor_Shop', 'seller_info_tab' ) );
@@ -88,6 +92,8 @@ class WCV_Vendor_Shop {
     /**
      * Filter WooCommerce main query to include vendor shop pages.
      *
+     * @since 2.7.0 Inactive vendors' store pages now return a 404.
+     *
      * @param object $q    Existing query object.
      *
      * @return void
@@ -101,6 +107,15 @@ class WCV_Vendor_Shop {
 
         $vendor_id = WCV_Vendors::get_vendor_id( $vendor_shop );
         if ( ! $vendor_id ) {
+            $q->set_404();
+            status_header( 404 );
+
+            return;
+        }
+
+        // Inactive vendors' store pages should not be publicly accessible, consistent with how
+        // their products are hidden from the shop loop and blocked from purchase elsewhere.
+        if ( 'inactive' === get_user_meta( $vendor_id, '_wcv_vendor_status', true ) ) {
             $q->set_404();
             status_header( 404 );
 
@@ -131,8 +146,8 @@ class WCV_Vendor_Shop {
         if ( WCV_Vendors::is_vendor( $post->post_author ) ) {
 
             $seller_info = get_user_meta( $post->post_author, 'pv_seller_info', true );
-            $has_html    = get_user_meta( $post->post_author, 'pv_shop_html_enabled', true );
-            $global_html = get_option( 'wcvendors_display_shop_description_html' );
+            $has_html    = wc_string_to_bool( get_user_meta( $post->post_author, 'pv_shop_html_enabled', true ) );
+            $global_html = wc_string_to_bool( get_option( 'wcvendors_display_shop_description_html', 'no' ) );
 
             $seller_info_label = __( get_option( 'wcvendors_display_label_store_info' ), 'wc-vendors' ); // phpcs:ignore
 
@@ -192,8 +207,8 @@ class WCV_Vendor_Shop {
         $vendor_id   = WCV_Vendors::get_vendor_id( $vendor_shop );
 
         if ( $vendor_id ) {
-            $has_html    = get_user_meta( $vendor_id, 'pv_shop_html_enabled', true );
-            $global_html = 'yes' === get_option( 'wcvendors_display_shop_description_html', 'no' ) ? true : false;
+            $has_html    = wc_string_to_bool( get_user_meta( $vendor_id, 'pv_shop_html_enabled', true ) );
+            $global_html = wc_string_to_bool( get_option( 'wcvendors_display_shop_description_html', 'no' ) );
             $description = do_shortcode( get_user_meta( $vendor_id, 'pv_shop_description', true ) );
 
             echo '<div class="pv_shop_description">';
@@ -301,8 +316,8 @@ class WCV_Vendor_Shop {
             $shop_name   = get_user_meta( $vendor_id, 'pv_shop_name', true );
 
             // Shop description.
-            $has_html         = get_user_meta( $vendor_id, 'pv_shop_html_enabled', true );
-            $global_html      = 'yes' === get_option( 'wcvendors_display_shop_description_html', 'no' ) ? true : false;
+            $has_html         = wc_string_to_bool( get_user_meta( $vendor_id, 'pv_shop_html_enabled', true ) );
+            $global_html      = wc_string_to_bool( get_option( 'wcvendors_display_shop_description_html', 'no' ) );
             $description      = do_shortcode( get_user_meta( $vendor_id, 'pv_shop_description', true ) );
             $shop_description = ( $global_html || $has_html ) ? wpautop( wptexturize( wp_kses_post( $description ) ) ) : sanitize_text_field( $description );
             $seller_info      = ( $global_html || $has_html ) ? wpautop( get_user_meta( $vendor_id, 'pv_seller_info', true ) ) : sanitize_text_field( get_user_meta( $vendor_id, 'pv_seller_info', true ) );
@@ -433,10 +448,11 @@ class WCV_Vendor_Shop {
      * @param string $title The vendor page title.
      *
      * @since 1.9.9
+     * @since 2.7.0 Bail on 404s so inactive vendor pages don't leak the shop name into the title.
      */
     public function vendor_page_title( $title ) {
 
-        if ( WCV_Vendors::is_vendor_page() ) {
+        if ( ! is_404() && WCV_Vendors::is_vendor_page() ) {
 
             $title['title'] = self::page_title();
         }
@@ -594,5 +610,80 @@ class WCV_Vendor_Shop {
             'wc-vendors/product/',
             WCV_TEMPLATE_BASE . 'product/'
         );
+    }
+
+    /**
+     * Whether the vendor shop sidebar feature is enabled.
+     *
+     * @since 2.6.9
+     *
+     * @return bool
+     */
+    private function is_vendor_shop_sidebar_enabled() {
+        return wc_string_to_bool( get_option( 'wcvendors_vendor_shop_sidebar_enabled', 'no' ) );
+    }
+
+    /**
+     * When the vendor shop sidebar is enabled, suppress the default theme/WooCommerce
+     * sidebar so only our dedicated widget area is shown. Handles both the WooCommerce
+     * default sidebar and the Storefront theme's own sidebar mechanism.
+     *
+     * @since 2.6.9
+     */
+    public function suppress_wc_sidebar_on_vendor_page() {
+        if ( ! WCV_Vendors::is_vendor_page() ) {
+            return;
+        }
+        if ( ! $this->is_vendor_shop_sidebar_enabled() ) {
+            return;
+        }
+        // WooCommerce default sidebar (most themes).
+        remove_action( 'woocommerce_sidebar', 'woocommerce_get_sidebar', 10 );
+        // Storefront theme renders its sidebar via a separate action.
+        remove_action( 'storefront_sidebar', 'storefront_get_sidebar', 10 );
+    }
+
+    /**
+     * Enqueue the vendor shop stylesheet on vendor store pages.
+     *
+     * @since 2.6.9
+     */
+    public function enqueue_vendor_shop_styles() {
+        if ( ! WCV_Vendors::is_vendor_page() ) {
+            return;
+        }
+        wp_enqueue_style(
+            'wcv-store',
+            WCV_ASSETS_URL . 'css/wcv-store.css',
+            array(),
+            WCV_VERSION
+        );
+    }
+
+    /**
+     * Swap in our own vendor shop template on vendor store pages.
+     *
+     * Only active when the vendor shop sidebar option is enabled. When disabled
+     * the WooCommerce default template is used.
+     *
+     * @since 2.6.9
+     *
+     * @param string $template The resolved template path.
+     * @return string
+     */
+    public function maybe_load_vendor_shop_template( $template ) {
+        if ( ! WCV_Vendors::is_vendor_page() ) {
+            return $template;
+        }
+        if ( ! $this->is_vendor_shop_sidebar_enabled() ) {
+            return $template;
+        }
+
+        $located = locate_template( array( 'wc-vendors/front/vendor-shop.php' ) );
+        if ( $located ) {
+            return $located;
+        }
+
+        return WCV_TEMPLATE_BASE . 'front/vendor-shop.php';
     }
 }

@@ -5,6 +5,8 @@ namespace Elementor\Modules\AtomicWidgets\Elements\Base;
 use Elementor\Element_Base;
 use Elementor\Modules\AtomicWidgets\Controls\Base\Atomic_Control_Base;
 use Elementor\Modules\AtomicWidgets\Controls\Section;
+use Elementor\Modules\AtomicWidgets\Elements\Atomic_Form\Atomic_Form;
+use Elementor\Modules\AtomicWidgets\Elements\Loader\Frontend_Assets_Loader;
 use Elementor\Modules\AtomicWidgets\PropsResolver\Render_Props_Resolver;
 use Elementor\Modules\AtomicWidgets\PropTypes\Contracts\Prop_Type;
 use Elementor\Modules\AtomicWidgets\Styles\Style_Schema;
@@ -27,6 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 trait Has_Atomic_Base {
 	use Has_Base_Styles;
+	use Has_Base_Settings;
 
 	public function has_widget_inner_wrapper(): bool {
 		return false;
@@ -91,14 +94,58 @@ trait Has_Atomic_Base {
 			$result = $style_parser->parse( $style );
 
 			if ( ! $result->is_valid() ) {
-				$widget_id = $data['id'] ?? 'unknown';
-				throw new \Exception( esc_html( "Styles validation failed for style `$style_id`. Widget ID: `$widget_id`. " . $result->errors()->to_string() ) );
+				throw new \Exception(
+					esc_html( $this->format_styles_validation_error_message( $style_id, $data, $style, $result->errors()->to_string() ) )
+				);
 			}
 
 			$styles[ $style_id ] = $result->unwrap();
 		}
 
 		return $styles;
+	}
+
+	private function format_styles_validation_error_message(
+		string $style_id,
+		array $data,
+		array $style,
+		string $validation_errors
+	): string {
+		$widget_id = $data['id'] ?? 'unknown';
+		$structure_label = $this->get_editor_structure_label( $data );
+		$style_label = isset( $style['label'] ) && is_string( $style['label'] ) ? $style['label'] : null;
+
+		$message_parts = [
+			"Styles validation failed for style `$style_id` (widget `$widget_id`)",
+		];
+
+		if ( $structure_label ) {
+			$message_parts[] = "Structure label: `$structure_label`";
+		} else {
+			$element_name = $this->get_title();
+
+			if ( '' === $element_name ) {
+				$element_name = $this->get_name();
+			}
+
+			$message_parts[] = "Element: `$element_name`";
+		}
+
+		if ( $style_label ) {
+			$message_parts[] = "Style label: `$style_label`";
+		}
+
+		return implode( '. ', $message_parts ) . '. ' . $validation_errors;
+	}
+
+	private function get_editor_structure_label( array $data ): ?string {
+		$title = $data['editor_settings']['title'] ?? $this->editor_settings['title'] ?? null;
+
+		if ( ! is_string( $title ) || '' === $title ) {
+			return null;
+		}
+
+		return $title;
 	}
 
 	private function parse_atomic_settings( array $settings ): array {
@@ -249,6 +296,11 @@ trait Has_Atomic_Base {
 		$props['attributes'] = Attributes_Prop_Type::generate( $merged_attribute_values );
 
 		$parsed = Render_Props_Resolver::for_settings()->resolve( $schema, $props );
+
+		return $this->transform_link_for_render( $parsed );
+	}
+
+	protected function transform_link_for_render( array $parsed ): array {
 		$link_attributes = isset( $parsed['link'] ) ? $this->get_link_attributes_string( $parsed['link'] ) : '';
 
 		$parsed['link'] = ! empty( $link_attributes ) ? [
@@ -297,12 +349,19 @@ trait Has_Atomic_Base {
 			$editor_data['title'] = sanitize_text_field( $data['title'] );
 		}
 
+		if ( isset( $data['grid_outline'] ) && is_bool( $data['grid_outline'] ) ) {
+			$editor_data['grid_outline'] = $data['grid_outline'];
+		}
+
 		return $editor_data;
 	}
 
 	public static function get_props_schema(): array {
 		$schema = static::define_props_schema();
-		$schema['_cssid'] = String_Prop_Type::make()->meta( Overridable_Prop_Type::ignore() );
+
+		if ( ! isset( $schema['_cssid'] ) ) {
+			$schema['_cssid'] = String_Prop_Type::make()->meta( Overridable_Prop_Type::ignore() );
+		}
 
 		return apply_filters(
 			'elementor/atomic-widgets/props-schema',
@@ -396,5 +455,30 @@ trait Has_Atomic_Base {
 		}
 
 		return implode( ' ', $parts );
+	}
+
+	public function has_action_link() {
+		if ( ! $this->get_id() ) {
+			return true;
+		}
+
+		$link_settings = $this->get_atomic_setting( 'link' ) ?? null;
+		$attributes = $this->get_link_attributes( $link_settings );
+
+		return isset( $attributes['data-action-link'] );
+	}
+
+	public function get_script_depends() {
+		$depends = parent::get_script_depends();
+
+		if ( $this->has_action_link() ) {
+			$depends[] = Frontend_Assets_Loader::ACTION_LINK_HANDLERS_HANDLE;
+		}
+
+		if ( Atomic_Form::is_instance_form( $this ) ) {
+			$depends[] = Frontend_Assets_Loader::FORM_HANDLERS_HANDLE;
+		}
+
+		return $depends;
 	}
 }

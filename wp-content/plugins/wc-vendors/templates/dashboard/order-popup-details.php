@@ -3,6 +3,7 @@
  * Order popup details template
  *
  * @version 2.6.5 - Fix security issues.
+ * @version 2.6.9 - Added payment method display.
  *
  * @phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
  * @package    WC_Vendors
@@ -53,7 +54,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="modal-body">
 
             <div class="wcv-order-customer-details wcv-flex wcv-flex-wrap">
-                <?php if ( $details_display_options['billing_address'] || $details_display_options['email'] || $details_display_options['phone'] ) : ?>
+                <?php if ( $details_display_options['billing_address'] || $details_display_options['email'] || $details_display_options['phone'] || $details_display_options['payment_method'] ) : ?>
                 <div class="billing-details">
                     <h4><?php esc_html_e( 'Billing Details', 'wc-vendors' ); ?></h4>
                     <?php if ( $details_display_options['billing_address'] ) : ?>
@@ -65,7 +66,10 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <?php if ( $details_display_options['phone'] ) : ?>
                         <div><p><small><?php esc_html_e( 'Phone', 'wc-vendors' ); ?></small> <?php echo $billing_details['phone'] ? esc_html( $billing_details['phone'] ) : esc_html__( 'Not set', 'wc-vendors' ); ?></p></div>
                     <?php endif; ?>
-                    
+                    <?php if ( $details_display_options['payment_method'] ) : ?>
+                        <?php $payment_method_title = $order->get_payment_method_title(); ?>
+                        <div><p><small><?php esc_html_e( 'Payment Method', 'wc-vendors' ); ?></small> <?php echo $payment_method_title ? esc_html( $payment_method_title ) : esc_html__( 'Not set', 'wc-vendors' ); ?></p></div>
+                    <?php endif; ?>
                 </div>
                 <?php endif; ?>
 
@@ -193,6 +197,18 @@ if ( ! defined( 'ABSPATH' ) ) {
                         </span>
                     </div>
 
+                    <?php $payment_method_title = $order->get_payment_method_title(); ?>
+                    <?php if ( $details_display_options['payment_method'] && $payment_method_title ) : ?>
+                    <div class="wcv-order-row payment-method">
+                        <span class="wcv-order-label">
+                            <?php esc_html_e( 'Payment Method', 'wc-vendors' ); ?>:
+                        </span>
+                        <span class="wcv-order-value">
+                            <?php echo esc_html( $payment_method_title ); ?>
+                        </span>
+                    </div>
+                    <?php endif; ?>
+
                     <!-- Refund Information -->
                     <?php if ( $refunded_amount > 0 ) : ?>
                         <div class="wcv-order-row refunded">
@@ -298,7 +314,14 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     <?php echo wp_kses_post( wc_price( $order_commission, array( 'currency' => $order_currency ) ) ); ?>
                                 </td>
                             </tr>
-                          
+
+                            <?php if ( $details_display_options['payment_method'] && $payment_method_title ) : ?>
+                                <tr class="wcv-order-payment-method">
+                                    <td class="wcv-order-totals-label right-space"><?php esc_html_e( 'Payment Method', 'wc-vendors' ); ?>:</td>
+                                    <td><?php echo esc_html( $payment_method_title ); ?></td>
+                                </tr>
+                            <?php endif; ?>
+
                             <?php if ( $refunded_amount > 0 ) : ?>
                                 <tr class="wcv-order-refunded">
                                     <td class="wcv-order-refund-label right-space">

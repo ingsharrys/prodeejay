@@ -637,6 +637,7 @@ class WCVendors_Admin_Menus {
                 'wc-vendors-woocommerce-bookings',
                 'wc-vendors-gateway-stripe-connect',
                 'wc-vendors-pro',
+                'wc-vendors-engage',
             )
         );
         include WCV_ABSPATH_ADMIN . 'views/html-admin-about-page.php';

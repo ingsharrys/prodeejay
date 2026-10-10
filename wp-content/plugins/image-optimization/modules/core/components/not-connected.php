@@ -30,7 +30,7 @@ class Not_Connected {
 			<p>
 				<b>
 					<?php esc_html_e(
-						'Image Optimizer is not connected right now. To start optimizing your images, please connect your account.',
+						'Image Optimization is not connected right now. To start optimizing your images, please connect your account.',
 						'image-optimization'
 					); ?>
 				</b>

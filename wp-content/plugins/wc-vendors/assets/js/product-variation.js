@@ -137,12 +137,16 @@ jQuery(function($) {
     update_variation_select_positions: function() {
       const attributes = $('#wcv-variation-attributes').data('variation_attr')
 
+      if (!attributes) {
+        return
+      }
+
       $('.wcv_variation').each(function() {
         const $selects = $(this).find('select.variation_attribute')
 
         $selects.sort(function(a, b) {
-          const an = attributes[$(a).data('taxonomy')].position
-          const bn = attributes[$(b).data('taxonomy')].position
+          const an = (attributes[$(a).data('taxonomy')] || {}).position || 0
+          const bn = (attributes[$(b).data('taxonomy')] || {}).position || 0
 
           if (an > bn) {
             return 1
@@ -160,13 +164,18 @@ jQuery(function($) {
 
     update_default_select_positions: function() {
       const attributes = $('#wcv-variation-attributes').data('variation_attr')
+
+      if (!attributes) {
+        return
+      }
+
       const $selects = $('.variation-default-values').find(
         'select.default_attribute'
       )
 
       $selects.sort(function(a, b) {
-        const an = attributes[$(a).data('taxonomy')].position
-        const bn = attributes[$(b).data('taxonomy')].position
+        const an = (attributes[$(a).data('taxonomy')] || {}).position || 0
+        const bn = (attributes[$(b).data('taxonomy')] || {}).position || 0
 
         if (an > bn) {
           return 1
@@ -971,6 +980,28 @@ jQuery(function($) {
     },
 
     /**
+     * Next available loop index for newly-added variation rows.
+     *
+     * Avoids collisions with loops already queued in #wcv_deleted_variations,
+     * which save_variations() uses to skip indexes it just removed.
+     *
+     * @return {number}
+     */
+    next_variation_loop: function() {
+      let deleted = []
+      try {
+        deleted = JSON.parse($('#wcv_deleted_variations').val() || '[]') || []
+      } catch (e) {
+        deleted = []
+      }
+      const maxDeletedLoop = deleted.reduce(function(max, v) {
+        const l = parseInt(v && v.loop, 10)
+        return isNaN(l) ? max : Math.max(max, l)
+      }, -1)
+      return Math.max($('.wcv_variation').length, maxDeletedLoop + 1)
+    },
+
+    /**
      * Add variation
      *
      * @return {Bool}
@@ -982,7 +1013,7 @@ jQuery(function($) {
       }
       const data = {
         action: 'wcv_json_add_variation',
-        loop: $('.wcv_variation').length,
+        loop: wcv_product_variations_ajax.next_variation_loop(),
         parent_data: parent_obj,
         attributes: $('#wcv-variation-attributes').data('variation_attr'),
         security: wcv_product_variation.wcv_add_variation_nonce
@@ -1116,7 +1147,7 @@ jQuery(function($) {
         const data = {
           action: 'wcv_json_link_all_variations',
           parent_data: parent_obj,
-          loop: $('.wcv_variation').length,
+          loop: wcv_product_variations_ajax.next_variation_loop(),
           attributes: $('#wcv-variation-attributes').data('variation_attr'),
           available_variations,
           security: wcv_product_variation.wcv_json_link_all_variations_nonce

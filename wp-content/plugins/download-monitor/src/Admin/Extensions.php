@@ -424,13 +424,6 @@ class DLM_Admin_Extensions {
 				'target'   => '',
 				'priority' => '10',
 			),
-			'suggest_feature' => array(
-				'name'     => esc_html__( 'Suggest a feature', 'download-monitor' ),
-				'url'      => 'https://forms.gle/3igARBBzrbp6M8Fc7',
-				'icon'     => 'dashicons dashicons-external',
-				'target'   => '_blank',
-				'priority' => '90',
-			),
 		);
 
 		if ( count( $this->installed_extensions ) > 0 ) {

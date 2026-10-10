@@ -310,6 +310,8 @@ class WCV_Vendor_Dashboard_Legacy {
     /**
      * [wcv_vendor_dashboard] shortcode
      *
+     * @since 2.7.0 Batch fetch commission rows for the page to eliminate an N+1 query in the template.
+     *
      * @param array $atts The shortcode attributes.
      *
      * @return string
@@ -397,6 +399,28 @@ class WCV_Vendor_Dashboard_Legacy {
             )
         );
 
+        // Batch fetch commission rows for all orders on this page to avoid an N+1 query in the template.
+        $commission_by_order = array();
+        $parent_order_ids    = array();
+        foreach ( $order_summary as $vendor_order ) {
+            $parent_order       = $vendor_order->get_parent_order();
+            $parent_order_ids[] = $parent_order ? $parent_order->get_id() : $vendor_order->get_parent_id();
+        }
+        $parent_order_ids = array_values( array_unique( array_filter( array_map( 'absint', $parent_order_ids ) ) ) );
+
+        if ( ! empty( $parent_order_ids ) ) {
+            $placeholders    = implode( ',', array_fill( 0, count( $parent_order_ids ), '%d' ) );
+            $commission_rows = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM {$wpdb->prefix}pv_commission WHERE order_id IN ( $placeholders ) AND vendor_id = %d", // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                    array_merge( $parent_order_ids, array( $user_id ) )
+                )
+            ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            foreach ( $commission_rows as $commission_row ) {
+                $commission_by_order[ (int) $commission_row->order_id ][] = $commission_row;
+            }
+        }
+
         $shipping_providers = new WCV_Shipping_Providers();
 
         $providers      = $shipping_providers->get_providers();
@@ -439,19 +463,20 @@ class WCV_Vendor_Dashboard_Legacy {
         wc_get_template(
             'orders.php',
             array(
-                'start_date'       => $start_date,
-                'end_date'         => $end_date,
-                'vendor_products'  => $vendor_products,
-                'order_summary'    => $order_summary,
-                'datepicker'       => $datepicker,
-                'providers'        => $providers,
-                'provider_array'   => $provider_array,
-                'can_view_orders'  => $can_view_orders,
-                'can_view_address' => $can_view_address,
-                'show_reversed'    => $show_reversed_orders,
-                'total_pages'      => ceil( $total_orders / $per_page ),
-                'paged'            => $paged,
-                'vendor_id'        => $user_id,
+                'start_date'          => $start_date,
+                'end_date'            => $end_date,
+                'vendor_products'     => $vendor_products,
+                'order_summary'       => $order_summary,
+                'commission_by_order' => $commission_by_order,
+                'datepicker'          => $datepicker,
+                'providers'           => $providers,
+                'provider_array'      => $provider_array,
+                'can_view_orders'     => $can_view_orders,
+                'can_view_address'    => $can_view_address,
+                'show_reversed'       => $show_reversed_orders,
+                'total_pages'         => ceil( $total_orders / $per_page ),
+                'paged'               => $paged,
+                'vendor_id'           => $user_id,
             ),
             'wc-vendors/dashboard/',
             WCV_PLUGIN_DIR . 'templates/dashboard/'

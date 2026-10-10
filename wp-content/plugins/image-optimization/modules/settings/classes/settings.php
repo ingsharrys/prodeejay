@@ -20,6 +20,7 @@ class Settings {
 	public const BACKUP_ORIGINAL_IMAGES_OPTION_NAME = 'image_optimizer_original_images';
 	public const CUSTOM_SIZES_OPTION_NAME = 'image_optimizer_custom_sizes';
 	public const HELP_VIDEOS = 'image_optimizer_help_videos';
+	public const MIGRATION_POPUP_DISMISSED = 'image_optimizer_migration_popup_dismissed';
 	public const SUBSCRIPTION_ID = 'image_optimizer_subscription_id';
 
 	/**

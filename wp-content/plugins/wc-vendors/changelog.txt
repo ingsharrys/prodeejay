@@ -1,5 +1,43 @@
 Changelog for WC Vendors Marketplace
 
+Version 2.7.1 - 30th July 2026
+
+ * Improvement: Add Total Refunded Sales row and calculate vendor commission on net sales
+ * Improvement: Optimize vendor ID lookup and vendors shortcode query performance
+ * Bug Fix: Authenticated SQL injection via the status parameter in the vendors REST endpoint (CVE-2026-15351)
+ * Bug Fix: Vendor order search ignored customer info capability settings
+ * Bug Fix: Fatal error on PHP 8 from static WCV_Shipping hook callbacks
+ * Bug Fix: Incorrect StoreAgent brand name and AI Moderate capability label
+ * Bug Fix: Reversed commissions included in Gross Sales Report totals
+ * Bug Fix: wcvendors_table_before_{id} now fires as an action to match wcvendors_table_after_{id}
+
+Version 2.7.0 - 16th June 2026
+
+ * Feature: Add a Trash Bin for vendors to restore or permanently delete their own products
+ * Bug Fix: Incorrect plural vendor label on the "When a Vendor Is Set to Pending" setting
+ * Bug Fix: Calculation errors and crash risk in get_vendor_dues_from_order
+ * Bug Fix: Inactive vendor store page accessible via URL
+ * Bug Fix: "Security check failed" error on the WC Vendors reports tab
+ * Bug Fix: Fatal error on null result in count_products_status
+ * Bug Fix: Fatal error on wp-login.php registration when a vendor terms page is set
+ * Bug Fix: Fatal error when wp_enqueue_scripts fires in an admin context
+ * Bug Fix: Variation with a custom attribute is not saved
+ * Bug Fix: Refunded orders leak onto the vendor dashboard when "Show reversed orders" is disabled
+
+Version 2.6.9 - 30th April 2026
+
+ * Feature: Add setting to auto-unpublish vendor products when role changes to Pending Vendor
+ * Improvement: Register a dedicated sidebar widget area for the WC Vendors single store page
+ * Improvement: Add bulk approve and deny actions for pending vendors
+ * Improvement: Show payment method on the order details page
+ * Improvement: Retain vendor status filter selection after page refresh
+ * Improvement: Add option for one row per order or one row per line item for the order CSV export
+ * Improvement: Add option to rename the Vendor Dashboard label
+ * Bug Fix: Fix missing borders in vendor order email
+ * Bug Fix: Persist product filters across pagination
+ * Bug Fix: Fix featured product setting not being enforced and missing in Vendor Dashboard
+ * Bug Fix: Refunded orders shown on vendor orders dashboard when "Show reversed orders" setting is disabled
+
 Version 2.6.8 - 31st March 2026
 
  * Improvement: Replace strpos() with str_contains() across the codebase

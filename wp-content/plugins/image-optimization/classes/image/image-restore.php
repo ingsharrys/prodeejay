@@ -24,7 +24,7 @@ class Image_Restore {
 			try {
 				self::restore( $image_id, $keep_image_meta );
 			} catch ( Throwable $t ) {
-				Logger::log( Logger::LEVEL_ERROR, 'Bulk images restoring error: ' . $t->getMessage() );
+				Logger::error( 'Bulk images restoring error: ' . $t->getMessage() );
 
 				( new Image_Meta( $image_id ) )
 				->set_status( Image_Status::RESTORING_FAILED )
@@ -53,14 +53,25 @@ class Image_Restore {
 			$current_path = $image->get_file_path( $image_size );
 
 			if ( $backup_path && $current_path ) {
-				$original_path = self::get_path_from_backup_path( $backup_path );
+				$resolved_backup_path = Image_Backup_Path_Validator::resolve( $backup_path );
 
-				if ( $original_path === $backup_path ) {
+				if ( null === $resolved_backup_path ) {
+					Logger::warn(
+						"Skipped restoring invalid backup path for image {$image_id} and size {$image_size}"
+					);
+
+					continue;
+				}
+
+				$original_path = self::get_path_from_backup_path( $resolved_backup_path );
+
+				if ( $original_path === $resolved_backup_path ) {
+
 					File_System::delete( $current_path, false, 'f' );
 
 					self::update_posts( $current_path, $original_path );
 				} else {
-					File_System::move( $backup_path, $original_path, $original_path === $current_path );
+					File_System::move( $resolved_backup_path, $original_path, $original_path === $current_path );
 
 					if ( $original_path !== $current_path ) {
 						File_System::delete( $current_path, false, 'f' );

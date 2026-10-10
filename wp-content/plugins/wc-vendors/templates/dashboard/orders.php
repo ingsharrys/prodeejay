@@ -10,15 +10,11 @@
  * @version       2.6.5 - Fix security issues.
  *
  * @phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
- * @phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
- * @phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
-
-global $wpdb;
 
 ?>
 
@@ -80,14 +76,14 @@ if ( function_exists( 'wc_print_notices' ) ) {
             $parent_order_id = $parent_order ? $parent_order->get_id() : $vendor_order->get_parent_id();
 
             $order_id       = $vendor_order->get_id();
-            $order_products = WCV_Queries::get_products_for_order( $order_id );
             $valid_items    = array();
             $needs_shipping = false;
 
             $items       = $vendor_order->get_items();
             $order_total = 0;
 
-            $order_products = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}pv_commission WHERE order_id = %d AND vendor_id = %d", $parent_order_id, $user_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            // Commission rows are batch-fetched in the controller to avoid an N+1 query.
+            $order_products = isset( $commission_by_order[ $parent_order_id ] ) ? $commission_by_order[ $parent_order_id ] : array();
 
             foreach ( $items as $item ) {
                 $valid_items[] = $item;

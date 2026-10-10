@@ -3,7 +3,6 @@
 namespace Elementor\Modules\AtomicWidgets\Elements\Base;
 
 use Elementor\Element_Base;
-use Elementor\Modules\AtomicWidgets\Elements\Loader\Frontend_Assets_Loader;
 use Elementor\Modules\AtomicWidgets\PropDependencies\Manager as Dependency_Manager;
 use Elementor\Modules\AtomicWidgets\PropTypes\Contracts\Prop_Type;
 use Elementor\Modules\AtomicWidgets\PropTypes\Concerns\Has_Meta;
@@ -34,10 +33,11 @@ abstract class Atomic_Element_Base extends Element_Base {
 		$this->styles = $data['styles'] ?? [];
 		$this->interactions = $this->parse_atomic_interactions( $data['interactions'] ?? [] );
 		$this->editor_settings = $data['editor_settings'] ?? [];
-		$this->add_script_depends( Frontend_Assets_Loader::ATOMIC_WIDGETS_HANDLER );
+
 		if ( static::$widget_description ) {
 			$this->description( static::$widget_description );
 		}
+
 		$this->origin_id = $data['origin_id'] ?? null;
 	}
 
@@ -85,6 +85,7 @@ abstract class Atomic_Element_Base extends Element_Base {
 		$config['atomic_pseudo_states'] = $this->define_atomic_pseudo_states();
 		$config['dependencies_per_target_mapping'] = Dependency_Manager::get_source_to_dependents( $props_schema );
 		$config['base_styles'] = $this->get_base_styles();
+		$config['base_settings'] = $this->get_base_settings();
 		$config['version'] = $this->version;
 		$config['show_in_panel'] = $this->should_show_in_panel();
 		$config['categories'] = $this->define_panel_categories();

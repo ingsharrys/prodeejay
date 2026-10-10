@@ -248,7 +248,7 @@ function attributes_cmp( $a, $b ) {
  * Get the order display options.
  *
  * @since 2.5.9
- * @version 2.5.9
+ * @version 2.6.9
  *
  * @return array
  */
@@ -260,6 +260,7 @@ function wcv_get_order_details_display_options() {
         'shipping_name'    => wc_string_to_bool( get_option( 'wcvendors_capability_order_customer_shipping_name', 'no' ) ),
         'shipping_address' => wc_string_to_bool( get_option( 'wcvendors_capability_order_customer_shipping', 'no' ) ),
         'billing_address'  => wc_string_to_bool( get_option( 'wcvendors_capability_order_customer_billing', 'no' ) ),
+        'payment_method'   => wc_string_to_bool( get_option( 'wcvendors_capability_order_payment_method', 'no' ) ),
     );
 }
 

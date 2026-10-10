@@ -9,21 +9,21 @@
  */
 
 use WC_Vendors\Classes\Front\WCV_Form_Helper;
+use WC_Vendors\Classes\Front\WCV_Table_Helper;
 use function WC_Vendors\Classes\Includes\wcv_is_vendor_shipping_disabled;
 ?>
 
 <div class="wcv_dashboard_table_header wcv_actions wcv-cols-group horizontal-gutters wcv-order-header">
     <div class="wcv-order-table-order-count wcv-flex wcv-flex-wrap-reverse wcv-gap-bottom">
-        <?php $order_counts = $this->count_orders_by_statuses(); ?>
-        <div class="small-100 all-100 quick-link-wrapper">
-            <?php foreach ( $order_counts as $order_status => $count ) : ?>
-                <span class="quick-link-btn black">
-                    <a href="<?php echo esc_url( add_query_arg( 'order_status', $order_status ) ); ?>">
-                        <span><?php echo esc_html( $count['label'] ); ?></span> (<?php echo esc_html( $count['count'] ); ?>)
-                    </a>
-                </span>
-            <?php endforeach; ?>
-        </div>
+        <?php
+        WCV_Table_Helper::render_status_filter_links(
+            $this->count_orders_by_statuses(),
+            'order_status',
+            array(
+                'wrapper_class' => 'small-100 all-100',
+            )
+        );
+        ?>
     </div>
     <div class="all-100 small-100">
         <form method="post" action="" class="wcv-form wcv-form-exclude">

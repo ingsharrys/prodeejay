@@ -60,8 +60,6 @@ class WC_Vendors_Bootstrap_Legacy {
         add_action( 'init', array( $this, 'maybe_flush_permalinks' ), 99 );
         add_action( 'admin_init', array( $this, 'wcv_required_ignore_notices' ) );
 
-        add_action( 'wcvendors_flush_rewrite_rules', array( $this, 'flush_rewrite_rules' ) );
-
         $this->include_gateways();
         $this->include_core();
         $this->include_init();

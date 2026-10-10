@@ -19,6 +19,9 @@ if ( ! defined( 'WP_TEMPLATE_PART_AREA_SIDEBAR' ) ) {
 if ( ! defined( 'WP_TEMPLATE_PART_AREA_UNCATEGORIZED' ) ) {
 	define( 'WP_TEMPLATE_PART_AREA_UNCATEGORIZED', 'uncategorized' );
 }
+if ( ! defined( 'WP_TEMPLATE_PART_AREA_NAVIGATION_OVERLAY' ) ) {
+	define( 'WP_TEMPLATE_PART_AREA_NAVIGATION_OVERLAY', 'navigation-overlay' );
+}
 
 /**
  * For backward compatibility reasons,
@@ -95,6 +98,15 @@ function get_allowed_block_template_part_areas() {
 			),
 			'icon'        => 'footer',
 			'area_tag'    => 'footer',
+		),
+		array(
+			'area'        => WP_TEMPLATE_PART_AREA_NAVIGATION_OVERLAY,
+			'label'       => _x( 'Navigation Overlay', 'template part area' ),
+			'description' => __(
+				'The Navigation Overlay template defines an overlay area that typically contains navigation links and can be toggled open and closed.'
+			),
+			'icon'        => 'navigation-overlay',
+			'area_tag'    => 'div',
 		),
 	);
 
@@ -331,11 +343,22 @@ function _get_block_template_file( $template_type, $slug ) {
 	);
 	foreach ( $themes as $theme_slug => $theme_dir ) {
 		$template_base_paths = get_block_theme_folders( $theme_slug );
-		$file_path           = $theme_dir . '/' . $template_base_paths[ $template_type ] . '/' . $slug . '.html';
-		if ( file_exists( $file_path ) ) {
+		$template_dir        = $theme_dir . '/' . $template_base_paths[ $template_type ];
+		$file_path           = $template_dir . '/' . $slug . '.html';
+		$template_file       = realpath( $file_path );
+		$template_root       = realpath( $template_dir );
+
+		if (
+			false !== $template_file &&
+			false !== $template_root &&
+			str_starts_with(
+				wp_normalize_path( $template_file ),
+				trailingslashit( wp_normalize_path( $template_root ) )
+			)
+		) {
 			$new_template_item = array(
 				'slug'  => $slug,
-				'path'  => $file_path,
+				'path'  => $template_file,
 				'theme' => $theme_slug,
 				'type'  => $template_type,
 			);
@@ -382,10 +405,10 @@ function _get_block_templates_files( $template_type, $query = array() ) {
 	}
 
 	// Prepare metadata from $query.
-	$slugs_to_include = isset( $query['slug__in'] ) ? $query['slug__in'] : array();
-	$slugs_to_skip    = isset( $query['slug__not_in'] ) ? $query['slug__not_in'] : array();
-	$area             = isset( $query['area'] ) ? $query['area'] : null;
-	$post_type        = isset( $query['post_type'] ) ? $query['post_type'] : '';
+	$slugs_to_include = $query['slug__in'] ?? array();
+	$slugs_to_skip    = $query['slug__not_in'] ?? array();
+	$area             = $query['area'] ?? null;
+	$post_type        = $query['post_type'] ?? '';
 
 	$stylesheet = get_stylesheet();
 	$template   = get_template();
@@ -1115,7 +1138,7 @@ function get_block_templates( $query = array(), $template_type = 'wp_template' )
 		return $templates;
 	}
 
-	$post_type     = isset( $query['post_type'] ) ? $query['post_type'] : '';
+	$post_type     = $query['post_type'] ?? '';
 	$wp_query_args = array(
 		'post_status'         => array( 'auto-draft', 'draft', 'publish' ),
 		'post_type'           => $template_type,
@@ -1702,8 +1725,8 @@ function inject_ignored_hooked_blocks_metadata_attributes( $changes, $deprecated
 		return $changes;
 	}
 
-	$meta  = isset( $changes->meta_input ) ? $changes->meta_input : array();
-	$terms = isset( $changes->tax_input ) ? $changes->tax_input : array();
+	$meta  = $changes->meta_input ?? array();
+	$terms = $changes->tax_input ?? array();
 
 	if ( empty( $changes->ID ) ) {
 		// There's no post object for this template in the database for this template yet.

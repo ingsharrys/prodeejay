@@ -47,7 +47,7 @@ const RatingForm = ( { close, handleSubmitForm } ) => {
 	return (
 		<FormControl fullWidth>
 			<RadioGroup
-				aria-labelledby="Image Optimizer feedback form"
+				aria-labelledby="Image Optimization feedback form"
 				onChange={ ( event, value ) => handleRatingChange( value ) }
 				name="radio-buttons-group"
 			>

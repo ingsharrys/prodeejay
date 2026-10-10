@@ -293,14 +293,22 @@ class WCV_Vendors {
      * @param bool     $group Whether to group the dues by vendor.
      *
      * @return array
+     * @version 2.7.0 - Fixed fatal error on deleted products, order discount and shipping/tax remainders
+     *                   applied once instead of per line item in ungrouped mode, and vendor with user ID 1
+     *                   no longer overwritten by the admin dues.
      */
     public static function get_vendor_dues_from_order( $order, $group = true ) {
 
         $receiver                         = array();
+        $admin_dues                       = array();
         $shipping_given                   = 0;
         $tax_given                        = 0;
         $item_keys                        = array();
         WCV_Shipping::$pps_shipping_costs = array();
+
+        $give_tax_setting      = 'yes' === get_option( 'wcvendors_vendor_give_taxes', 'no' );
+        $give_shipping_setting = 'yes' === get_option( 'wcvendors_vendor_give_shipping', 'no' );
+        $shipping_disabled     = 'no' === get_option( 'woocommerce_calc_shipping' );
 
         foreach ( $order->get_items() as $key => $order_item ) {
 
@@ -311,17 +319,16 @@ class WCV_Vendors {
                 continue;
             }
 
-            $give_tax               = 'yes' === get_option( 'wcvendors_vendor_give_taxes', 'no' ) ? true : false;
-            $give_shipping          = 'yes' === get_option( 'wcvendors_vendor_give_shipping', 'no' ) ? true : false;
+            $give_tax               = $give_tax_setting;
+            $give_shipping          = $give_shipping_setting;
             $give_tax_override      = get_user_meta( $author, 'wcv_give_vendor_tax', true );
             $give_shipping_override = get_user_meta( $author, 'wcv_give_vendor_shipping', true );
-            $is_vendor              = self::is_vendor( $author );
-            $commission             = $is_vendor ? WCV_Commission::calculate_commission( $order_item['line_subtotal'], $product_id, $order, $order_item['qty'], $order_item ) : 0;
+            $commission             = WCV_Commission::calculate_commission( $order_item['line_subtotal'], $product_id, $order, $order_item['qty'], $order_item );
             $tax                    = ! empty( $order_item['line_tax'] ) ? (float) $order_item['line_tax'] : 0;
             $order_id               = $order->get_id();
 
             // Check if shipping is enabled.
-            if ( 'no' === get_option( 'woocommerce_calc_shipping' ) ) {
+            if ( $shipping_disabled ) {
                 $shipping     = 0;
                 $shipping_tax = 0;
             } else {
@@ -330,10 +337,13 @@ class WCV_Vendors {
                 $shipping_tax   = $shipping_costs['tax'];
             }
 
-            $_product = new WC_Product( $order_item['product_id'] );
+            $_product = wc_get_product( $product_id );
+
+            // Trust the recorded line item taxes when the product no longer exists.
+            $is_taxable = $_product instanceof WC_Product ? $_product->is_taxable() : ( $tax > 0 || (float) $shipping_tax > 0 );
 
             // Add line item tax and shipping taxes together.
-            $total_tax = ( $_product->is_taxable() ) ? (float) $tax + (float) $shipping_tax : 0;
+            $total_tax = $is_taxable ? (float) $tax + (float) $shipping_tax : 0;
 
             // Tax override on a per vendor basis.
             if ( $give_tax_override ) {
@@ -344,54 +354,51 @@ class WCV_Vendors {
                 $give_shipping = true;
             }
 
-            if ( $is_vendor ) {
+            $shipping_given += $give_shipping ? (float) $shipping : 0;
+            $tax_given      += $give_tax ? (float) $total_tax : 0;
 
-                $shipping_given += $give_shipping ? (float) $shipping : 0;
-                $tax_given      += $give_tax ? (float) $total_tax : 0;
+            $give  = 0;
+            $give += ! empty( $receiver[ $author ]['total'] ) ? (float) $receiver[ $author ]['total'] : 0;
+            $give += $give_shipping ? (float) $shipping : 0;
+            $give += (float) $commission;
+            $give += $give_tax ? (float) $total_tax : 0;
 
-                $give  = 0;
-                $give += ! empty( $receiver[ $author ]['total'] ) ? (float) $receiver[ $author ]['total'] : 0;
-                $give += $give_shipping ? (float) $shipping : 0;
-                $give += (float) $commission;
-                $give += $give_tax ? (float) $total_tax : 0;
+            if ( $group ) {
 
-                if ( $group ) {
+                $receiver[ $author ] = array(
+                    'vendor_id'  => (int) $author,
+                    'commission' => ! empty( $receiver[ $author ]['commission'] ) ? (float) $receiver[ $author ]['commission'] + (float) $commission : (float) $commission,
+                    'shipping'   => $give_shipping ? ( ! empty( $receiver[ $author ]['shipping'] ) ? (float) $receiver[ $author ]['shipping'] + (float) $shipping : (float) $shipping ) : 0,
+                    'tax'        => $give_tax ? ( ! empty( $receiver[ $author ]['tax'] ) ? (float) $receiver[ $author ]['tax'] + (float) $total_tax : (float) $total_tax ) : 0,
+                    'qty'        => ! empty( $receiver[ $author ]['qty'] ) ? (int) $receiver[ $author ]['qty'] + (int) $order_item['qty'] : (int) $order_item['qty'],
+                    'total'      => (float) $give,
+                );
 
-                    $receiver[ $author ] = array(
-                        'vendor_id'  => (int) $author,
-                        'commission' => ! empty( $receiver[ $author ]['commission'] ) ? (float) $receiver[ $author ]['commission'] + (float) $commission : (float) $commission,
-                        'shipping'   => $give_shipping ? ( ! empty( $receiver[ $author ]['shipping'] ) ? (float) $receiver[ $author ]['shipping'] + (float) $shipping : (float) $shipping ) : 0,
-                        'tax'        => $give_tax ? ( ! empty( $receiver[ $author ]['tax'] ) ? (float) $receiver[ $author ]['tax'] + (float) $total_tax : (float) $total_tax ) : 0,
-                        'qty'        => ! empty( $receiver[ $author ]['qty'] ) ? (int) $receiver[ $author ]['qty'] + (int) $order_item['qty'] : (int) $order_item['qty'],
-                        'total'      => (float) $give,
-                    );
+            } else {
+                $item_keys[]                 = $key;
+                $receiver[ $author ][ $key ] = array(
+                    'vendor_id'  => (int) $author,
+                    'product_id' => $product_id,
+                    'commission' => (float) $commission,
+                    'shipping'   => $give_shipping ? (float) $shipping : 0,
+                    'tax'        => $give_tax ? (float) $total_tax : 0,
+                    'qty'        => (int) $order_item['qty'],
+                    'total'      => ( $give_shipping ? (float) $shipping : 0 ) + (float) $commission + ( $give_tax ? (float) $total_tax : 0 ),
+                );
 
-                } else {
-                    $item_keys[]                 = $key;
-                    $receiver[ $author ][ $key ] = array(
-                        'vendor_id'  => (int) $author,
-                        'product_id' => $product_id,
-                        'commission' => (float) $commission,
-                        'shipping'   => $give_shipping ? (float) $shipping : 0,
-                        'tax'        => $give_tax ? (float) $total_tax : 0,
-                        'qty'        => (int) $order_item['qty'],
-                        'total'      => ( $give_shipping ? (float) $shipping : 0 ) + (float) $commission + ( $give_tax ? (float) $total_tax : 0 ),
-                    );
-
-                }
             }
 
             $admin_comm = (float) $order_item['line_subtotal'] - (float) $commission;
 
             if ( $group ) {
-                $receiver[1] = array(
+                $admin_dues = array(
                     'vendor_id'  => 1,
-                    'qty'        => ! empty( $receiver[1]['qty'] ) ? (int) $receiver[1]['qty'] + (int) $order_item['qty'] : (int) $order_item['qty'],
-                    'commission' => ! empty( $receiver[1]['commission'] ) ? (float) $receiver[1]['commission'] + (float) $admin_comm : (float) $admin_comm,
-                    'total'      => ! empty( $receiver[1] ) ? (float) $receiver[1]['total'] + (float) $admin_comm : (float) $admin_comm,
+                    'qty'        => ! empty( $admin_dues['qty'] ) ? (int) $admin_dues['qty'] + (int) $order_item['qty'] : (int) $order_item['qty'],
+                    'commission' => ! empty( $admin_dues['commission'] ) ? (float) $admin_dues['commission'] + (float) $admin_comm : (float) $admin_comm,
+                    'total'      => ! empty( $admin_dues['total'] ) ? (float) $admin_dues['total'] + (float) $admin_comm : (float) $admin_comm,
                 );
             } else {
-                $receiver[1][ $key ] = array(
+                $admin_dues[ $key ] = array(
                     'vendor_id'  => 1,
                     'product_id' => $product_id,
                     'commission' => (float) $admin_comm,
@@ -409,20 +416,42 @@ class WCV_Vendors {
         $tax      = round( ( (float) $order->get_total_tax() - (float) $tax_given ), 2 );
         $total    = ( (float) $tax + (float) $shipping ) - (float) $discount;
 
-        if ( ! empty( $receiver ) ) {
+        if ( ! empty( $admin_dues ) ) {
             if ( $group ) {
-                $r_total                   = round( (float) $receiver[1]['total'], 2 );
-                $receiver[1]['commission'] = round( (float) $receiver[1]['commission'], 2 ) - round( (float) $discount, 2 );
-                $receiver[1]['shipping']   = (float) $shipping;
-                $receiver[1]['tax']        = (float) $tax;
-                $receiver[1]['total']      = (float) $r_total + round( (float) $total, 2 );
+                $r_total                  = round( (float) $admin_dues['total'], 2 );
+                $admin_dues['commission'] = round( (float) $admin_dues['commission'], 2 ) - round( (float) $discount, 2 );
+                $admin_dues['shipping']   = (float) $shipping;
+                $admin_dues['tax']        = (float) $tax;
+                $admin_dues['total']      = (float) $r_total + round( (float) $total, 2 );
+
+                // The store owner can also be a vendor (user ID 1) - merge instead of overwriting their dues.
+                if ( isset( $receiver[1] ) ) {
+                    $admin_dues['commission'] += (float) $receiver[1]['commission'];
+                    $admin_dues['shipping']   += (float) $receiver[1]['shipping'];
+                    $admin_dues['tax']        += (float) $receiver[1]['tax'];
+                    $admin_dues['total']      += (float) $receiver[1]['total'];
+                }
+
+                $receiver[1] = $admin_dues;
             } elseif ( ! empty( $item_keys ) ) {
-                foreach ( $item_keys as $key ) {
-                    $r_total                           = round( (float) $receiver[1][ $key ]['total'], 2 );
-                    $receiver[1][ $key ]['commission'] = round( (float) $receiver[1][ $key ]['commission'], 2 ) - round( (float) $discount, 2 );
-                    $receiver[1][ $key ]['shipping']   = ( (float) $order->get_shipping_total() - (float) $shipping_given );
-                    $receiver[1][ $key ]['tax']        = (float) $tax;
-                    $receiver[1][ $key ]['total']      = (float) $r_total + round( (float) $total, 2 );
+                // Apply the order level discount and shipping/tax remainders once, against the first line item.
+                $first_key                              = reset( $item_keys );
+                $r_total                                = round( (float) $admin_dues[ $first_key ]['total'], 2 );
+                $admin_dues[ $first_key ]['commission'] = round( (float) $admin_dues[ $first_key ]['commission'], 2 ) - round( (float) $discount, 2 );
+                $admin_dues[ $first_key ]['shipping']   = (float) $shipping;
+                $admin_dues[ $first_key ]['tax']        = (float) $tax;
+                $admin_dues[ $first_key ]['total']      = (float) $r_total + round( (float) $total, 2 );
+
+                foreach ( $admin_dues as $key => $details ) {
+                    // The store owner can also be a vendor (user ID 1) - merge instead of overwriting their dues.
+                    if ( isset( $receiver[1][ $key ] ) ) {
+                        $receiver[1][ $key ]['commission'] += $details['commission'];
+                        $receiver[1][ $key ]['shipping']   += $details['shipping'];
+                        $receiver[1][ $key ]['tax']        += $details['tax'];
+                        $receiver[1][ $key ]['total']      += $details['total'];
+                    } else {
+                        $receiver[1][ $key ] = $details;
+                    }
                 }
             }
         }
@@ -579,11 +608,17 @@ class WCV_Vendors {
      *
      * @param string|int $input The username or user ID.
      *
-     * @return int
+     * @return int|false
+     * @version 2.7.1 Added fast-path for numeric vendor IDs to skip the get_users() lookup.
      */
     public static function get_vendor_id( $input ) {
         if ( empty( $input ) ) {
             return false;
+        }
+
+        // Numeric vendor ID needs no slug lookup; skip the get_users() query.
+        if ( is_numeric( $input ) && self::is_vendor( (int) $input ) ) {
+            return (int) $input;
         }
 
         $users = get_users(
@@ -1381,7 +1416,7 @@ class WCV_Vendors {
      */
     public static function add_rewrite_rules() {
 
-        $permalink = untrailingslashit( get_option( 'wcvendors_vendor_shop_permalink' ) );
+        $permalink = untrailingslashit( get_option( 'wcvendors_vendor_shop_permalink', 'vendors' ) );
 
         // Remove beginning slash.
         if ( '/' === substr( $permalink, 0, 1 ) ) {

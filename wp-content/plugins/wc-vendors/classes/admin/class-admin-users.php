@@ -18,6 +18,12 @@ class WCV_Admin_Users {
      */
     public function __construct() {
 
+        // These must fire in all contexts (admin, REST API, CLI, etc.) — not just is_admin().
+        add_action( 'user_register', array( $this, 'add_vendor_status_meta' ) );
+        add_action( 'set_user_role', array( $this, 'update_vendor_status_meta' ), 10, 3 );
+        add_action( 'set_user_role', array( $this, 'handle_pending_vendor_product_action' ), 20, 3 );
+        add_action( 'set_user_role', array( $this, 'handle_vendor_approval_product_restore' ), 20, 3 );
+
         if ( ! is_admin() ) {
             return;
         }
@@ -71,10 +77,6 @@ class WCV_Admin_Users {
             // Check allowed product types and hide controls.
             add_filter( 'product_type_options', array( $this, 'check_allowed_product_type_options' ) );
         }
-
-        // Add vendor status meta key after new user is created.
-        add_action( 'user_register', array( $this, 'add_vendor_status_meta' ) );
-        add_action( 'set_user_role', array( $this, 'update_vendor_status_meta' ), 10, 3 );
     }
 
     /**
@@ -849,5 +851,153 @@ class WCV_Admin_Users {
         } else {
             delete_user_meta( $user_id, '_wcv_vendor_status' );
         }
+    }
+
+    /**
+     * Maps the pending vendor product action option to a post status string.
+     *
+     * @since 2.6.8
+     * @return string 'draft' or 'pending'
+     */
+    private function get_pending_vendor_new_product_status() {
+        $action = get_option( 'wcvendors_pending_vendor_product_action', 'do_nothing' );
+        return ( 'set_to_draft' === $action ) ? 'draft' : 'pending';
+    }
+
+    /**
+     * When a vendor is moved to Pending Vendor, optionally update their published product statuses.
+     *
+     * @param int    $user_id   The user ID.
+     * @param string $role      The new role being set.
+     * @param array  $old_roles The previous roles.
+     * @since 2.6.8
+     */
+    public function handle_pending_vendor_product_action( $user_id, $role, $old_roles ) {
+        if ( 'pending_vendor' !== $role ) {
+            return;
+        }
+
+        if ( ! in_array( 'vendor', $old_roles, true ) ) {
+            return;
+        }
+
+        $action = get_option( 'wcvendors_pending_vendor_product_action', 'do_nothing' );
+
+        if ( 'do_nothing' === $action ) {
+            return;
+        }
+
+        $new_status = $this->get_pending_vendor_new_product_status();
+
+        // Use get_posts() directly to avoid woocommerce_product_query filters
+        // (e.g. hide_all_inactive_vendor_products) that would exclude this vendor
+        // since their status was already set to inactive before this hook runs.
+        // Only query parent products — variations are hidden implicitly when the parent status changes.
+        $product_ids = get_posts(
+            array(
+                'post_type'      => 'product',
+                'post_status'    => 'publish',
+                'author'         => $user_id,
+                'posts_per_page' => -1,
+                'fields'         => 'ids',
+            )
+        );
+
+        if ( empty( $product_ids ) ) {
+            return;
+        }
+
+        wp_defer_term_counting( true );
+        foreach ( $product_ids as $product_id ) {
+            wp_update_post(
+                array(
+                    'ID'          => absint( $product_id ),
+                    'post_status' => $new_status,
+                )
+            );
+        }
+        wp_defer_term_counting( false );
+
+        // Store affected IDs and the applied status so they can be restored on re-approval
+        // regardless of whether the setting changes in the interim.
+        update_user_meta(
+            $user_id,
+            '_wcv_pending_vendor_product_ids',
+            array(
+                'ids'    => $product_ids,
+                'status' => $new_status,
+            )
+        );
+
+        wc_get_logger()->info(
+            sprintf(
+                /* translators: 1: number of products updated, 2: new product status, 3: vendor user ID */
+                __( '%1$d product(s) set to "%2$s" for vendor #%3$d after role changed to Pending Vendor.', 'wc-vendors' ),
+                count( $product_ids ),
+                $new_status,
+                $user_id
+            ),
+            array( 'source' => 'wc-vendors' )
+        );
+    }
+
+    /**
+     * When a pending vendor is re-approved, restore any products that were auto-unpublished.
+     *
+     * @param int    $user_id    The user ID.
+     * @param string $role       The new role being set.
+     * @param array  $_old_roles The previous roles (unused; see inline comment).
+     * @since 2.6.8
+     */
+    public function handle_vendor_approval_product_restore( $user_id, $role, $_old_roles ) {
+        if ( 'vendor' !== $role ) {
+            return;
+        }
+
+        // Don't rely on $_old_roles here: the WCVendors "Approve" flow calls
+        // remove_role('pending_vendor') before set_role('vendor'), so by the time
+        // set_user_role fires, $_old_roles is already empty. Use meta presence as the gate.
+        $stored = get_user_meta( $user_id, '_wcv_pending_vendor_product_ids', true );
+
+        if ( empty( $stored ) || ! is_array( $stored ) || empty( $stored['ids'] ) ) {
+            return;
+        }
+
+        $product_ids     = $stored['ids'];
+        $expected_status = $stored['status'];
+
+        $restored = 0;
+        wp_defer_term_counting( true );
+        foreach ( $product_ids as $product_id ) {
+            $product_id = absint( $product_id );
+            if ( (int) get_post_field( 'post_author', $product_id ) !== $user_id ) {
+                continue;
+            }
+            $current_status = get_post_status( $product_id );
+            // Skip products that no longer exist or were manually changed since demotion.
+            if ( $current_status !== $expected_status ) {
+                continue;
+            }
+            wp_update_post(
+                array(
+                    'ID'          => $product_id,
+                    'post_status' => 'publish',
+                )
+            );
+            ++$restored;
+        }
+        wp_defer_term_counting( false );
+
+        delete_user_meta( $user_id, '_wcv_pending_vendor_product_ids' );
+
+        wc_get_logger()->info(
+            sprintf(
+                /* translators: 1: number of products restored, 2: vendor user ID */
+                __( '%1$d product(s) restored to "publish" for vendor #%2$d after re-approval.', 'wc-vendors' ),
+                $restored,
+                $user_id
+            ),
+            array( 'source' => 'wc-vendors' )
+        );
     }
 }

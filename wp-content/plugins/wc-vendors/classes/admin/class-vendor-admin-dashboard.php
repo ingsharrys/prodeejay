@@ -86,7 +86,7 @@ class WCV_Vendor_Admin_Dashboard {
         $shop_description = true;
         $description      = get_user_meta( $user_id, 'pv_shop_description', true );
         $seller_info      = get_user_meta( $user_id, 'pv_seller_info', true );
-        $has_html         = get_user_meta( $user_id, 'pv_shop_html_enabled', true );
+        $has_html         = wc_string_to_bool( get_user_meta( $user_id, 'pv_shop_html_enabled', true ) );
         $shop_page        = WCV_Vendors::get_vendor_shop_page( wp_get_current_user()->user_login );
         $global_html      = wc_string_to_bool( get_option( 'wcvendors_display_shop_description_html', 'no' ) );
 

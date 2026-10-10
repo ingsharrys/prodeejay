@@ -244,6 +244,13 @@ class WCV_Plugin_Installer {
                 'desc'         => __( 'Integration with Simple Auctions plugin to create an auction marketplace just like eBay, Gumtree, or Facebook Marketplace. Allow your vendors to sell auction products right from their dashboard.', 'wc-vendors' ),
                 'upgrade_link' => 'https://www.wcvendors.com/pricing/?utm_source=plugin&utm_medium=extensionspage&utm_campaign=upgradesimpleauctionsaddon',
             ),
+            'wc-vendors-engage'                     => array(
+                'base_name'    => 'wc-vendors-engage/wc-vendors-engage.php',
+                'name'         => __( 'WC Vendors Engage', 'wc-vendors' ),
+                'logo'         => WCV_ASSETS_URL . 'images/extensions/icon-cart.png',
+                'desc'         => __( 'Build customer loyalty with store followers and exclusive follower-only discounts. Let customers follow their favourite vendors, receive filtered product feeds, and automatically unlock follower discounts at checkout.', 'wc-vendors' ),
+                'upgrade_link' => 'https://www.wcvendors.com/pricing/?utm_source=plugin&utm_medium=extensionspage&utm_campaign=upgradeengageaddon',
+            ),
             'woocommerce'                           => array(
                 'base_name' => 'woocommerce/woocommerce.php',
                 'name'      => __( 'WooCommerce', 'wc-vendors' ),

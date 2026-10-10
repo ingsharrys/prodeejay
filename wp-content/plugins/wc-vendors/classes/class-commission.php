@@ -591,6 +591,7 @@ class WCV_Commission {
      * Get the commission total for a specific vendor.
      *
      * @since  1.9.6
+     * @since  2.7.0 Run the query through $wpdb->prepare() to harden against SQL injection.
      * @access public
      *
      * @param int    $vendor_id    The vendor id to search for.
@@ -604,8 +605,6 @@ class WCV_Commission {
 
         global $wpdb;
 
-        $table_name = $wpdb->prefix . 'pv_commission';
-
         $sql = 'SELECT sum( `total_due` ) as total_due';
 
         if ( $inc_shipping ) {
@@ -615,14 +614,16 @@ class WCV_Commission {
             $sql .= ', sum( `tax` ) as total_tax ';
         }
 
-        $sql
-            .= "
-                FROM `{$table_name}`
-                WHERE vendor_id = {$vendor_id}
-                AND status = '{$status}'
-            ";
+        $sql .= $wpdb->prepare(
+            " FROM `{$wpdb->prefix}pv_commission`
+                WHERE vendor_id = %d
+                AND status = %s
+            ",
+            $vendor_id,
+            $status
+        );
 
-        $results = $wpdb->get_row( $sql ); // phpcs:ignore
+        $results = $wpdb->get_row( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
         $commissions_now = array_filter( get_object_vars( $results ) );
 

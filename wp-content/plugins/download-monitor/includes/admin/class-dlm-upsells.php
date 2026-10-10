@@ -1040,6 +1040,10 @@ class DLM_Upsells {
 	}
 
 	public function enhanced_metrics_upsells_script() {
+		if ( ! isset( $_GET['page'] ) || 'download-monitor-reports' !== $_GET['page'] ) {
+			return;
+		}
+
 		$upsells_asset_file = require plugin_dir_path( DLM_PLUGIN_FILE ) . 'assets/js/upsells/upsells.asset.php';
 		$upsells_enqueue    = array(
 			'handle'       => 'dlm-reports-upsells',

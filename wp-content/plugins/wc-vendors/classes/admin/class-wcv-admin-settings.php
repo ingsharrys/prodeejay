@@ -78,7 +78,7 @@ class WCVendors_Admin_Settings extends WC_Admin_Settings {
 
         self::add_message( __( 'Your settings have been saved.', 'wc-vendors' ) );
         self::check_vendor_dashboard_page_validity();
-        update_option( 'wcvendors_queue_flush_rewrite_rules', 'yes' );
+        flush_rewrite_rules();
         do_action( 'wcvendors_settings_saved' );
     }
 

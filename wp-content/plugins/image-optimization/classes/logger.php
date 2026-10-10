@@ -41,9 +41,9 @@ class Logger {
 		$function = $backtrace[2]['function'];
 
 		if ( $class ) {
-			$message = '[Image Optimizer]: ' . $log_level . ' in ' . "$class$type$function()" . ': ' . $message;
+			$message = '[Image Optimization]: ' . $log_level . ' in ' . "$class$type$function()" . ': ' . $message;
 		} else {
-			$message = '[Image Optimizer]: ' . $log_level . ' in ' . "$function()" . ': ' . $message;
+			$message = '[Image Optimization]: ' . $log_level . ' in ' . "$function()" . ': ' . $message;
 		}
 
 		error_log( $message ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log

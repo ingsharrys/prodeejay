@@ -1147,8 +1147,12 @@ jQuery(function($) {
             data = el.val().split(wcv_frontend_product.wc_deliminator);
 
             $.each(data, function(index, value) {
-              if ($.trim(value).length > 0) {
-                attr_obj[$.trim(value).toLowerCase()] = $.trim(value);
+              var trimmed = $.trim(value);
+              if (trimmed.length > 0) {
+                // Use original casing as the option key so values saved
+                // by AJAX-rendered variation rows match the parent
+                // attribute's stored values on reload.
+                attr_obj[trimmed] = trimmed;
               }
             });
           } else {

@@ -109,6 +109,25 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 			if ( is_admin() || ! empty( $GLOBALS['wp']->query_vars['rest_route'] ) ) {
 				return;
 			}
+
+			// When WPML is active, resolve the translated endpoint for the current language so
+			// query var lookups below match the rewrite endpoint that was actually registered.
+			if ( function_exists( 'icl_get_languages' ) && has_filter( 'wpml_translate_single_string' ) ) {
+				$current_lang = apply_filters( 'wpml_current_language', null );
+				if ( $current_lang ) {
+					$translated_endpoint = apply_filters(
+						'wpml_translate_single_string',
+						$this->endpoint,
+						'admin_texts_dlm_download_endpoint',
+						'dlm_download_endpoint',
+						$current_lang
+					);
+					if ( ! empty( $translated_endpoint ) ) {
+						$this->endpoint = $translated_endpoint;
+					}
+				}
+			}
+
 			// check HTTP method.
 			$request_method = ( ! empty( $_SERVER['REQUEST_METHOD'] )
 				? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) )
@@ -472,6 +491,10 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 				);
 				session_set_cookie_params( apply_filters( 'dlm_set_session_params', $params ) );
 				session_start();
+				if ( PHP_SESSION_ACTIVE !== session_status() ) {
+					session_save_path( sys_get_temp_dir() );
+					session_start();
+				}
 			}
 
 			// Check Access.
@@ -549,6 +572,12 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 			// Get the referrer.
 			$referrer       = ( isset( $_SERVER['HTTP_REFERER'] ) ) ? esc_url_raw( $_SERVER['HTTP_REFERER'] ) : '';
 			$cookie_manager = DLM_Cookie_Manager::get_instance();
+
+			// Access has been granted at this point, so it's now safe to hand out a log token for this attempt.
+			if ( $this->check_for_xhr() ) {
+				header( 'X-DLM-Log-Token: ' . $this->dlm_logging->generate_xhr_log_token( $download->get_id(), $version->get_id() ) );
+			}
+
 			// check if user downloaded this version in the past minute. This checks if the cookie exists and if it's
 			// value is the same as the download id.
 			if ( false === $cookie_manager->check_cookie_meta( 'wp_dlm_downloading', $download->get_id() ) ) {
@@ -919,14 +948,14 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 			$headers = array();
 			// We use this method to encode the filename so that file names with characters like
 			// chinese or persian can be named correctly after the download in Safari.
-			$file_name = rawurlencode( sanitize_file_name( $file_name ) );
+			$file_name_safe = sanitize_file_name( $file_name );
+			$file_name      = rawurlencode( $file_name_safe );
 			if ( $this->check_for_xhr() ) {
-				$headers['Content-Disposition']
-											= "attachment; filename=\"{$file_name}\";";
+				$headers['Content-Disposition'] = "attachment; filename=\"{$file_name}\";";
 				$headers['X-DLM-File-Name']     = "{$file_name}";
 			} else {
-				$headers['Content-Disposition']
-					= "attachment; filename*=UTF-8''{$file_name};";
+				// Include filename= fallback for Safari which doesn't support filename*=UTF-8'' without it.
+				$headers['Content-Disposition'] = "attachment; filename=\"{$file_name_safe}\"; filename*=UTF-8''{$file_name}";
 			}
 
 			$headers['X-Robots-Tag']              = 'noindex, nofollow';

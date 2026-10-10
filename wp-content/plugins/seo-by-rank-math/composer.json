@@ -33,7 +33,8 @@
 		"donatj/phpuseragentparser": "^1.6.1",
 		"woocommerce/action-scheduler": "^3.4.2",
 		"a5hleyrich/wp-background-processing": "^1.0.2",
-		"wp-media/wp-mixpanel": "^1.0"
+		"wp-media/wp-mixpanel": "^1.0",
+		"wordpress/mcp-adapter": "^0.4.1"
 	},
 	"require-dev": {
 		"micheh/phpcs-gitlab": "^2.0",
@@ -78,8 +79,8 @@
         ],
 		"phpcs": "vendor/bin/phpcs",
 		"phpstan": "vendor/bin/phpstan analyze --memory-limit=4G --no-progress",
-		"test-unit": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist",
-		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist",
-		"test-unit-cover": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist --coverage-html coverage-report --coverage-clover tests/Unit/coverage-unit.xml"
+		"test-unit": "php -d memory_limit=1G \"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist",
+		"test-integration": "php -d memory_limit=1G \"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist",
+		"test-unit-cover": "php -d memory_limit=1G \"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist --coverage-html coverage-report --coverage-clover tests/Unit/coverage-unit.xml"
 	}
 }

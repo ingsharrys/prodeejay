@@ -1082,11 +1082,12 @@ class WCV_Shortcodes {
             )
         );
 
+        // Validate per_page before it is used to compute the offset, and floor
+        // it to 1 to avoid a divide-by-zero when paginating below.
+        $per_page = is_numeric( $per_page ) ? max( 1, absint( $per_page ) ) : 12;
+
         $paged  = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
         $offset = ( $paged - 1 ) * $per_page;
-        if ( ! is_numeric( $per_page ) ) {
-            $per_page = 12;
-        }
 
         if ( ! is_numeric( $columns ) ) {
             $columns = 4;
@@ -1191,6 +1192,13 @@ class WCV_Shortcodes {
         $paged_vendors = $wpdb->get_results( $vendor_paged_sql ); // phpcs:ignore
         $total_vendors = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // phpcs:ignore
 
+        // Prime user + usermeta caches once so the per-vendor reads below
+        // (and during rendering) hit cache instead of querying per vendor.
+        $vendor_ids = wp_list_pluck( $paged_vendors, 'ID' );
+        if ( ! empty( $vendor_ids ) ) {
+            cache_users( $vendor_ids );
+        }
+
         // Process vendor data.
         $vendors = array();
         foreach ( $paged_vendors as $vendor ) {
@@ -1198,17 +1206,12 @@ class WCV_Shortcodes {
             $wp_u->ID            = $vendor->ID;
             $wp_u->product_count = $vendor->product_count;
 
-            // Get vendor meta in one efficient query instead of multiple calls.
-            $vendor_meta = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-                $wpdb->prepare(
-                    "SELECT meta_key, meta_value FROM {$wpdb->usermeta} WHERE user_id = %d",
-                    $vendor->ID
-                ),
-                ARRAY_A
-            );
+            // get_user_meta() with no key returns array( meta_key => array( values ) ) from
+            // the primed cache, so [0] takes the first value before unserializing.
+            $vendor_meta = get_user_meta( $vendor->ID );
 
-            foreach ( $vendor_meta as $meta ) {
-                $wp_u->{$meta['meta_key']} = maybe_unserialize( $meta['meta_value'] );
+            foreach ( $vendor_meta as $meta_key => $meta_values ) {
+                $wp_u->{$meta_key} = maybe_unserialize( $meta_values[0] );
             }
 
             $vendors[] = $wp_u;

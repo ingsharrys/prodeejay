@@ -44,8 +44,7 @@ class Image_Backup {
 		try {
 			File_System::copy( $image_path, $backup_path, true );
 		} catch ( File_System_Operation_Error $e ) {
-			Logger::log(
-				Logger::LEVEL_ERROR,
+			Logger::error(
 				"Error while creating a backup for image {$image_id} and size {$image_size}"
 			);
 
@@ -97,14 +96,7 @@ class Image_Backup {
 				return false;
 			}
 
-			try {
-				File_System::delete( $backups[ $image_size ], false, 'f' );
-			} catch ( File_System_Operation_Error $e ) {
-				Logger::log(
-					Logger::LEVEL_ERROR,
-					"Error while removing a backup for image {$image_id} and size {$image_size}"
-				);
-			}
+			self::delete_backup_file( $image_id, $image_size, $backups[ $image_size ] );
 
 			$meta->remove_image_backup_path( $image_size );
 			$meta->save();
@@ -113,11 +105,7 @@ class Image_Backup {
 		}
 
 		foreach ( $backups as $image_size => $backup_path ) {
-			try {
-				File_System::delete( $backup_path, false, 'f' );
-			} catch ( File_System_Operation_Error $e ) {
-				Logger::log( Logger::LEVEL_ERROR, "Error while removing backups {$image_id}" );
-			}
+			self::delete_backup_file( $image_id, $image_size, $backup_path );
 
 			$meta->remove_image_backup_path( $image_size );
 		}
@@ -125,5 +113,25 @@ class Image_Backup {
 		$meta->save();
 
 		return true;
+	}
+
+	private static function delete_backup_file( int $image_id, string $image_size, string $backup_path ): void {
+		$resolved_path = Image_Backup_Path_Validator::resolve( $backup_path );
+
+		if ( null === $resolved_path ) {
+			Logger::warn(
+				"Skipped removing invalid backup path for image {$image_id} and size {$image_size}"
+			);
+
+			return;
+		}
+
+		try {
+			File_System::delete( $resolved_path, false, 'f' );
+		} catch ( File_System_Operation_Error $fsoe ) {
+			Logger::error(
+				"Error while removing a backup for image {$image_id} and size {$image_size}"
+			);
+		}
 	}
 }

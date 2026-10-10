@@ -7,6 +7,7 @@
  * @package    WC_Vendors
  * @version    1.7.6
  * @version    2.6.5 - Fix security issues.
+ * @version    2.6.9 - Added payment method display.
  *
  * @phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
  */
@@ -62,7 +63,7 @@ $allow_add_order_note = wc_string_to_bool( get_option( 'wcvendors_capability_ord
             <?php do_action( 'wcvendors_order_before_customer_detail' ); ?>
 
             <div class="wcv-order-customer-details wcv-flex wcv-flex-wrap">
-                <?php if ( $details_display_options['billing_address'] || $details_display_options['email'] || $details_display_options['phone'] ) : ?>
+                <?php if ( $details_display_options['billing_address'] || $details_display_options['email'] || $details_display_options['phone'] || $details_display_options['payment_method'] ) : ?>
                 <div class="billing-details">
                     <h4><?php esc_html_e( 'Billing Details', 'wc-vendors' ); ?></h4>
                     <?php if ( $details_display_options['billing_address'] ) : ?>
@@ -114,6 +115,22 @@ $allow_add_order_note = wc_string_to_bool( get_option( 'wcvendors_capability_ord
                                     <small><?php esc_html_e( 'Phone / Landline Number', 'wc-vendors' ); ?></small>
                                     
                                     <?php esc_html_e( 'No phone number set.', 'wc-vendors' ); ?>
+                                </p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ( $details_display_options['payment_method'] ) : ?>
+                        <div class="wcv-order-payment-method">
+                            <?php $payment_method_title = $order->get_payment_method_title(); ?>
+                            <?php if ( $payment_method_title ) : ?>
+                                <p>
+                                    <small><?php esc_html_e( 'Payment Method', 'wc-vendors' ); ?></small>
+                                    <?php echo esc_html( $payment_method_title ); ?>
+                                </p>
+                            <?php else : ?>
+                                <p class="none_set">
+                                    <small><?php esc_html_e( 'Payment Method', 'wc-vendors' ); ?></small>
+                                    <?php esc_html_e( 'No payment method set.', 'wc-vendors' ); ?>
                                 </p>
                             <?php endif; ?>
                         </div>
@@ -311,6 +328,18 @@ $allow_add_order_note = wc_string_to_bool( get_option( 'wcvendors_capability_ord
                             </span>
                         </div>
 
+                        <?php $payment_method_title = $order->get_payment_method_title(); ?>
+                        <?php if ( $details_display_options['payment_method'] && $payment_method_title ) : ?>
+                        <div class="wcv-order-row payment-method">
+                            <span class="wcv-order-label">
+                                <?php esc_html_e( 'Payment Method', 'wc-vendors' ); ?>:
+                            </span>
+                            <span class="wcv-order-value">
+                                <?php echo esc_html( $payment_method_title ); ?>
+                            </span>
+                        </div>
+                        <?php endif; ?>
+
                         <!-- Refund Information -->
                         <?php if ( $is_order_refund ) : ?>
                             <div class="wcv-order-row refunded">
@@ -418,7 +447,14 @@ $allow_add_order_note = wc_string_to_bool( get_option( 'wcvendors_capability_ord
                                     <?php echo wp_kses_post( wc_price( $_order->commission_total, array( 'currency' => $order_currency ) ) ); ?>
                                 </td>
                             </tr>
-                          
+
+                            <?php if ( $details_display_options['payment_method'] && $payment_method_title ) : ?>
+                                <tr class="wcv-order-payment-method">
+                                    <td class="wcv-order-totals-label right-space"><?php esc_html_e( 'Payment Method', 'wc-vendors' ); ?>:</td>
+                                    <td><?php echo esc_html( $payment_method_title ); ?></td>
+                                </tr>
+                            <?php endif; ?>
+
                             <tr class="wcv-order-total">
                                 <td class="wcv-order-totals-label right-space">
                                     <strong> <?php esc_html_e( 'Order Total', 'wc-vendors' ); ?>:</strong>

@@ -134,6 +134,51 @@ class DLM_Logging {
 	}
 
 	/**
+	 * Generate a single-use token for an XHR download attempt, tied to the given download/version.
+	 *
+	 * @param int $download_id
+	 * @param int $version_id
+	 *
+	 * @return string
+	 */
+	public function generate_xhr_log_token( $download_id, $version_id ) {
+		$token = bin2hex( random_bytes( 32 ) );
+
+		set_transient(
+			'dlm_xhr_log_' . $token,
+			array(
+				'download_id' => absint( $download_id ),
+				'version_id'  => absint( $version_id ),
+			),
+			apply_filters( 'dlm_xhr_log_token_ttl', 30 * MINUTE_IN_SECONDS )
+		);
+
+		return $token;
+	}
+
+	/**
+	 * Validate and consume a single-use XHR log token.
+	 *
+	 * @param string $token
+	 * @param int    $download_id
+	 * @param int    $version_id
+	 *
+	 * @return bool
+	 */
+	private function consume_xhr_log_token( $token, $download_id, $version_id ) {
+		$key  = 'dlm_xhr_log_' . $token;
+		$data = get_transient( $key );
+		delete_transient( $key );
+
+		if ( ! is_array( $data ) || ! isset( $data['download_id'], $data['version_id'] ) ) {
+			return false;
+		}
+
+		return absint( $data['download_id'] ) === absint( $download_id )
+			&& absint( $data['version_id'] ) === absint( $version_id );
+	}
+
+	/**
 	 * Log the XHR download
 	 *
 	 * @return void
@@ -148,14 +193,27 @@ class DLM_Logging {
 
 		check_ajax_referer( 'dlm_ajax_nonce', 'nonce' );
 
+		$download_id = absint( $_POST['download_id'] );
+		$version_id  = absint( $_POST['version_id'] );
+
+		if ( ! isset( $_POST['log_token'] )
+			|| ! $this->consume_xhr_log_token( sanitize_text_field( wp_unslash( $_POST['log_token'] ) ), $download_id, $version_id )
+		) {
+			wp_send_json_error( 'Invalid or expired log token' );
+		}
+
 		// Let's make sure the DLM_DOING_XHR is defined
 		if ( ! defined( 'DLM_DOING_XHR' ) ) {
 			define( 'DLM_DOING_XHR', true );
 		}
 
-		$download_id = absint( $_POST['download_id'] );
-		$version_id  = absint( $_POST['version_id'] );
-		$status      = sanitize_text_field( wp_unslash( $_POST['status'] ) );
+		$status           = sanitize_text_field( wp_unslash( $_POST['status'] ) );
+		$allowed_statuses = apply_filters( 'dlm_xhr_log_allowed_statuses', array( 'completed', 'redirected', 'failed' ) );
+
+		if ( ! in_array( $status, $allowed_statuses, true ) ) {
+			wp_send_json_error( 'Invalid status' );
+		}
+
 		$cookie      = 'true' === $_POST['cookie'];
 		$current_url = ( isset( $_POST['currentURL'] ) ) ? esc_url_raw( $_POST['currentURL'] ) : '-';
 		// Set our objects

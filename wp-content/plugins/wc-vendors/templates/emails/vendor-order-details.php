@@ -37,16 +37,16 @@ do_action( 'woocommerce_email_before_order_table', $order, $sent_to_admin, $plai
         <thead>
         <tr>
             <th class="td" scope="col"
-                style="text-align:<?php echo esc_attr( $text_align ); ?>;"><?php esc_html_e( 'Product', 'wc-vendors' ); ?></th>
+                style="text-align:<?php echo esc_attr( $text_align ); ?>; border: 1px solid #eee;"><?php esc_html_e( 'Product', 'wc-vendors' ); ?></th>
             <th class="td" scope="col"
-                style="text-align:<?php echo esc_attr( $text_align ); ?>;"><?php esc_html_e( 'Quantity', 'wc-vendors' ); ?></th>
+                style="text-align:<?php echo esc_attr( $text_align ); ?>; border: 1px solid #eee;"><?php esc_html_e( 'Quantity', 'wc-vendors' ); ?></th>
             <?php if ( 'both' === $totals_display || 'commission' === $totals_display ) : ?>
                 <th class="td" scope="col"
-                    style="text-align:<?php echo esc_attr( $text_align ); ?>;"><?php esc_html_e( 'Commission', 'wc-vendors' ); ?></th>
+                    style="text-align:<?php echo esc_attr( $text_align ); ?>; border: 1px solid #eee;"><?php esc_html_e( 'Commission', 'wc-vendors' ); ?></th>
             <?php endif; ?>
             <?php if ( 'both' === $totals_display || 'product' === $totals_display ) : ?>
                 <th class="td" scope="col"
-                    style="text-align:<?php echo esc_attr( $text_align ); ?>;"><?php esc_html_e( 'Price', 'wc-vendors' ); ?></th>
+                    style="text-align:<?php echo esc_attr( $text_align ); ?>; border: 1px solid #eee;"><?php esc_html_e( 'Price', 'wc-vendors' ); ?></th>
             <?php endif; ?>
 
         </tr>
@@ -89,9 +89,9 @@ do_action( 'woocommerce_email_before_order_table', $order, $sent_to_admin, $plai
                 ?>
                 <tr>
                     <th class="td" scope="row"
-                        style="text-align:<?php echo esc_attr( $text_align ); ?>; <?php echo ( 1 === $i ) ? 'border-top-width: 4px;' : ''; ?>"><?php echo wp_kses_post( $total['label'] ); ?></th>
+                        style="text-align:<?php echo esc_attr( $text_align ); ?>; border: 1px solid #eee; <?php echo ( 1 === $i ) ? 'border-top: 4px solid #e5e5e5;' : ''; ?>"><?php echo wp_kses_post( $total['label'] ); ?></th>
                     <td class="td" colspan="<?php echo esc_attr( $colspan ); ?>"
-                        style="text-align:<?php echo esc_attr( $text_align ); ?>; <?php echo ( 1 === $i ) ? 'border-top-width: 4px;' : ''; ?>"><?php echo wp_kses_post( $total['value'] ); ?></td>
+                        style="text-align:<?php echo esc_attr( $text_align ); ?>; border: 1px solid #eee; <?php echo ( 1 === $i ) ? 'border-top: 4px solid #e5e5e5;' : ''; ?>"><?php echo wp_kses_post( $total['value'] ); ?></td>
                 </tr>
                 <?php
             }

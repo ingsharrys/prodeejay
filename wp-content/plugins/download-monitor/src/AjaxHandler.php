@@ -171,17 +171,69 @@ class DLM_Ajax_Handler {
 
 		$path         = sanitize_text_field( wp_unslash( $_POST['path'] ) );
 		$file_manager = download_monitor()->service( 'file_manager' );
+
+		$disallowed_dirs = $file_manager->disallowed_wp_directories();
+		$items           = array();
+
+		// Empty path means initial load — return items from all allowed paths.
+		if ( '' === $path ) {
+			$allowed_paths = $file_manager->get_allowed_paths();
+			foreach ( $allowed_paths as $allowed_path ) {
+				$path_files = $file_manager->list_files( $allowed_path );
+				if ( ! is_array( $path_files ) ) {
+					continue;
+				}
+				foreach ( $path_files as $found_file ) {
+					$file  = $file_manager->mb_pathinfo( $found_file['path'] );
+					$allow = true;
+					foreach ( $disallowed_dirs as $disallowed_dir ) {
+						if ( strpos( trailingslashit( $file['dirname'] . DIRECTORY_SEPARATOR . $file['basename'] ), $disallowed_dir ) ) {
+							$allow = false;
+							break;
+						}
+					}
+					if ( ! $allow ) {
+						continue;
+					}
+					if ( $found_file['type'] === 'folder' ) {
+						$items[] = array(
+							'type' => 'folder',
+							'name' => $file['basename'],
+							'path' => trailingslashit( $file['dirname'] ) . $file['basename'],
+						);
+					} else {
+						$filename  = $file['basename'];
+						$extension = empty( $file['extension'] ) ? '' : $file['extension'];
+						if ( substr( $filename, 0, 1 ) === '.' ) {
+							continue;
+						}
+						if ( in_array( $extension, array( '', 'php', 'html', 'htm', 'tmp' ) ) ) {
+							continue;
+						}
+						$items[] = array(
+							'type' => 'file',
+							'name' => $filename,
+							'path' => trailingslashit( $file['dirname'] ) . $filename,
+							'ext'  => $extension,
+						);
+					}
+				}
+			}
+			wp_send_json_success( $items );
+		}
+
 		// Parse file path.
 		list( $file_path, $remote_file, $restriction ) = $file_manager->get_secure_path( $path );
 		// Check if we have a restriction.
 		if ( $restriction ) {
-			echo __( 'You are not allowed in this directory', 'download-monitor' );
-			wp_die();
+			wp_send_json_error( __( 'You are not allowed in this directory', 'download-monitor' ) );
 		}
 
 		// List all files
-		$files           = $file_manager->list_files( $path );
-		$disallowed_dirs = $file_manager->disallowed_wp_directories();
+		$files = $file_manager->list_files( $path );
+		if ( ! is_array( $files ) ) {
+			wp_send_json_success( array() );
+		}
 		foreach ( $files as $found_file ) {
 			$allow = true;
 			// Multi-byte-safe pathinfo
@@ -196,7 +248,11 @@ class DLM_Ajax_Handler {
 				continue;
 			}
 			if ( $found_file['type'] == 'folder' ) {
-				echo '<li><a href="#" class="folder" data-path="' . esc_attr( trailingslashit( $file['dirname'] ) ) . esc_attr( $file['basename'] ) . '">' . esc_attr( $file['basename'] ) . '</a></li>';
+				$items[] = array(
+					'type' => 'folder',
+					'name' => $file['basename'],
+					'path' => trailingslashit( $file['dirname'] ) . $file['basename'],
+				);
 			} else {
 				$filename  = $file['basename'];
 				$extension = ( empty( $file['extension'] ) ) ? '' : $file['extension'];
@@ -208,11 +264,16 @@ class DLM_Ajax_Handler {
 					continue;
 				} // Ignored file types
 
-				echo '<li><a href="#" class="file filetype-' . esc_attr( sanitize_title( $extension ) ) . '" data-path="' . esc_attr( trailingslashit( $file['dirname'] ) ) . esc_attr( $file['basename'] ) . '">' . esc_attr( $file['basename'] ) . '</a></li>';
+				$items[] = array(
+					'type' => 'file',
+					'name' => $file['basename'],
+					'path' => trailingslashit( $file['dirname'] ) . $file['basename'],
+					'ext'  => $extension,
+				);
 			}
 		}
 
-		die();
+		wp_send_json_success( $items );
 	}
 
 	/**

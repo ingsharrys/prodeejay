@@ -368,6 +368,16 @@ if ( ! function_exists( 'wcv_allowed_html_tags' ) ) {
                 'id'    => array(),
                 'style' => array(),
             ),
+            'button'     => array(
+                'type'          => array(),
+                'class'         => array(),
+                'id'            => array(),
+                'name'          => array(),
+                'value'         => array(),
+                'aria-expanded' => array(),
+                'aria-haspopup' => array(),
+                'aria-label'    => array(),
+            ),
             'form'       => array(
                 'action' => array(),
                 'method' => array(),

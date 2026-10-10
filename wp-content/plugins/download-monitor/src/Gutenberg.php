@@ -115,8 +115,6 @@ class DLM_Gutenberg {
 		}
 
 		$template_handler = new DLM_Template_Handler();
-		// enqueue style only on shortcode use
-		wp_enqueue_style( 'dlm-frontend' );
 
 		// Action to allow the adition of extra scripts and code related to the shortcode
 		do_action( 'dlm_download_shortcode_scripts' );

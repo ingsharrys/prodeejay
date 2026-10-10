@@ -3,7 +3,7 @@
  * Plugin Name: Paid Memberships Pro - WooCommerce Add On
  * Plugin URI: https://www.paidmembershipspro.com/add-ons/pmpro-woocommerce/
  * Description: Integrate Paid Memberships Pro With WooCommerce.
- * Version: 1.10
+ * Version: 1.10.1
  * WC requires at least: 7.0.0
  * WC tested up to: 8.9.1
  * Author: Paid Memberships Pro
@@ -63,6 +63,28 @@ function pmprowoo_init() {
 	}
 }
 add_action( 'init', 'pmprowoo_init' );
+
+/**
+ * Register our option names with pmpro-network-subsite so that subsites in
+ * "inherit" mode read these settings from the main site.
+ *
+ * Requires a version of pmpro-network-subsite that exposes the
+ * pmpro_multisite_advanced_settings_options filter. On older versions this
+ * is a harmless no-op.
+ *
+ * @since 1.10.1
+ *
+ * @param string[] $options Option names to inherit from the main site.
+ * @return string[]
+ */
+function pmprowoo_register_multisite_inherited_options( $options ) {
+	$options[] = '_pmprowoo_product_levels';
+	$options[] = '_pmprowoo_gift_codes';
+	$options[] = '_pmprowoo_member_discounts';
+	$options[] = 'pmpro_pmprowoo_discounts_on_subscriptions';
+	return $options;
+}
+add_filter( 'pmpro_multisite_advanced_settings_options', 'pmprowoo_register_multisite_inherited_options' );
 
 /**
  * Disable other membership products if a membership product is in the cart already
@@ -207,6 +229,12 @@ function pmprowoo_add_membership_from_order( $order_id ) {
 			// Get the product object from the ID of the item in the order.
 			$_product = wc_get_product( $item['product_id'] );
 
+			// If we don't have a product object, skip.
+			if ( empty( $_product ) ) {
+				continue;
+			}
+
+			// Get the product ID for the product that we are currently getting a membership price for.
 			if ( $_product->is_type( 'variation' ) ) {
 			    $product_id = $_product->get_parent_id();
 			} else {
@@ -493,7 +521,15 @@ function pmprowoo_get_membership_price( $price, $product ) {
 	} else {
 		$product_id = $product->get_id();
 	}
-	
+
+	// Ensure the global is initialized before using it.
+	if ( ! is_array( $pmprowoo_product_levels ) ) {
+		$pmprowoo_product_levels = get_option( '_pmprowoo_product_levels' );
+		if ( empty( $pmprowoo_product_levels ) ) {
+			$pmprowoo_product_levels = array();
+		}
+	}
+
 	$membership_product_ids = array_keys( $pmprowoo_product_levels );
 	$items       = is_object( WC()->cart ) ? WC()->cart->get_cart_contents() : array(); // items in the cart
 
@@ -609,8 +645,17 @@ function pmprowoo_tab_options() {
 		$membership_level_options[ $key ] = $option->name;
 	}
 	?>
-    <div id="pmprowoo_tab_data" class="panel woocommerce_options_panel">
-
+    <div id="pmprowoo_tab_data" class="panel woocommerce_options_panel pmpro_woocommerce_options_panel">
+		<div class="options_group">
+			<h3><?php esc_html_e( 'Paid Memberships Pro - WooCommerce Integration Settings', 'pmpro-woocommerce' ); ?></h3>
+			<p>
+				<?php esc_html_e( 'These settings allow you to integrate Paid Memberships Pro with WooCommerce products. You can assign a membership level to a product and set up member discount pricing.', 'pmpro-woocommerce' ); ?>
+				<?php
+				$woocommerce_link = '<a title="' . esc_attr__( 'Paid Memberships Pro - WooCommerce Integration Documentation', 'pmpro-woocommerce' ) . '" target="_blank" rel="nofollow noopener" href="https://www.paidmembershipspro.com/add-ons/pmpro-woocommerce/?utm_source=plugin&utm_medium=pmpro-woocommerce&utm_campaign=add-ons">' . esc_html__( 'WooCommerce Integration', 'pmpro-woocommerce' ) . '</a>';
+				printf( esc_html__( 'Learn more about %s.', 'pmpro-woocommerce' ), $woocommerce_link ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				?>
+			</p>
+		</div>
 		<div class="options_group pmprowoo_options_group-membership_product">
 			<h3><?php esc_html_e( 'Give Customers a Membership Level', 'pmpro-woocommerce' ); ?></h3>
 			<?php
@@ -645,7 +690,7 @@ function pmprowoo_tab_options() {
 
 			?>
         </div> <!-- end pmprowoo_options_group-membership_product -->
-		<div class="options-group pmprowoo_options_group-membership_discount">
+		<div class="options_group pmprowoo_options_group-membership_discount">
 			<h3><?php esc_html_e( 'Member Discount Pricing', 'pmpro-woocommerce' ); ?></h3>
 			<p><?php printf( __( 'Set the custom price based on Membership Level. <a href="%s">Edit your membership levels</a> to set a global percent discount for all products.', 'pmpro-woocommerce' ), esc_url( admin_url( 'admin.php?page=pmpro-membershiplevels' ) ) ); ?></p>
             <?php
@@ -733,21 +778,25 @@ function pmprowoo_add_membership_discount() {
 	}
 	?>
 	<hr />
-    <h2 class="title"><?php esc_html_e( "Set Membership Discount", "pmpro-woocommerce" ); ?></h2>
-    <p><?php esc_html_e( "Set a membership discount for this level which will be applied when a user with this membership level is logged in. The discount is applied to the product's regular price, sale price, or level-specific price set on the edit product page.", "pmpro-woocommerce" ); ?></p>
-    <table>
-        <tbody class="form-table">
-        <tr>
-            <th scope="row" valign="top"><label
-                        for="membership_discount"><?php esc_html_e( "Membership Discount (%):", "pmpro-woocommerce" ); ?></label>
-            </th>
-            <td>
-                <input type="number" min="0" max="100" name="membership_discount"
-                       value="<?php echo esc_attr( $membership_discount ); ?>"/>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+	<h2><?php esc_html_e( "Set Membership Discount", "pmpro-woocommerce" ); ?></h2>
+	<p>
+		<?php esc_html_e( "Set a membership discount for this level which will be applied when a user with this membership level is logged in. The discount is applied to the product's regular price, sale price, or level-specific price set on the edit product page.", "pmpro-woocommerce" ); ?>
+		<?php
+		$woocommerce_link = '<a title="' . esc_attr__( 'Paid Memberships Pro - WooCommerce Integration Documentation', 'pmpro-woocommerce' ) . '" target="_blank" rel="nofollow noopener" href="https://www.paidmembershipspro.com/add-ons/pmpro-woocommerce/?utm_source=plugin&utm_medium=pmpro-woocommerce&utm_campaign=add-ons">' . esc_html__( 'WooCommerce Integration', 'pmpro-woocommerce' ) . '</a>';
+		printf( esc_html__( 'Learn more about %s.', 'pmpro-woocommerce' ), $woocommerce_link ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		?>
+	</p>
+	<table class="form-table">
+		<tbody>
+		<tr>
+			<th scope="row" valign="top"><label for="membership_discount"><?php esc_html_e( "Membership Discount (%)", "pmpro-woocommerce" ); ?></label>
+			</th>
+			<td>
+				<input id="membership_discount" type="number" min="0" max="100" name="membership_discount" value="<?php echo esc_attr( $membership_discount ); ?>"/>
+			</td>
+		</tr>
+		</tbody>
+	</table>
 	<?php
 }
 add_action( "pmpro_membership_level_after_other_settings", "pmprowoo_add_membership_discount" );

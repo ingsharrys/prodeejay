@@ -638,7 +638,7 @@ class PMPro_Field {
 		}
 
 		// Sanitize the value if needed.
-		if ( ! empty( $field->sanitize ) ) {
+		if ( ! empty( $this->sanitize ) ) {
 			if ( $this->type == 'textarea' ) {
 				$value = sanitize_textarea_field( $value );
 			} elseif ( is_array( $value ) ) {
@@ -664,6 +664,13 @@ class PMPro_Field {
 
 		// If field was not submitted, bail.
 		if ( null === $value ) {
+			return;
+		}
+
+		// Read-only fields are display-only; their value is managed server-side
+		// (via update_user_meta by add-ons/admin tooling), never from the request.
+		// Skipping the save here prevents users from tampering with fields they cannot edit.
+		if ( 'readonly' === $this->type || ! empty( $this->readonly ) ) {
 			return;
 		}
 
@@ -1004,12 +1011,12 @@ class PMPro_Field {
 			//build multi select
 			$r = '<select id="' . esc_attr( $this->id ) . '" name="' . esc_attr( $this->name ) . '[]" multiple="multiple" style="width: 100%" ';
 			if(isset($this->placeholder)) {
-				$r .= 'placeholder="' . esc_attr($this->placeholder) . '" ';
+				$r .= 'data-placeholder="' . esc_attr($this->placeholder) . '" ';
 				if(empty($this->select2options)) {
 					$this->select2options = 'placeholder: "' . esc_attr($this->placeholder) . '"';
 				}
 			} else {
-				$r .= 'placeholder="' . esc_html__('Choose one or more.', 'paid-memberships-pro') . '" ';
+				$r .= 'data-placeholder="' . esc_html__('Choose one or more.', 'paid-memberships-pro') . '" ';
 			}
 			if(!empty($this->class))
 				$r .= 'class="' . esc_attr( $this->class ) . '" ';
@@ -1094,7 +1101,7 @@ class PMPro_Field {
 					esc_attr( "{$this->id}_{$counter}" ),
 					esc_attr( $this->class ),
 					( in_array($ovalue, $value) ? 'checked="checked"' : null ),
-					( !empty( $this->readonly ) ? 'readonly="readonly"' : null ),
+					( !empty( $this->readonly ) ? 'disabled="disabled"' : null ),
 					$this->getHTMLAttributes()
 				);
 
@@ -1277,9 +1284,10 @@ class PMPro_Field {
 		elseif($this->type == "readonly")
 		{
 			if ( empty( $value ) ) {
-				$value = '&#8212;';
+				$r = '&#8212;';
+			} else {
+				$r = esc_html( $value );
 			}
-			$r = $value;
 		}
 		else
 		{
@@ -1523,18 +1531,24 @@ class PMPro_Field {
 		$this->divclass = pmpro_get_element_class( $this->divclass );
 		$this->class = pmpro_get_element_class( $this->class );
 
+		// radio/checkbox_grouped render multiple inputs, so the group is named with role/aria instead of a <label for>.
+		$pmpro_field_is_group = in_array( $this->type, array( 'radio', 'checkbox_grouped' ), true );
 		?>
-		<div id="<?php echo esc_attr( $this->id );?>_div" <?php if ( ! empty( $this->divclass ) ) { echo 'class="' . esc_attr( $this->divclass ) . '"'; } ?>>
+		<div id="<?php echo esc_attr( $this->id );?>_div" <?php if ( ! empty( $this->divclass ) ) { echo 'class="' . esc_attr( $this->divclass ) . '"'; } ?><?php if ( $pmpro_field_is_group && ! empty( $this->showmainlabel ) ) { echo ' role="group" aria-labelledby="' . esc_attr( $this->id ) . '_label"'; } ?>>
 			<?php if(!empty($this->showmainlabel)) { ?>
+				<?php if ( $pmpro_field_is_group ) { ?>
+				<span id="<?php echo esc_attr( $this->id );?>_label" class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_label' ) ); ?>">
+				<?php } else { ?>
 				<label class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_label' ) ); ?>" for="<?php echo esc_attr($this->name);?>">
+				<?php } ?>
 					<?php echo wp_kses_post( $this->label );?>
-					<?php 
+					<?php
 						if(!empty($this->required) && !empty($this->showrequired) && $this->showrequired === 'label')
 						{
 						?><span class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_asterisk' ) ); ?>"> <abbr title="<?php esc_attr_e( 'Required Field' ,'paid-memberships-pro' ); ?>">*</abbr></span><?php
 						}
 					?>
-				</label>
+				<?php echo $pmpro_field_is_group ? '</span>' : '</label>'; ?>
 				<?php $this->display($value); ?>
 			<?php } else { ?>
 				<?php $this->display($value); ?>

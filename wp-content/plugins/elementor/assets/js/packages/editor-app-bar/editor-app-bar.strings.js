@@ -1,5 +1,11 @@
 __( 'Exit to WordPress', 'elementor' );
 __( 'Send Feedback', 'elementor' );
+__( 'Angie', 'elementor' );
+__(
+	'Angie lets you generate custom widgets, sections, and code using simple instructions.',
+	'elementor'
+);
+__( 'Build custom widgets using simple instructions.', 'elementor' );
 __( 'More', 'elementor' );
 __( 'Elementor Logo', 'elementor' );
 __( 'Submit Feedback', 'elementor' );
@@ -12,9 +18,8 @@ __( 'Submit Another Feedback', 'elementor' );
 __( 'Submit', 'elementor' );
 __( 'Connect to Elementor', 'elementor' );
 __( 'Integrations', 'elementor' );
-__( 'User Preferences', 'elementor' );
-__( 'Theme Builder', 'elementor' );
 __( 'Structure', 'elementor' );
+__( 'Theme Builder', 'elementor' );
 __( 'Site Settings', 'elementor' );
 __( 'Save Changes', 'elementor' );
 __( 'Switch Device', 'elementor' );
@@ -43,3 +48,10 @@ __( 'Submit', 'elementor' );
 __( 'Preview Changes', 'elementor' );
 __( 'My Elementor', 'elementor' );
 __( 'Connect my account', 'elementor' );
+__( 'Angie', 'elementor' );
+__( 'Meet Angie', 'elementor' );
+__( 'New', 'elementor' );
+__( 'Angie', 'elementor' );
+__( 'Learn More', 'elementor' );
+__( 'Try for free', 'elementor' );
+__( 'User Preferences', 'elementor' );
