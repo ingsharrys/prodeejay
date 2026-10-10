@@ -1,0 +1,32 @@
+.pjm h1 .dashicons { font-size: 28px; width: 28px; height: 28px; margin-right: 6px; color: #1db954; }
+.pjm-grid { display: grid; grid-template-columns: minmax(320px, 1fr) minmax(320px, 1.3fr); gap: 20px; margin-top: 16px; }
+@media (max-width: 1100px) { .pjm-grid { grid-template-columns: 1fr; } }
+.pjm-caja { background: #fff; border: 1px solid #dcdcde; border-radius: 10px; padding: 18px 20px; margin-bottom: 20px; }
+.pjm-caja h2 { margin: 6px 0 12px; font-size: 15px; }
+.pjm-caja h2 + label { display: block; margin-bottom: 4px; color: #50575e; }
+.pjm-caja select, .pjm-caja input[type="search"] { width: 100%; max-width: none; }
+.pjm-fila { display: flex; gap: 8px; margin: 10px 0 22px; }
+.pjm-fila input { flex: 1; }
+.pjm-zona { border: 2px dashed #c3c4c7; border-radius: 12px; padding: 30px 16px; text-align: center; cursor: pointer; transition: background .15s, border-color .15s; }
+.pjm-zona:hover, .pjm-zona:focus, .pjm-zona.encima { border-color: #1db954; background: #f0fbf4; outline: none; }
+.pjm-zona .dashicons { font-size: 40px; width: 40px; height: 40px; color: #1db954; }
+.pjm-zona p { margin: 8px 0 4px; font-size: 14px; }
+.pjm-zona small { color: #646970; }
+.pjm-check { display: block; margin: 12px 0; }
+.pjm-cola { margin: 0; }
+.pjm-cola li { border: 1px solid #dcdcde; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+.pjm-nombre { font-weight: 600; word-break: break-all; }
+.pjm-barra { height: 6px; background: #f0f0f1; border-radius: 99px; overflow: hidden; margin: 8px 0 6px; }
+.pjm-barra i { display: block; height: 100%; width: 0; background: #1db954; transition: width .2s; }
+.pjm-estado { font-size: 12px; color: #50575e; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.pjm-cola li.ok { border-color: #1db954; }
+.pjm-cola li.ok .pjm-estado { color: #008a20; }
+.pjm-cola li.error { border-color: #d63638; background: #fcf0f1; }
+.pjm-cola li.error .pjm-estado { color: #d63638; }
+.pjm-cola li.error .pjm-barra { display: none; }
+.pjm-meta { color: #646970; margin: 8px 0; }
+.pjm-tabla td { vertical-align: middle; word-break: break-all; }
+.pjm-acciones { white-space: nowrap; text-align: right; }
+.pjm-acciones .button { margin-left: 4px; }
+.pjm-aviso { background: #fff8e5; border: 1px solid #dba617; border-radius: 10px; padding: 14px 16px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
+.pjm-aviso.ok { background: #edfaef; border-color: #1db954; }
