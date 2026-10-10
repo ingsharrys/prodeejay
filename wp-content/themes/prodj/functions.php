@@ -5,9 +5,32 @@
 
 /* Enqueue styles */
 function hello_elementor_child_enqueue_styles() {
-    wp_enqueue_style('hello-elementor-child-style', get_stylesheet_uri(), array('hello-elementor-style'), wp_get_theme()->get('Version'));
+    // 'hello-elementor' es el nombre real del estilo del tema padre; si la
+    // dependencia no existe, WordPress omite en silencio la hoja del hijo.
+    wp_enqueue_style('hello-elementor-child-style', get_stylesheet_uri(), array('hello-elementor'), wp_get_theme()->get('Version'));
+
+    // Diseño del catálogo (inicio, packs, sets y video). Vive en un archivo
+    // del tema para no depender del "CSS adicional" guardado en la base de datos.
+    $catalogo_css = get_stylesheet_directory() . '/assets/css/prodj.css';
+    if (file_exists($catalogo_css)) {
+        wp_enqueue_style(
+            'prodj-catalogo',
+            get_stylesheet_directory_uri() . '/assets/css/prodj.css',
+            array('bootstrap-css'),
+            filemtime($catalogo_css)
+        );
+    }
 }
-add_action('wp_enqueue_scripts', 'hello_elementor_child_enqueue_styles');
+add_action('wp_enqueue_scripts', 'hello_elementor_child_enqueue_styles', 20);
+
+/* Marca las páginas del catálogo para aplicarles el diseño oscuro */
+function prodj_body_class_catalogo($classes) {
+    if (is_page_template(array('home-prodj.php', 'packs.php', 'sets.php', 'video.php'))) {
+        $classes[] = 'prodj-catalogo';
+    }
+    return $classes;
+}
+add_filter('body_class', 'prodj_body_class_catalogo');
 
 function custom_redirect_script() {
     wp_enqueue_script('custom-redirect', get_stylesheet_directory_uri() . '/js/custom-redirect.js', array('jquery'), '', true);

@@ -1,0 +1,509 @@
+/*
+ * Prodeejay Remix — diseño del catálogo (inicio, packs, sets/mixes y video).
+ *
+ * Se aplica solo a las páginas con body.prodj-catalogo (ver functions.php).
+ * Algunas reglas llevan !important porque las plantillas traen estilos en
+ * línea (style="...") que de otro modo ganarían.
+ */
+
+:root {
+    --pj-bg: #0f0f0f;
+    --pj-fila: #181818;
+    --pj-fila-hover: #242424;
+    --pj-borde: #2a2a2a;
+    --pj-texto: #ffffff;
+    --pj-gris: #a7a7a7;
+    --pj-acento: #1db954;
+    --pj-acento-claro: #1ed760;
+    --pj-radio: 10px;
+}
+
+/* ---------- Encabezado (todas las páginas) ---------- */
+.custom-header .navbar-nav a:hover,
+.custom-header .navbar-nav .current-menu-item > a {
+    color: var(--pj-acento);
+}
+
+/* ---------- Base de las páginas del catálogo ---------- */
+body.prodj-catalogo {
+    background: var(--pj-bg);
+    color: var(--pj-texto);
+    margin: 0;
+    padding-bottom: 110px; /* espacio para el reproductor fijo */
+    -webkit-font-smoothing: antialiased;
+}
+
+.prodj-catalogo .image-container {
+    width: 100%;
+    line-height: 0;
+    overflow: hidden;
+}
+
+.prodj-catalogo .full-width-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 520px;
+    object-fit: cover;
+}
+
+/* ---------- Título "NEW RELEASES" ---------- */
+.prodj-catalogo .titlerelease {
+    color: var(--pj-texto);
+    font-weight: 900;
+    font-size: clamp(22px, 3vw, 32px);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 40px 0 8px;
+}
+
+.prodj-catalogo .linearelease {
+    width: 80px;
+    height: 4px;
+    background: var(--pj-acento);
+    border-radius: 2px;
+    margin-bottom: 26px;
+}
+
+/* ---------- Buscador ---------- */
+.prodj-catalogo .search-wrapper .form-control,
+.prodj-catalogo #categoryFilter {
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+    color: var(--pj-texto);
+    border-radius: 999px;
+    height: 48px;
+    padding: 0 20px;
+    font-size: 15px;
+}
+
+.prodj-catalogo .search-wrapper .form-control::placeholder {
+    color: #8a8a8a;
+}
+
+.prodj-catalogo .search-wrapper .form-control:focus,
+.prodj-catalogo #categoryFilter:focus {
+    background-color: #242424;
+    border-color: var(--pj-acento);
+    box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.25);
+    color: var(--pj-texto);
+}
+
+.prodj-catalogo #categoryFilter option {
+    background: #1f1f1f;
+    color: var(--pj-texto);
+}
+
+.prodj-catalogo .buscarboton {
+    width: 100%;
+    height: 48px;
+    background: var(--pj-acento);
+    border: none;
+    border-radius: 999px;
+    color: #000;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.prodj-catalogo .buscarboton:hover,
+.prodj-catalogo .buscarboton:focus {
+    background: var(--pj-acento-claro);
+    color: #000;
+}
+
+/* ---------- Encabezado de la tabla ---------- */
+.prodj-catalogo #lamusic {
+    margin: 0 0 8px;
+}
+
+.prodj-catalogo #lamusic > div {
+    background: transparent !important;
+    color: var(--pj-gris) !important;
+    border: none !important;
+    border-bottom: 1px solid var(--pj-borde) !important;
+    padding: 10px 12px;
+}
+
+.prodj-catalogo #lamusic .text-repro {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+/* ---------- Filas de canciones ---------- */
+.prodj-catalogo .product-row {
+    margin: 0 0 8px;
+    background: var(--pj-fila);
+    border-radius: var(--pj-radio);
+    overflow: hidden;
+    transition: background 0.15s ease;
+}
+
+.prodj-catalogo .product-row:hover {
+    background: var(--pj-fila-hover);
+}
+
+.prodj-catalogo .product-row > div {
+    background: transparent !important;
+    border: none !important;
+    margin-top: 0 !important;
+    min-height: 64px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    color: var(--pj-gris);
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.prodj-catalogo .product-row > div.d-none {
+    display: none !important;
+}
+
+@media (min-width: 768px) {
+    .prodj-catalogo .product-row > div.d-md-block {
+        display: flex !important;
+    }
+}
+
+/* DJ en verde y nombre de la canción destacado */
+.prodj-catalogo .product-row > div:nth-child(1) {
+    color: var(--pj-acento);
+    font-weight: 700;
+}
+
+.prodj-catalogo .product-row > div:nth-child(3) {
+    color: var(--pj-texto);
+    font-weight: 600;
+}
+
+/* Columna de reproducir + comprar */
+.prodj-catalogo .product-row > div:last-child {
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+.prodj-catalogo .product-row form.cart {
+    margin: 0;
+}
+
+/* ---------- Botón de reproducir ---------- */
+.prodj-catalogo .botonplay {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    padding: 0 !important;
+    border: none;
+    border-radius: 50%;
+    background: var(--pj-acento);
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.prodj-catalogo .botonplay:hover {
+    transform: scale(1.08);
+    background: var(--pj-acento-claro);
+}
+
+.prodj-catalogo .botonplay i {
+    color: #000 !important;
+    font-size: 15px;
+}
+
+/* Triángulo de "play" para los botones que aún no se han tocado */
+.prodj-catalogo .botonplay .play-button:empty {
+    display: block;
+    width: 0;
+    height: 0;
+    margin-left: 3px;
+    border-style: solid;
+    border-width: 8px 0 8px 13px;
+    border-color: transparent transparent transparent #000;
+}
+
+/* Canciones sin preview (icono de audífonos) */
+.prodj-catalogo a.botonplay {
+    background: #2a2a2a;
+    box-shadow: none;
+}
+
+.prodj-catalogo a.botonplay i {
+    color: var(--pj-gris) !important;
+}
+
+/* ---------- Botón de precio / agregar al carrito ---------- */
+.prodj-catalogo .product-row .button.alt {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px !important;
+    border-radius: 999px !important;
+    font-size: 13px !important;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    background: transparent !important;
+    border: 1px solid var(--pj-acento) !important;
+    color: var(--pj-acento) !important;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.prodj-catalogo .product-row .button.alt:hover {
+    background: var(--pj-acento) !important;
+    color: #000 !important;
+}
+
+.prodj-catalogo .product-row .button.alt .amount,
+.prodj-catalogo .product-row .button.alt bdi,
+.prodj-catalogo .product-row .button.alt .carrito {
+    color: inherit !important;
+}
+
+/* "Ir al carrito" cuando la canción ya está en el carrito */
+.prodj-catalogo .product-row .button.alt:not(.single_add_to_cart_button) {
+    background: var(--pj-acento) !important;
+    color: #000 !important;
+}
+
+.prodj-catalogo .loading-spinner {
+    color: var(--pj-acento);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* ---------- Paginación ---------- */
+.prodj-catalogo .woocommerce-pagination {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 30px 0 12px;
+}
+
+.prodj-catalogo .woocommerce-pagination a {
+    min-width: 42px;
+    height: 42px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: #1f1f1f;
+    color: var(--pj-texto);
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prodj-catalogo .woocommerce-pagination a:hover {
+    background: var(--pj-borde);
+}
+
+.prodj-catalogo .woocommerce-pagination a.active {
+    background: var(--pj-acento);
+    color: #000;
+}
+
+/* ---------- Carrito flotante ---------- */
+.prodj-catalogo .header-cart {
+    position: fixed;
+    right: 22px;
+    bottom: 100px;
+    z-index: 1050;
+    padding: 0 !important;
+    text-decoration: none;
+}
+
+.prodj-catalogo #floating-cart {
+    position: relative;
+    width: 58px;
+    height: 58px;
+    border: none;
+    border-radius: 50%;
+    background: var(--pj-acento);
+    color: #000;
+    font-size: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+    transition: transform 0.15s ease;
+}
+
+.prodj-catalogo #floating-cart:hover {
+    transform: scale(1.06);
+}
+
+.prodj-catalogo #cart-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #fff;
+    color: #000;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---------- Reproductor fijo inferior ---------- */
+.prodj-catalogo #audioPlayerWrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1040;
+    padding: 12px 20px;
+    background: rgba(18, 18, 18, 0.97);
+    border-top: 1px solid var(--pj-borde);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.prodj-catalogo #customAudioControls {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.prodj-catalogo #playButton,
+.prodj-catalogo #pauseButton {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #fff;
+    color: #000;
+    font-size: 16px;
+    line-height: 44px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.prodj-catalogo #playButton:hover,
+.prodj-catalogo #pauseButton:hover {
+    transform: scale(1.05);
+}
+
+.prodj-catalogo #audioSeekbar {
+    flex: 1;
+    height: 4px;
+    accent-color: var(--pj-acento);
+    cursor: pointer;
+}
+
+.prodj-catalogo #time {
+    min-width: 42px;
+    color: var(--pj-gris);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Barras del ecualizador mientras suena una canción */
+.prodj-catalogo #sound-bars {
+    position: fixed;
+    left: 50%;
+    bottom: 76px;
+    transform: translateX(-50%);
+    z-index: 1039;
+    height: 50px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+.prodj-catalogo #sound-bars .bar {
+    width: 4px;
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(to top, var(--pj-acento), #9cf0b9);
+    transition: height 0.15s ease;
+}
+
+/* ---------- Ventana del video ---------- */
+.prodj-catalogo .modal-dialog {
+    max-width: 760px;
+}
+
+.prodj-catalogo .modal-content {
+    background: var(--pj-fila);
+    color: var(--pj-texto);
+    border: 1px solid var(--pj-borde);
+    border-radius: 14px;
+}
+
+.prodj-catalogo .modal-header {
+    border-bottom-color: var(--pj-borde);
+}
+
+.prodj-catalogo .modal-header .btn-close {
+    filter: invert(1);
+}
+
+.prodj-catalogo .modal-body video,
+.prodj-catalogo .modal-body iframe {
+    width: 100%;
+    height: auto;
+    border-radius: var(--pj-radio);
+}
+
+/* ---------- Móvil ---------- */
+@media (max-width: 767px) {
+    .prodj-catalogo .product-row > div {
+        padding: 10px 6px;
+        font-size: 12px;
+        min-height: 56px;
+    }
+
+    .prodj-catalogo .product-row > div:last-child {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .prodj-catalogo .botonplay {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+    }
+
+    .prodj-catalogo .product-row .button.alt {
+        padding: 6px 10px !important;
+        font-size: 11px !important;
+    }
+
+    .prodj-catalogo .header-cart {
+        right: 14px;
+        bottom: 92px;
+    }
+
+    .prodj-catalogo #audioPlayerWrapper {
+        padding: 10px 12px;
+    }
+
+    .prodj-catalogo #customAudioControls {
+        gap: 10px;
+    }
+
+    /* En pantallas pequeñas las barras taparían las canciones */
+    .prodj-catalogo #sound-bars {
+        display: none;
+    }
+}
