@@ -20,13 +20,11 @@ $header_nav_menu = wp_nav_menu( array(
 ) );
 ?>
 <style>
-    /* Solo los enlaces del encabezado: una regla global "a {}" deformaba
-       botones y enlaces en el resto del sitio (tienda, checkout, Elementor). */
-    .custom-header a {
-        color: white;
-        padding: 10px 15px;
-        text-decoration: none;
-    }
+    a {
+    color: white;  /* Cambia el color del texto a blanco */
+    padding: 10px 15px;  /* Espaciado alrededor del enlace */
+    text-decoration: none;  /* Quita el subrayado */
+}
 </style>
 <header id="site-header" class="site-header dynamic-header custom-header">
     <div class="header-inner custom-header-inner">
