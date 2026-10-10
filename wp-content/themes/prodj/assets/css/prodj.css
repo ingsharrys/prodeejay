@@ -507,3 +507,122 @@ body.prodj-catalogo {
         display: none;
     }
 }
+
+/* =====================================================================
+ * Portada (página de inicio hecha con bloques de WordPress).
+ * Hello Elementor casi no trae estilos para bloques, así que sin esto
+ * la portada se ve como texto plano. Solo aplica a body.home.
+ * ===================================================================== */
+body.home {
+    background: var(--pj-bg);
+    color: #cfcfcf;
+    -webkit-font-smoothing: antialiased;
+}
+
+.home .page-content {
+    font-size: 17px;
+    line-height: 1.7;
+    padding-bottom: 60px;
+}
+
+.home .page-content h1,
+.home .page-content h2,
+.home .page-content h3,
+.home .page-content h4 {
+    color: var(--pj-texto);
+    font-family: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    margin: 1.6em 0 0.5em;
+}
+
+.home .page-content h1 { font-size: clamp(30px, 4.5vw, 52px); }
+.home .page-content h2 { font-size: clamp(24px, 3.4vw, 38px); }
+.home .page-content h3 { font-size: clamp(20px, 2.4vw, 28px); }
+
+.home .page-content p,
+.home .page-content li {
+    color: var(--pj-gris);
+}
+
+/* Enlaces dentro del texto: sin el relleno de la regla global del menú */
+.home .page-content p a,
+.home .page-content li a {
+    padding: 0;
+    color: var(--pj-acento);
+}
+
+.home .page-content p a:hover,
+.home .page-content li a:hover {
+    text-decoration: underline;
+}
+
+/* Botones (JOIN NOW, NEW REMIXES, DJS, PACKS...) */
+.home .wp-block-buttons {
+    gap: 14px;
+    margin: 28px 0;
+}
+
+.home .wp-block-button__link {
+    padding: 14px 30px !important;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+}
+
+.home .wp-block-button__link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45);
+}
+
+/* Botones sin color propio: oscuros con borde, verdes al pasar el mouse */
+.home .wp-block-button__link:not(.has-background) {
+    background: #1f1f1f;
+    color: var(--pj-texto);
+    border: 1px solid #333;
+}
+
+.home .wp-block-button__link:not(.has-background):hover {
+    background: var(--pj-acento);
+    border-color: var(--pj-acento);
+    color: #000;
+}
+
+/* Botones con color propio (ej. JOIN NOW en rojo): se respeta su color */
+.home .wp-block-button__link.has-background:hover {
+    filter: brightness(1.12);
+}
+
+.home .page-content img {
+    border-radius: 12px;
+}
+
+.home .wp-block-separator {
+    border-color: var(--pj-borde);
+    opacity: 1;
+}
+
+.home .site-footer {
+    background: #000;
+    color: var(--pj-gris);
+}
+
+@media (max-width: 767px) {
+    .home .page-content {
+        font-size: 16px;
+    }
+
+    .home .wp-block-buttons {
+        gap: 10px;
+    }
+
+    .home .wp-block-button__link {
+        padding: 12px 22px !important;
+        font-size: 13px;
+    }
+}
