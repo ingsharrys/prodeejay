@@ -19,8 +19,7 @@ $skip_link_url = apply_filters( 'hello_elementor_skip_link_url', '#content' );
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="<?php echo esc_attr( $viewport_content ); ?>">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
-	<!-- Bootstrap 5 CSS -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Bootstrap CSS se carga una sola vez desde functions.php (bootstrap-css). -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
