@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Prodj · Subir música
  * Description:       Sube música y videos a la carpeta /music del sitio de forma segura: solo administradores, solo dentro de /music, solo archivos de audio/video verificados por su contenido y por trozos (sin límite de tamaño del hosting).
- * Version:           1.0.1
+ * Version:           1.1.0
  * Requires at least: 6.4
  * Requires PHP:      8.0
  * Author:            Dario Charry
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 
 final class Prodj_Subir_Musica
 {
-    public const VERSION = '1.0.1';
+    public const VERSION = '1.1.0';
     public const CAP = 'prodj_subir_musica';
     public const NONCE = 'prodj_subir_musica';
     public const REGISTRO = 'prodj_musica_registro';
@@ -45,6 +45,8 @@ final class Prodj_Subir_Musica
         add_action('wp_ajax_prodj_musica_listar', [self::class, 'ajax_listar']);
         add_action('wp_ajax_prodj_musica_crear_carpeta', [self::class, 'ajax_crear_carpeta']);
         add_action('wp_ajax_prodj_musica_eliminar', [self::class, 'ajax_eliminar']);
+        add_action('wp_ajax_prodj_musica_info_carpeta', [self::class, 'ajax_info_carpeta']);
+        add_action('wp_ajax_prodj_musica_eliminar_carpeta', [self::class, 'ajax_eliminar_carpeta']);
         add_action('wp_ajax_prodj_musica_proteger', [self::class, 'ajax_proteger']);
     }
 
@@ -477,6 +479,100 @@ final class Prodj_Subir_Musica
         wp_send_json_success();
     }
 
+    /** Carpeta que se puede eliminar: dentro de /music y nunca la raíz. */
+    private static function carpeta_borrable(): string
+    {
+        $carpeta = self::resolver_carpeta(self::texto('carpeta'));
+        if (is_wp_error($carpeta)) {
+            wp_send_json_error(['mensaje' => $carpeta->get_error_message()], 400);
+        }
+        if ('' === self::relativa($carpeta)) {
+            wp_send_json_error(['mensaje' => 'La carpeta principal /music no se puede eliminar.'], 400);
+        }
+
+        return $carpeta;
+    }
+
+    /** Cuenta lo que hay dentro, sin seguir enlaces simbólicos. */
+    public static function contenido_carpeta(string $dir): array
+    {
+        $archivos = 0;
+        $carpetas = 0;
+        $bytes = 0;
+        $it = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::SELF_FIRST
+        );
+        foreach ($it as $item) {
+            if ($item->isDir() && !$item->isLink()) {
+                $carpetas++;
+            } else {
+                $archivos++;
+                if (!$item->isLink()) {
+                    $bytes += (int) $item->getSize();
+                }
+            }
+        }
+
+        return ['archivos' => $archivos, 'carpetas' => $carpetas, 'bytes' => $bytes];
+    }
+
+    /** Lo que contiene la carpeta, para mostrarlo antes de confirmar. */
+    public static function ajax_info_carpeta(): void
+    {
+        self::exigir_permiso();
+        $carpeta = self::carpeta_borrable();
+
+        $resumen = self::contenido_carpeta($carpeta);
+        wp_send_json_success($resumen + [
+            'nombre' => basename($carpeta),
+            'ruta'   => self::relativa($carpeta),
+            'tamano' => size_format($resumen['bytes']),
+        ]);
+    }
+
+    /**
+     * Elimina una carpeta con todo su contenido. Exige escribir el nombre
+     * de la carpeta como confirmación. Los enlaces simbólicos se borran
+     * como enlace, nunca se sigue a su destino.
+     */
+    public static function ajax_eliminar_carpeta(): void
+    {
+        self::exigir_permiso();
+        $carpeta = self::carpeta_borrable();
+
+        if (self::texto('confirmacion') !== sanitize_text_field(basename($carpeta))) {
+            wp_send_json_error(['mensaje' => 'Para confirmar, escribe exactamente el nombre de la carpeta.'], 400);
+        }
+
+        $resumen = self::contenido_carpeta($carpeta);
+        if (function_exists('set_time_limit')) {
+            @set_time_limit(0);
+        }
+
+        $fallos = 0;
+        $it = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($carpeta, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST
+        );
+        foreach ($it as $item) {
+            $ruta = $item->getPathname();
+            $ok = ($item->isDir() && !$item->isLink()) ? @rmdir($ruta) : @unlink($ruta);
+            if (!$ok) {
+                $fallos++;
+            }
+        }
+
+        $relativa = self::relativa($carpeta);
+        if ($fallos > 0 || !@rmdir($carpeta)) {
+            self::registrar('intentó eliminar la carpeta', $relativa . ' (quedaron ' . $fallos . ' elementos sin borrar)');
+            wp_send_json_error(['mensaje' => 'No se pudo eliminar todo: ' . $fallos . ' elemento(s) no se borraron (revisa los permisos).'], 500);
+        }
+
+        self::registrar('eliminó la carpeta', $relativa . ' (' . $resumen['archivos'] . ' archivos)');
+        wp_send_json_success(['carpeta' => $relativa]);
+    }
+
     /* ------------------------------------------------------------------
      * Protección de la carpeta /music
      * ------------------------------------------------------------------ */
@@ -680,6 +776,11 @@ final class Prodj_Subir_Musica
                         <input type="text" id="pjm-nueva" placeholder="Nueva subcarpeta (ej. DJ Wasson)" maxlength="60">
                         <button type="button" class="button" id="pjm-crear">Crear dentro</button>
                     </div>
+                    <p class="pjm-borrar-carpeta">
+                        <button type="button" class="button button-link-delete" id="pjm-borrar-carpeta">
+                            <span class="dashicons dashicons-trash"></span> Eliminar esta carpeta
+                        </button>
+                    </p>
 
                     <h2>2. Sube los archivos</h2>
                     <div id="pjm-zona" class="pjm-zona" tabindex="0" role="button" aria-label="Elegir archivos">

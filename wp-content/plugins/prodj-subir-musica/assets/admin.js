@@ -85,11 +85,76 @@
         selCarpeta.value = C.carpetas.includes(deseada) ? deseada : '';
     }
 
+    const bBorrarCarpeta = $('pjm-borrar-carpeta');
+
+    function actualizarBotonBorrar() {
+        // La raíz /music nunca se puede eliminar.
+        bBorrarCarpeta.disabled = selCarpeta.value === '';
+    }
+
     selCarpeta.addEventListener('change', () => {
         try {
             localStorage.setItem('pjm-carpeta', selCarpeta.value);
         } catch (e) { /* sin almacenamiento local */ }
+        actualizarBotonBorrar();
         cargarLista();
+    });
+
+    bBorrarCarpeta.addEventListener('click', async () => {
+        const ruta = selCarpeta.value;
+        if (!ruta) {
+            return;
+        }
+        if (subiendo) {
+            alert('Espera a que terminen las subidas en curso.');
+            return;
+        }
+        let info;
+        try {
+            info = await llamar('prodj_musica_info_carpeta', { carpeta: ruta });
+        } catch (e) {
+            alert(e.message);
+            return;
+        }
+
+        let confirmacion = info.nombre;
+        if (info.archivos === 0 && info.carpetas === 0) {
+            if (!confirm('¿Eliminar la carpeta vacía "/music/' + ruta + '"?')) {
+                return;
+            }
+        } else {
+            const escrito = prompt(
+                '⚠️ Vas a eliminar "/music/' + ruta + '" con TODO su contenido:\n\n' +
+                '• ' + info.archivos + ' archivo(s) · ' + info.tamano + '\n' +
+                '• ' + info.carpetas + ' subcarpeta(s)\n\n' +
+                'Esto no se puede deshacer, y los productos que enlacen a estas canciones dejarán de descargarse.\n\n' +
+                'Para confirmar, escribe el nombre de la carpeta: ' + info.nombre
+            );
+            if (escrito === null) {
+                return;
+            }
+            if (escrito.trim() !== info.nombre) {
+                alert('El nombre no coincide. No se eliminó nada.');
+                return;
+            }
+            confirmacion = escrito.trim();
+        }
+
+        bBorrarCarpeta.disabled = true;
+        try {
+            await llamar('prodj_musica_eliminar_carpeta', { carpeta: ruta, confirmacion });
+            // Quitar la carpeta y sus subcarpetas del selector y pasar a la carpeta padre.
+            C.carpetas = C.carpetas.filter((c) => c !== ruta && !c.startsWith(ruta + '/'));
+            const padre = ruta.includes('/') ? ruta.slice(0, ruta.lastIndexOf('/')) : '';
+            pintarCarpetas(padre);
+            try {
+                localStorage.setItem('pjm-carpeta', padre);
+            } catch (e) { /* sin almacenamiento local */ }
+            cargarLista();
+        } catch (e) {
+            alert(e.message);
+        }
+        actualizarBotonBorrar();
     });
 
     $('pjm-crear').addEventListener('click', async () => {
@@ -103,6 +168,7 @@
             C.carpetas.push(r.carpeta);
             C.carpetas.sort((a, b) => a.localeCompare(b, 'es', { numeric: true, sensitivity: 'base' }));
             pintarCarpetas(r.carpeta);
+            actualizarBotonBorrar();
             $('pjm-nueva').value = '';
             cargarLista();
         } catch (e) {
@@ -326,5 +392,6 @@
     }
 
     pintarCarpetas();
+    actualizarBotonBorrar();
     cargarLista();
 })();
