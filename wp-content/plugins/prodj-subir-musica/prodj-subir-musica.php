@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Prodj · Subir música
  * Description:       Sube música y videos a la carpeta /music del sitio de forma segura: solo administradores, solo dentro de /music, solo archivos de audio/video verificados por su contenido y por trozos (sin límite de tamaño del hosting).
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 6.4
  * Requires PHP:      8.0
  * Author:            Dario Charry
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 
 final class Prodj_Subir_Musica
 {
-    public const VERSION = '1.0.0';
+    public const VERSION = '1.0.1';
     public const CAP = 'prodj_subir_musica';
     public const NONCE = 'prodj_subir_musica';
     public const REGISTRO = 'prodj_musica_registro';
@@ -27,8 +27,12 @@ final class Prodj_Subir_Musica
     /** Tamaño máximo de un archivo completo. */
     public const ARCHIVO_MAX = 4 * GB_IN_BYTES;
 
-    /** Niveles de subcarpetas que se muestran y se pueden crear. */
-    public const PROFUNDIDAD = 3;
+    /**
+     * Niveles de subcarpetas que se muestran y se pueden crear
+     * (ej. dj/essentialtools/2026/11_25 son 4). Se puede cambiar con
+     * PRODJ_MUSICA_PROFUNDIDAD en wp-config.php.
+     */
+    public const PROFUNDIDAD = 8;
 
     /** Extensiones permitidas; su contenido real se verifica en contenido_valido(). */
     public const TIPOS = ['mp3', 'wav', 'aif', 'aiff', 'flac', 'm4a', 'mp4', 'zip'];
@@ -128,7 +132,12 @@ final class Prodj_Subir_Musica
         return self::url_raiz() . '/' . implode('/', $partes);
     }
 
-    /** Lista de subcarpetas (relativas), hasta PROFUNDIDAD niveles. */
+    public static function profundidad(): int
+    {
+        return defined('PRODJ_MUSICA_PROFUNDIDAD') ? max(1, (int) PRODJ_MUSICA_PROFUNDIDAD) : self::PROFUNDIDAD;
+    }
+
+    /** Lista de subcarpetas (relativas), hasta profundidad() niveles. */
     public static function carpetas(): array
     {
         $raiz = self::raiz();
@@ -144,7 +153,7 @@ final class Prodj_Subir_Musica
 
     private static function recorrer(string $dir, int $nivel, array &$lista): void
     {
-        if ($nivel > self::PROFUNDIDAD) {
+        if ($nivel > self::profundidad()) {
             return;
         }
         try {
@@ -424,8 +433,8 @@ final class Prodj_Subir_Musica
 
         $relativa_padre = self::relativa($padre);
         $nivel = '' === $relativa_padre ? 1 : count(explode('/', $relativa_padre)) + 1;
-        if ($nivel > self::PROFUNDIDAD) {
-            wp_send_json_error(['mensaje' => 'Máximo ' . self::PROFUNDIDAD . ' niveles de carpetas.'], 400);
+        if ($nivel > self::profundidad()) {
+            wp_send_json_error(['mensaje' => 'Máximo ' . self::profundidad() . ' niveles de carpetas dentro de /music.'], 400);
         }
 
         $nueva = $padre . '/' . $nombre;
