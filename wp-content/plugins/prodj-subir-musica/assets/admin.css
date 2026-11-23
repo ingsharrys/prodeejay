@@ -30,3 +30,8 @@
 .pjm-acciones .button { margin-left: 4px; }
 .pjm-aviso { background: #fff8e5; border: 1px solid #dba617; border-radius: 10px; padding: 14px 16px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
 .pjm-aviso.ok { background: #edfaef; border-color: #1db954; }
+.pjm-borrar-carpeta { margin: -12px 0 20px; }
+.pjm-borrar-carpeta .button { display: inline-flex; align-items: center; gap: 4px; color: #b32d2e; border-color: #b32d2e; }
+.pjm-borrar-carpeta .button:hover:not(:disabled), .pjm-borrar-carpeta .button:focus:not(:disabled) { background: #b32d2e; border-color: #b32d2e; color: #fff; }
+.pjm-borrar-carpeta .button:disabled { color: #a7aaad !important; border-color: #dcdcde !important; }
+.pjm-borrar-carpeta .dashicons { font-size: 16px; width: 16px; height: 16px; }
